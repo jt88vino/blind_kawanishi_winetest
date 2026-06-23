@@ -1,111 +1,598 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ソムリエ / ワインエキスパート 試験対策ドリル byブラインド川西</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Noto Sans JP -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
   <style>
-    :root{
-      --rose900:#881337;--rose800:#9f1239;--rose100:#ffe4e6;
-      --stone900:#292524;--stone800:#44403c;--stone700:#57534e;--stone600:#78716c;
-      --stone500:#a8a29e;--stone400:#d6d3d1;--stone300:#d6d3d1;--stone200:#e7e5e4;
-      --stone100:#f5f5f4;--stone50:#fafaf9;
-      --green800:#166534;--green600:#16a34a;--green100:#dcfce7;--green50:#f0fdf4;
-      --red800:#991b1b;--red500:#ef4444;--red100:#fee2e2;--red50:#fef2f2;
+    :root {
+      --rose900: #881337;
+      --rose800: #9f1239;
+      --rose100: #ffe4e6;
+      --stone900: #292524;
+      --stone800: #44403c;
+      --stone700: #57534e;
+      --stone600: #78716c;
+      --stone500: #a8a29e;
+      --stone400: #d6d3d1;
+      --stone300: #d6d3d1;
+      --stone200: #e7e5e4;
+      --stone100: #f5f5f4;
+      --stone50: #fafaf9;
+      --green800: #166534;
+      --green600: #16a34a;
+      --green100: #dcfce7;
+      --green50: #f0fdf4;
+      --red800: #991b1b;
+      --red500: #ef4444;
+      --red100: #fee2e2;
+      --red50: #fef2f2;
     }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--stone50);color:var(--stone800);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Noto Sans JP",sans-serif}
-    button,select,input{font-family:inherit}
-    button{cursor:pointer}
-    button:disabled{cursor:not-allowed;opacity:.55}
-    .center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-    .quizPage{min-height:100vh;padding:40px 16px;display:flex;justify-content:center}
-    .card{width:100%;max-width:448px;background:#fff;border:1px solid var(--stone200);border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.12);overflow:hidden}
-    .body{padding:24px}
-    .hero{background:var(--rose900);color:#fff;padding:32px;text-align:center}
-    .logo{width:80px;height:80px;display:block;margin:0 auto 16px;border-radius:999px;border:2px solid rgba(255,255,255,.22);object-fit:cover;box-shadow:0 8px 22px rgba(0,0,0,.25);user-select:none}
-    .fallbackLogo{width:80px;height:80px;margin:0 auto 16px;border-radius:999px;border:2px solid #fecdd3;background:#4c0519;color:#ffe4e6;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:900;user-select:none}
-    .fallbackLogo .wine{font-size:28px;line-height:1;margin-bottom:2px}
-    h1{margin:0;font-size:24px;line-height:1.35;letter-spacing:.04em}
-    .subtitle{margin:8px 0 0;color:#fecdd3;font-size:14px;font-weight:700}
-    .field{margin-bottom:18px}
-    .label{display:block;margin-bottom:8px;color:var(--stone600);font-size:14px;font-weight:800}
-    select,input[type=text]{width:100%;padding:12px;border:1px solid var(--stone300);border-radius:10px;background:var(--stone50);color:var(--stone800);font-size:15px;outline:none}
-    select:focus,input[type=text]:focus{border-color:var(--rose800);box-shadow:0 0 0 3px rgba(159,18,57,.15)}
-    .toggle{display:flex;gap:4px;padding:4px;border:1px solid var(--stone200);border-radius:12px;background:var(--stone100)}
-    .toggle button{flex:1;border:0;background:transparent;color:var(--stone600);padding:10px 8px;border-radius:9px;font-size:13px;font-weight:900}
-    .toggle button.active{background:#fff;color:var(--rose800);box-shadow:0 2px 8px rgba(0,0,0,.08)}
-    .btn{border:0;border-radius:12px;padding:14px 18px;font-size:16px;font-weight:900;transition:transform .05s ease,background .2s ease}
-    .btn:active{transform:scale(.99)}
-    .btnPrimary{width:100%;background:var(--rose800);color:#fff;box-shadow:0 8px 18px rgba(159,18,57,.24)}
-    .btnPrimary:hover{background:var(--rose900)}
-    .btnDark{background:var(--stone800);color:#fff}
-    .btnDark:hover{background:var(--stone900)}
-    .btnLight{background:var(--stone200);color:var(--stone700)}
-    .btnLight:hover{background:var(--stone300)}
-    .btnOutline{background:#fff;border:2px solid var(--stone300);color:var(--stone700)}
-    .message{margin-top:18px;padding:12px;border-radius:10px;font-size:12px;font-weight:800;line-height:1.6;white-space:pre-wrap}
-    .message.ok{background:var(--green100);color:var(--green800)}
-    .message.err{background:var(--red100);color:var(--red800)}
-    .loading{text-align:center;padding:36px 0;color:var(--stone500);font-weight:900}
-    .spinner{width:42px;height:42px;border-radius:999px;border:4px solid var(--rose100);border-top-color:var(--rose800);margin:0 auto 14px;animation:spin .9s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .animate{animation:fadeIn .25s ease-out both}
-    .admin{margin:24px -24px -24px;padding:22px 24px 24px;border-top:1px solid var(--stone200);background:var(--stone50)}
-    .admin h3{margin:0 0 14px;color:var(--stone500);font-size:12px}
-    .adminRow{display:flex;gap:8px;margin-bottom:12px}
-    .adminRow input{flex:1;font-size:12px;padding:10px}
-    .adminRow button{white-space:nowrap;padding:10px 14px;font-size:12px;border-radius:10px}
-    .fileLabel{display:block;width:100%;text-align:center;border:1px solid var(--stone300);border-radius:10px;background:#fff;color:var(--stone700);padding:11px;font-size:12px;font-weight:900;cursor:pointer}
-    .fileLabel input{display:none}
-    .quizWrap{width:100%;max-width:672px}
-    .quizTop{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--stone200);color:var(--stone500);font-weight:900}
-    .themePill{max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;padding:7px 12px;border-radius:999px;background:var(--rose100);color:var(--rose900);font-size:13px}
-    .topActions{display:flex;align-items:center;gap:10px}
-    .counter{text-align:right;color:var(--stone700);font-size:18px;line-height:1.2}
-    .counter small{color:var(--stone400);font-size:12px;font-weight:500}
-    .progress{color:var(--stone400);font-size:11px;font-weight:600;margin-top:4px}
-    .homeBtn{border:0;background:var(--stone200);color:var(--stone700);border-radius:11px;padding:9px 12px;font-size:12px;font-weight:900}
-    .qCard{background:#fff;border:1px solid var(--stone200);border-radius:18px;box-shadow:0 3px 12px rgba(0,0,0,.04);padding:24px;margin-bottom:22px}
-    .qText{margin:0;font-size:19px;line-height:1.85;font-weight:700;white-space:pre-wrap}
-    .options{display:grid;gap:12px;margin-bottom:28px}
-    .option{width:100%;text-align:left;padding:16px;border-radius:14px;border:2px solid var(--stone200);background:#fff;color:var(--stone700);font-size:17px;font-weight:800;line-height:1.5}
-    .option:hover:not(:disabled){border-color:#fda4af;background:#fff1f2}
-    .option.correct{border-color:var(--green600);background:var(--green50);color:var(--green800)}
-    .option.wrong{border-color:#f87171;background:var(--red50);color:var(--red800)}
-    .option.muted{background:var(--stone50);color:var(--stone400);opacity:.7}
-    .optionInner{display:flex;justify-content:space-between;gap:12px;align-items:center}
-    .answer{border-radius:18px;padding:24px;margin-bottom:22px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
-    .answer.correct{background:var(--green50);border:1px solid #bbf7d0}
-    .answer.wrong{background:var(--red50);border:1px solid #fecaca}
-    .answer h3{margin:0 0 14px;font-size:20px}
-    .answer.correct h3{color:var(--green800)}
-    .answer.wrong h3{color:var(--red800)}
-    .answer p{white-space:pre-wrap;line-height:1.8;margin:0}
-    .nav{display:flex;gap:12px}
-    .nav .btn{flex:1}
-    .result{width:100%;max-width:448px;background:#fff;border:1px solid var(--stone200);border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.12);padding:32px;text-align:center}
-    .bubble{position:relative;display:inline-block;margin:0 auto 18px;max-width:100%;background:#fff;border:2px solid var(--rose800);color:var(--rose800);font-size:20px;font-weight:900;line-height:1.45;padding:12px 22px;border-radius:14px;white-space:pre-wrap;box-shadow:0 6px 16px rgba(0,0,0,.12)}
-    .bubble:after{content:"";position:absolute;width:14px;height:14px;background:#fff;border-right:2px solid var(--rose800);border-bottom:2px solid var(--rose800);bottom:-9px;left:50%;transform:translateX(-50%) rotate(45deg)}
-    .resultLogo{width:128px;height:128px;border-radius:999px;border:4px solid rgba(136,19,55,.1);margin:0 auto 26px;object-fit:cover;box-shadow:0 10px 28px rgba(0,0,0,.16)}
-    .score{margin:14px 0 28px;color:var(--rose900);font-size:52px;line-height:1;font-weight:900}
-    .score span{color:var(--stone500);font-size:24px;font-weight:500}
-    .progressPill{display:inline-block;margin:8px 0 18px;padding:6px 12px;border-radius:999px;background:var(--stone100);color:var(--stone500);font-size:12px;font-weight:900}
-    .complete{margin-bottom:14px;padding:14px;background:var(--green50);border:1px solid #bbf7d0;color:var(--green800);border-radius:12px;font-weight:900}
-    .modalBack{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:999}
-    .modal{width:100%;max-width:360px;background:#fff;border-radius:18px;border:1px solid var(--stone200);padding:24px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.25)}
-    .modal h3{margin:0 0 8px;font-size:18px}
-    .modal p{margin:0 0 22px;color:var(--stone500);font-size:14px;line-height:1.7}
-    .debug{max-width:980px;margin:20px auto;padding:20px;border-radius:12px;background:#fff5f5;border:1px solid #fecaca;color:#991b1b;white-space:pre-wrap;line-height:1.6;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-    @media(max-width:520px){
-      .center{padding:16px}.hero{padding:26px 20px}h1{font-size:21px}.body{padding:20px}
-      .admin{margin-left:-20px;margin-right:-20px;margin-bottom:-20px;padding-left:20px;padding-right:20px}
-      .toggle button{font-size:12px}.quizTop{align-items:start}.themePill{max-width:42%}.qText{font-size:17px}.option{font-size:16px}.nav{flex-direction:column}
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      margin: 0;
+      background: var(--stone50);
+      color: var(--stone800);
+    }
+    button, select, input {
+      font-family: inherit;
+    }
+    button {
+      cursor: pointer;
+    }
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+    .center {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .quizPage {
+      min-height: 100vh;
+      padding: 40px 16px;
+      display: flex;
+      justify-content: center;
+    }
+    .card {
+      width: 100%;
+      max-width: 448px;
+      background: #fff;
+      border: 1px solid var(--stone200);
+      border-radius: 20px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+    .body {
+      padding: 24px;
+    }
+    .hero {
+      background: var(--rose900);
+      color: #fff;
+      padding: 32px;
+      text-align: center;
+    }
+    .logo {
+      width: 80px;
+      height: 80px;
+      display: block;
+      margin: 0 auto 16px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.22);
+      object-fit: cover;
+      box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+      user-select: none;
+    }
+    .fallbackLogo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 16px;
+      border-radius: 999px;
+      border: 2px solid #fecdd3;
+      background: #4c0519;
+      color: #ffe4e6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+      user-select: none;
+    }
+    .fallbackLogo .wine {
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.35;
+      letter-spacing: 0.04em;
+    }
+    .subtitle {
+      margin: 8px 0 0;
+      color: #fecdd3;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .field {
+      margin-bottom: 18px;
+    }
+    .label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--stone600);
+      font-size: 14px;
+      font-weight: 800;
+    }
+    select, input[type=text] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--stone300);
+      border-radius: 10px;
+      background: var(--stone50);
+      color: var(--stone800);
+      font-size: 15px;
+      outline: none;
+    }
+    select:focus, input[type=text]:focus {
+      border-color: var(--rose800);
+      box-shadow: 0 0 0 3px rgba(159,18,57,0.15);
+    }
+    .toggle {
+      display: flex;
+      gap: 4px;
+      padding: 4px;
+      border: 1px solid var(--stone200);
+      border-radius: 12px;
+      background: var(--stone100);
+    }
+    .toggle button {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      color: var(--stone600);
+      padding: 10px 8px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+    .toggle button.active {
+      background: #fff;
+      color: var(--rose800);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .btn {
+      border: 0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 16px;
+      font-weight: 900;
+      transition: transform 0.05s ease, background 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn:active {
+      transform: scale(0.99);
+    }
+    .btnPrimary {
+      width: 100%;
+      background: var(--rose800);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(159,18,57,0.24);
+    }
+    .btnPrimary:hover {
+      background: var(--rose900);
+    }
+    .btnDark {
+      background: var(--stone800);
+      color: #fff;
+    }
+    .btnDark:hover {
+      background: var(--stone900);
+    }
+    .btnLight {
+      background: var(--stone200);
+      color: var(--stone700);
+    }
+    .btnLight:hover {
+      background: var(--stone300);
+    }
+    .btnOutline {
+      background: #fff;
+      border: 2px solid var(--stone300);
+      color: var(--stone700);
+    }
+    .message {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .message.ok {
+      background: var(--green100);
+      color: var(--green800);
+    }
+    .message.err {
+      background: var(--red100);
+      color: var(--red800);
+    }
+    .loading {
+      text-align: center;
+      padding: 36px 0;
+      color: var(--stone500);
+      font-weight: 900;
+    }
+    .spinner {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 4px solid var(--rose100);
+      border-top-color: var(--rose800);
+      margin: 0 auto 14px;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate {
+      animation: fadeIn 0.25s ease-out both;
+    }
+    .admin {
+      margin: 24px -24px -24px;
+      padding: 22px 24px 24px;
+      border-top: 1px solid var(--stone200);
+      background: var(--stone50);
+    }
+    .admin h3 {
+      margin: 0 0 14px;
+      color: var(--stone500);
+      font-size: 12px;
+    }
+    .adminRow {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .adminRow input {
+      flex: 1;
+      font-size: 12px;
+      padding: 10px;
+    }
+    .adminRow button {
+      white-space: nowrap;
+      padding: 10px 14px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+    .fileLabel {
+      display: block;
+      width: 100%;
+      text-align: center;
+      border: 1px solid var(--stone300);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--stone700);
+      padding: 11px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .fileLabel input {
+      display: none;
+    }
+    .quizWrap {
+      width: 100%;
+      max-width: 672px;
+    }
+    .quizTop {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--stone200);
+      color: var(--stone500);
+      font-weight: 900;
+    }
+    .themePill {
+      max-width: 45%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--rose100);
+      color: var(--rose900);
+      font-size: 13px;
+    }
+    .topActions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .counter {
+      text-align: right;
+      color: var(--stone700);
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .counter small {
+      color: var(--stone400);
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .progress {
+      color: var(--stone400);
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .homeBtn {
+      border: 0;
+      background: var(--stone200);
+      color: var(--stone700);
+      border-radius: 11px;
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .qCard {
+      background: #fff;
+      border: 1px solid var(--stone200);
+      border-radius: 18px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+      padding: 24px;
+      margin-bottom: 22px;
+    }
+    .qText {
+      margin: 0;
+      font-size: 19px;
+      line-height: 1.85;
+      font-weight: 700;
+      white-space: pre-wrap;
+    }
+    .options {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .option {
+      width: 100%;
+      text-align: left;
+      padding: 16px;
+      border-radius: 14px;
+      border: 2px solid var(--stone200);
+      background: #fff;
+      color: var(--stone700);
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+    .option:hover:not(:disabled) {
+      border-color: #fda4af;
+      background: #fff1f2;
+    }
+    .option.correct {
+      border-color: var(--green600);
+      background: var(--green50);
+      color: var(--green800);
+    }
+    .option.wrong{
+      border-color: #f87171;
+      background: var(--red50);
+      color: var(--red800);
+    }
+    .option.muted{
+      background: var(--stone50);
+      color: var(--stone400);
+      opacity: .7;
+    }
+    .optionInner {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+    .answer {
+      border-radius: 18px;
+      padding: 24px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.08);
+    }
+    .answer.correct {
+      background: var(--green50);
+      border: 1px solid #bbf7d0;
+    }
+    .answer.wrong {
+      background: var(--red50);
+      border: 1px solid #fecaca;
+    }
+    .answer h3 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+    .answer.correct h3 {
+      color: var(--green800);
+    }
+    .answer.wrong h3 {
+      color: var(--red800);
+    }
+    .answer p {
+      white-space: pre-wrap;
+      line-height: 1.8;
+      margin: 0;
+    }
+    .nav {
+      display: flex;
+      gap: 12px;
+    }
+    .nav .btn {
+      flex: 1;
+    }
+    .result {
+      width: 100%;
+      max-width: 448px;
+      background: #fff;
+      border: 1px solid var(--stone200);
+      border-radius: 20px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.12);
+      padding: 32px;
+      text-align: center;
+    }
+    .bubble {
+      position: relative;
+      display: inline-block;
+      margin: 0 auto 18px;
+      max-width: 100%;
+      background: #fff;
+      border: 2px solid var(--rose800);
+      color: var(--rose800);
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.45;
+      padding: 12px 22px;
+      border-radius: 14px;
+      white-space: pre-wrap;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+    .bubble:after {
+      content: "";
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      background: #fff;
+      border-right: 2px solid var(--rose800);
+      border-bottom: 2px solid var(--rose800);
+      bottom: -9px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+    }
+    .resultLogo {
+      width: 128px;
+      height: 128px;
+      border-radius: 999px;
+      border: 4px solid rgba(136,19,55,.1);
+      margin: 0 auto 26px;
+      object-fit: cover;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.16);
+    }
+    .score {
+      margin: 14px 0 28px;
+      color: var(--rose900);
+      font-size: 52px;
+      line-height: 1;
+      font-weight: 900;
+    }
+    .score span {
+      color: var(--stone500);
+      font-size: 24px;
+      font-weight: 500;
+    }
+    .progressPill {
+      display: inline-block;
+      margin: 8px 0 18px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--stone100);
+      color: var(--stone500);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .complete {
+      margin-bottom: 14px;
+      padding: 14px;
+      background: var(--green50);
+      border: 1px solid #bbf7d0;
+      color: var(--green800);
+      border-radius: 12px;
+      font-weight: 900;
+    }
+    .modalBack {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 999;
+    }
+    .modal {
+      width: 100%;
+      max-width: 360px;
+      background: #fff;
+      border-radius: 18px;
+      border: 1px solid var(--stone200);
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 24px 70px rgba(0,0,0,0.25);
+    }
+    .modal h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .modal p {
+      margin: 0 0 22px;
+      color: var(--stone500);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .debug {
+      max-width: 980px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+      background: #fff5f5;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    @media(max-width: 520px) {
+      .center { padding: 16px; }
+      .hero { padding: 26px 20px; }
+      h1 { font-size: 21px; }
+      .body { padding: 20px; }
+      .admin { margin-left: -20px; margin-right: -20px; margin-bottom: -20px; padding-left: 20px; padding-right: 20px; }
+      .toggle button { font-size: 12px; }
+      .quizTop { align-items: start; }
+      .themePill { max-width: 42%; }
+      .qText { font-size: 17px; }
+      .option { font-size: 16px; }
+      .nav { flex-direction: column; }
     }
   </style>
 </head>
-<body>
+<body class="bg-stone-50 text-stone-800">
+
   <div id="root">
     <div class="center"><div class="loading"><div class="spinner"></div>アプリを起動中...</div></div>
   </div>
@@ -113,20 +600,20 @@
   <script>
     "use strict";
 
-    window.addEventListener("error", function(e){
+    window.addEventListener("error", function(e) {
       var root = document.getElementById("root");
-      if(!root) return;
+      if (!root) return;
       root.innerHTML = '<div class="debug">JavaScript Error\n\n' + esc(e.message || "不明なエラー") + "\n" + esc(e.filename || "") + ":" + esc(String(e.lineno || "")) + "\n\nこの表示が出た場合は、表示されたエラー文をそのまま共有してください。</div>";
     });
 
-    window.addEventListener("unhandledrejection", function(e){
+    window.addEventListener("unhandledrejection", function(e) {
       console.error(e.reason);
     });
 
     var DEFAULT_IMPORT_URL = "https://docs.google.com/spreadsheets/d/10_r8UZXOqXkbZZcBMyrci3gsg6t-2zVapaIFOET3GDA/export?format=csv&gid=1571684716";
     var DEFAULT_LOGO_URL = "https://assets.st-note.com/production/uploads/images/233954636/profile_9ee7939ab1c2b0d090f5668ffb7d3155.png?width=80&height=80&dpr=2&crop=1:1,smart";
     var QUESTIONS_PER_BATCH = 10;
-    var EXCLUDED_KEYWORDS = ["システム","管理","テスト","ダミー"];
+    var EXCLUDED_KEYWORDS = ["システム", "管理", "テスト", "ダミー"];
 
     var defaultSampleData =
       "タイトル,問題番号,問題,選択肢,解答,解説\n" +
@@ -134,286 +621,292 @@
       "フランス,2,次のうちボルドー地方の主要品種を1つ選べ。,1.カベルネ・ソーヴィニヨン2.ネッビオーロ3.サンジョヴェーゼ4.テンプラニーリョ,カベルネ・ソーヴィニヨン,ボルドー地方ではカベルネ・ソーヴィニヨンやメルロが主要品種です。";
 
     var state = {
-      screen:"title",
-      quizData:[],
-      selectedTheme:"すべて",
-      isRandomOrder:false,
-      sessionQuestions:[],
-      currentBatchIndex:0,
-      questions:[],
-      currentIndex:0,
-      userAnswers:{},
-      seenWords:new Set(),
-      message:"",
-      messageIsError:false,
-      importUrl:"",
-      isLoading:false,
-      isInitialLoading:true,
-      logoClickCount:0,
-      showAdminTools:false,
-      showHomeConfirm:false
+      screen: "title",
+      quizData: [],
+      selectedTheme: "すべて",
+      isRandomOrder: false,
+      sessionQuestions: [],
+      currentBatchIndex: 0,
+      questions: [],
+      currentIndex: 0,
+      userAnswers: {},
+      seenWords: new Set(),
+      message: "",
+      messageIsError: false,
+      importUrl: "",
+      isLoading: false,
+      isInitialLoading: true,
+      logoClickCount: 0,
+      showAdminTools: false,
+      showHomeConfirm: false
     };
 
     var messageTimer = null;
 
-    function esc(v){
-      return String(v == null ? "" : v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+    // SVGインラインアイコンの生成関数群 (外部フォント依存を排除)
+    const Icons = {
+      Wine: '<svg class="w-10 h-10 mx-auto text-rose-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8" /><path d="M12 11v11" /><path d="M19 3a5 5 0 0 1-5 5h-4a5 5 0 0 1-5-5z" /></svg>',
+      BookOpen: '<svg class="w-5 h-5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></svg>',
+      ListOrdered: '<svg class="w-4 h-4 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6" /><line x1="10" y1="12" x2="21" y2="12" /><line x1="10" y1="18" x2="21" y2="18" /><path d="M4 6h1v4" /><path d="M4 10h2" /><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" /></svg>',
+      Shuffle: '<svg class="w-4 h-4 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8" /><line x1="4" y1="20" x2="21" y2="3" /><polyline points="21 16 21 21 16 21" /><line x1="15" y1="15" x2="21" y2="21" /><line x1="4" y1="4" x2="9" y2="9" /></svg>',
+      Home: '<svg class="w-4.5 h-4.5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>',
+      DownloadCloud: '<svg class="w-4 h-4 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17" /><line x1="12" y1="12" x2="12" y2="21" /><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29" /></svg>',
+      LinkIcon: '<svg class="w-4 h-4 text-stone-400 absolute left-3 top-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>',
+      Upload: '<svg class="w-3.5 h-3.5 inline mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>',
+      Loader2: '<svg class="w-10 h-10 animate-spin mb-4 text-rose-800 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.21-8.56" /></svg>'
+    };
+
+    function esc(v) {
+      return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    function normalizeText(v){
-      return String(v == null ? "" : v).replace(/\r\n/g,"\n").replace(/\r/g,"\n");
+    function normalizeText(v) {
+      return String(v == null ? "" : v).replace(/\r\n/g, "\n").replace(/\r/g, "\n");
     }
 
-    function setMessage(text,isError){
+    function setMessage(text, isError) {
       state.message = text || "";
       state.messageIsError = !!isError;
-      if(messageTimer){clearTimeout(messageTimer);messageTimer=null}
-      if(state.message && !state.message.includes("読込中") && !state.message.includes("お待ち") && !state.isInitialLoading){
-        messageTimer = setTimeout(function(){state.message="";render()},7000);
+      if (messageTimer) { clearTimeout(messageTimer); messageTimer = null; }
+      if (state.message && !state.message.includes("読込中") && !state.message.includes("お待ち") && !state.isInitialLoading) {
+        messageTimer = setTimeout(function() { state.message = ""; render(); }, 7000);
       }
     }
 
-    function safeFetch(url){
-      return fetch(url,{method:"GET",cache:"no-store",mode:"cors",credentials:"omit"});
+    function safeFetch(url) {
+      return fetch(url, { method: "GET", cache: "no-store", mode: "cors", credentials: "omit" });
     }
 
-    function looksHtml(text){
-      var t = String(text || "").trim().slice(0,160).toLowerCase();
+    function looksHtml(text) {
+      var t = String(text || "").trim().slice(0, 160).toLowerCase();
       return t.startsWith("<!doctype") || t.startsWith("<html") || t.startsWith("<script");
     }
 
-    function parseData(raw){
+    function parseData(raw) {
       raw = normalizeText(raw);
-      if(!raw.trim()) return [];
-      if(looksHtml(raw)) throw new Error("HTML_RESPONSE_ERROR");
+      if (!raw.trim()) return [];
+      if (looksHtml(raw)) throw new Error("HTML_RESPONSE_ERROR");
 
-      var cleaned = raw.split("\n").map(function(line){
-        var l = line.trim().replace(/^"|"$/g,"").trim();
-        if(l.includes("ID:") || l.includes("章:") || l.includes("問題:") || l.includes("選択肢:") || l.includes("正解:") || l.includes("解説:") || l.startsWith("---")){
-          l = l.replace(/,+$/g,"").trim().replace(/^"|"$/g,"").trim();
+      var cleaned = raw.split("\n").map(function(line) {
+        var l = line.trim().replace(/^"|"$/g, "").trim();
+        if (l.includes("ID:") || l.includes("章:") || l.includes("問題:") || l.includes("選択肢:") || l.includes("正解:") || l.includes("解説:") || l.startsWith("---")) {
+          l = l.replace(/,+$/g, "").trim().replace(/^"|"$/g, "").trim();
         }
         return l;
       }).join("\n");
 
-      if(cleaned.includes("ID:") || cleaned.includes("章:") || cleaned.includes("問題:")){
+      if (cleaned.includes("ID:") || cleaned.includes("章:") || cleaned.includes("問題:")) {
         var textData = processTextData(cleaned);
-        if(textData.length) return textData;
+        if (textData.length) return textData;
       }
       return processCSVData(raw);
     }
 
-    function processTextData(text){
-      var blocks = text.split(/-{10,}/);
+    function processTextData(text) {
+      var blocks = text.split(/(?:-{10,}|" -{10,}")/);
       var out = [];
-      blocks.forEach(function(block,index){
-        if(!block.trim()) return;
+      blocks.forEach(function(block, index) {
+        if (!block.trim()) return;
 
-        function extract(prefix){
-          var escaped = prefix.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
-          var re = new RegExp("^[\\s\\\",]*" + escaped + "\\s*([\\s\\S]*?)(?=(?:^[\\s\\\",]*(?:ID|章|問題|選択肢|正解|解説):|$))","m");
+        function extract(prefix) {
+          var escaped = prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          var re = new RegExp("^[\\s\\\",]*" + escaped + "\\s*([\\s\\S]*?)(?=(?:^[\\s\\\",]*(?:ID|章|問題|選択肢|正解|解説):|$))", "m");
           var m = block.match(re);
-          return m ? m[1].trim().replace(/^"+|"+$/g,"").trim() : "";
+          return m ? m[1].trim() : '';
         }
+        var id = extract('ID:') || index + 1;
+        var theme = extract('章:') || "その他";
+        var question = extract('問題:');
+        var optionsRaw = extract('選択肢:');
+        var correct = extract('正解:');
+        var explanation = extract('解説:');
 
-        var id = extract("ID:") || index + 1;
-        var theme = extract("章:") || "その他";
-        var question = extract("問題:");
-        var optionsRaw = extract("選択肢:");
-        var correct = extract("正解:");
-        var explanation = extract("解説:");
-
-        if(!question || !optionsRaw) return;
-        if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)})) return;
+        if (!question || !optionsRaw) return;
+        if (EXCLUDED_KEYWORDS.some(function(k) { return theme.includes(k); })) return;
 
         var options = splitOptionsFromCell(optionsRaw);
-        if(!options.length) return;
+        if (!options.length) return;
 
         out.push({
-          id:Number(id) || index + 1,
-          theme:theme,
-          question:question,
-          options:options,
-          correctAnswer:normalizeAnswer(correct || options[0]),
-          explanation:explanation || "解説はありません。"
+          id: Number(id) || index + 1,
+          theme: theme,
+          question: question,
+          options: options,
+          correctAnswer: normalizeAnswer(correct || options[0]),
+          explanation: explanation || "解説はありません。"
         });
       });
       return out;
     }
 
-    function csvRows(csvText){
+    function csvRows(csvText) {
       var text = normalizeText(csvText);
       var rows = [];
       var row = [];
       var val = "";
       var inQuotes = false;
 
-      for(var i=0;i<text.length;i++){
+      for (var i = 0; i < text.length; i++) {
         var ch = text[i];
-        if(ch === '"'){
-          if(inQuotes && text[i+1] === '"'){
+        if (ch === '"') {
+          if (inQuotes && text[i+1] === '"') {
             val += '"';
             i++;
-          }else{
+          } else {
             inQuotes = !inQuotes;
           }
-        }else if(ch === "," && !inQuotes){
+        } else if (ch === "," && !inQuotes) {
           row.push(val);
           val = "";
-        }else if(ch === "\n" && !inQuotes){
+        } else if (ch === "\n" && !inQuotes) {
           row.push(val);
           rows.push(row);
           row = [];
           val = "";
-        }else{
+        } else {
           val += ch;
         }
       }
-      if(val !== "" || row.length){
+      if (val !== "" || row.length) {
         row.push(val);
         rows.push(row);
       }
       return rows;
     }
 
-    function toHalfWidthNumber(s){
-      return String(s).replace(/[０-９]/g,function(ch){
-        return String.fromCharCode(ch.charCodeAt(0)-0xFEE0);
+    function toHalfWidthNumber(s) {
+      return String(s).replace(/[０-９]/g, function(ch) {
+        return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0);
       });
     }
 
-    function stripOptionMarker(s){
+    function stripOptionMarker(s) {
       return String(s || "")
         .trim()
-        .replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/,"")
-        .replace(/^[0-9０-９]{1,2}\s*[\.\．\)\）:：]\s*/,"")
+        .replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, "")
+        .replace(/^[0-9０-９]{1,2}\s*[\.\．\)\）:：]\s*/, "")
         .trim();
     }
 
-    function normalizeAnswer(s){
-      return stripOptionMarker(String(s || "").replace(/^"+|"+$/g,"").trim());
+    function normalizeAnswer(s) {
+      return stripOptionMarker(String(s || "").replace(/^"+|"+$/g, "").trim());
     }
 
-    function splitOptionsFromCell(cell){
-      if(cell == null) return [];
+    function splitOptionsFromCell(cell) {
+      if (cell == null) return [];
 
       var text = String(cell)
-        .replace(/^"+|"+$/g,"")
-        .replace(/\\r\\n/g,"\n")
-        .replace(/\\n/g,"\n")
-        .replace(/\r\n/g,"\n")
-        .replace(/\r/g,"\n")
+        .replace(/^"+|"+$/g, "")
+        .replace(/\\r\\n/g, "\n")
+        .replace(/\\n/g, "\n")
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n")
         .trim();
 
-      if(!text) return [];
+      if (!text) return [];
 
-      text = text.replace(/[；;]/g,"\n");
+      text = text.replace(/[；;]/g, "\n");
 
       var parts = [];
 
-      if(text.includes("\n")){
+      if (text.includes("\n")) {
         parts = text.split("\n");
-      }else if(/[①②③④⑤⑥⑦⑧⑨⑩]/.test(text)){
+      } else if (/[①②③④⑤⑥⑦⑧⑨⑩]/.test(text)) {
         parts = text.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
-      }else if(/[0-9０-９]{1,2}\s*[\.\．\)\）:：]/.test(text)){
+      } else if (/[0-9０-９]{1,2}\s*[\.\．\)\）:：]/.test(text)) {
         parts = text.split(/(?=[0-9０-９]{1,2}\s*[\.\．\)\）:：])/);
-      }else if(/(?:^|[\s　])(?:[1-9１-９])[\s　]+/.test(text)){
+      } else if (/(?:^|[\s　])(?:[1-9１-９])[\s　]+/.test(text)) {
         parts = text.split(/(?=(?:^|[\s　])[1-9１-９][\s　]+)/);
-      }else if(text.includes(",") || text.includes("、")){
+      } else if (text.includes(",") || text.includes("、")) {
         parts = text.split(/,|、/);
-      }else{
+      } else {
         parts = [text];
       }
 
       parts = parts
-        .map(function(x){return String(x || "").trim()})
+        .map(function(x) { return String(x || "").trim(); })
         .filter(Boolean);
 
-      var cleaned = parts.map(function(x){
-        return x.replace(/^"+|"+$/g,"").trim();
+      return parts.map(function(x) {
+        return x.replace(/^"+|"+$/g, "").trim();
       }).filter(Boolean);
-
-      return cleaned;
     }
 
-    function answerMatches(selected, correct){
+    function answerMatches(selected, correct) {
       var a = normalizeAnswer(selected);
       var b = normalizeAnswer(correct);
-      if(a === b) return true;
-      if(String(selected).trim() === String(correct).trim()) return true;
+      if (a === b) return true;
+      if (String(selected).trim() === String(correct).trim()) return true;
 
       var selectedNumber = String(selected).trim().match(/^[0-9０-９]{1,2}/);
       var correctNumber = String(correct).trim().match(/^[0-9０-９]{1,2}/);
-      if(selectedNumber && correctNumber && toHalfWidthNumber(selectedNumber[0]) === toHalfWidthNumber(correctNumber[0])) return true;
+      if (selectedNumber && correctNumber && toHalfWidthNumber(selectedNumber[0]) === toHalfWidthNumber(correctNumber[0])) return true;
 
       return false;
     }
 
-    function processCSVData(csv){
-      var rows = csvRows(csv).filter(function(r){
-        return r.some(function(c){return String(c || "").trim() !== ""});
+    function processCSVData(csv) {
+      var rows = csvRows(csv).filter(function(r) {
+        return r.some(function(c) { return String(c || "").trim() !== ""; });
       });
-      if(rows.length < 2) return [];
+      if (rows.length < 2) return [];
 
-      var headers = rows[0].map(function(x){return String(x || "").trim()});
+      var headers = rows[0].map(function(x) { return String(x || "").trim(); });
 
-      function idx(cands){
-        // 完全一致を最優先する。「問題」を探しているのに「問題番号」に先に当たる事故を防ぐ。
-        for(var c=0;c<cands.length;c++){
-          var candRaw = String(cands[c]);
-          var cand = candRaw.toLowerCase();
-          for(var i=0;i<headers.length;i++){
+      function idx(cands) {
+        for (var c = 0; c < cands.length; c++) {
+          var cand = String(cands[c]).toLowerCase();
+          for (var i = 0; i < headers.length; i++) {
             var h = String(headers[i] || "").trim();
-            if(h.toLowerCase() === cand) return i;
+            if (h.toLowerCase() === cand) return i;
           }
         }
-
-        // 完全一致がない場合だけ部分一致。ただし「問題」は「問題番号」に一致させない。
-        for(var c2=0;c2<cands.length;c2++){
-          var candRaw2 = String(cands[c2]);
-          var cand2 = candRaw2.toLowerCase();
-          for(var j=0;j<headers.length;j++){
+        for (var c2 = 0; c2 < cands.length; c2++) {
+          var cand2 = String(cands[c2]).toLowerCase();
+          for (var j = 0; j < headers.length; j++) {
             var h2 = String(headers[j] || "").trim();
             var lower2 = h2.toLowerCase();
-
-            if(candRaw2 === "問題" && (h2 === "問題番号" || h2.includes("問題番号"))) continue;
-            if(candRaw2 === "番号" && (h2 === "問題" || h2.includes("問題文"))) continue;
-
-            if(lower2.includes(cand2)) return j;
+            if (cands[c2] === "問題" && (h2 === "問題番号" || h2.includes("問題番号"))) continue;
+            if (cands[c2] === "番号" && (h2 === "問題" || h2.includes("問題文"))) continue;
+            if (lower2.includes(cand2)) return j;
           }
         }
         return -1;
       }
 
-      var idI = idx(["id","ID","番号","問題番号"]);
-      var themeI = idx(["title","chapterTitle","章","タイトル","テーマ"]);
-      if(themeI === -1) themeI = 0;
+      var idI = idx(["id", "ID", "番号", "問題番号"]);
+      var qI = idx(["questionSentence", "問題文", "問題", "question"]);
+      var expI = idx(["explanation", "解説", "説明"]);
+      var caI = idx(["correctAnswers.0", "correctAnswer", "正解", "解答", "答え"]);
 
-      var qI = idx(["questionSentence","問題文","問題","question"]);
-      var expI = idx(["explanation","解説","説明"]);
-      var caI = idx(["correctAnswers.0","correctAnswer","正解","解答","答え"]);
+      if (qI === -1) qI = headers.length > 2 ? 2 : -1;
+      if (qI === -1) return [];
 
-      if(qI === -1) qI = headers.length > 2 ? 2 : -1;
-      if(qI === -1) return [];
-
-      if(expI === -1) expI = headers.length > 5 ? 5 : -1;
+      if (expI === -1) expI = headers.length > 5 ? 5 : -1;
 
       var optionColumns = [];
-      for(var n=0;n<20;n++){
-        var found = headers.findIndex(function(x){
-          var l = String(x || "").trim().toLowerCase();
-          return l === "options." + n || l === "option." + n || x === "選択肢" + n || x === "選択肢." + n;
-        });
-        if(found !== -1) optionColumns.push(found);
+
+      // 👑 1. まず複数列に選択肢が分かれているパターン（「選択肢1」「選択肢2」等）を検知して全列を登録
+      headers.forEach(function(headerText, idx) {
+        var h = String(headerText).trim().toLowerCase();
+        var isMultiColumnOption = /^(選択肢|option|options|opt)[\s_.-]*([0-9a-f０-９ａ-ｆa-zａ-ｚ])$/i.test(h);
+        if (isMultiColumnOption) {
+          optionColumns.push(idx);
+        }
+      });
+
+      // 👑 2. 複数列形式がなく、単一の結合セル（「選択肢」列）にデータが入っている場合
+      if (optionColumns.length === 0) {
+        var joinedOptionsI = idx(["選択肢", "options", "option"]);
+        if (joinedOptionsI !== -1 && joinedOptionsI !== qI && joinedOptionsI !== caI && joinedOptionsI !== 0) {
+          optionColumns.push(joinedOptionsI);
+        }
       }
 
-      var joinedOptionsI = idx(["選択肢","options","option"]);
-      if(optionColumns.length === 0 && joinedOptionsI !== -1 && joinedOptionsI !== qI && joinedOptionsI !== caI){
-        optionColumns.push(joinedOptionsI);
-      }
-
-      if(optionColumns.length === 0){
-        headers.forEach(function(_h,i){
-          if(i !== idI && i !== themeI && i !== qI && i !== expI && i !== caI){
+      // 👑 3. ヘッダー名が不規則で特定できない場合の自動フォールバック
+      if (optionColumns.length === 0) {
+        headers.forEach(function(_h, i) {
+          if (i !== idI && i !== 0 && i !== qI && i !== expI && i !== caI) {
             optionColumns.push(i);
           }
         });
@@ -421,107 +914,105 @@
 
       var out = [];
 
-      for(var r=1;r<rows.length;r++){
+      for (var r = 1; r < rows.length; r++) {
         var row = rows[r];
-        if(!String(row[qI] || "").trim()) continue;
+        if (!String(row[qI] || "").trim()) continue;
 
-        var theme = String(row[themeI] || "その他").trim() || "その他";
-        if(theme === headers[themeI] || theme.toLowerCase() === "title" || theme.toLowerCase() === "chaptertitle" || theme === "章") continue;
-        if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)})) continue;
+        // 👑 スプシのA列（row[0]）を、そのまま出題テーマ（theme）として優先表示する！
+        var theme = String(row[0] || "その他").trim() || "その他";
+        if (theme === headers[0] || theme.toLowerCase() === "title" || theme.toLowerCase() === "chaptertitle" || theme === "章") continue;
+        if (EXCLUDED_KEYWORDS.some(function(k) { return theme.includes(k); })) return;
 
         var options = [];
-        optionColumns.forEach(function(colIndex){
+        optionColumns.forEach(function(colIndex) {
           var cell = String(row[colIndex] || "").trim();
-          if(!cell) return;
+          if (!cell) return;
 
-          splitOptionsFromCell(cell).forEach(function(opt){
-            if(opt) options.push(opt);
+          splitOptionsFromCell(cell).forEach(function(opt) {
+            if (opt) options.push(opt);
           });
         });
 
         options = options
-          .map(function(x){return String(x || "").replace(/^"+|"+$/g,"").trim()})
+          .map(function(x) { return String(x || "").replace(/^"+|"+$/g, "").trim(); })
           .filter(Boolean);
 
-        if(!options.length){
-          options = ["選択肢1","選択肢2","選択肢3","選択肢4"];
+        if (!options.length) {
+          options = ["選択肢1", "選択肢2", "選択肢3", "選択肢4"];
         }
 
         var correctAnswer = caI !== -1 && row[caI] ? String(row[caI]).trim() : options[0];
 
         out.push({
-          id:idI !== -1 && row[idI] ? Number(row[idI]) || r : r,
-          theme:theme,
-          question:String(row[qI] || "").replace(/\\n/g,"\n"),
-          options:options,
-          correctAnswer:correctAnswer,
-          explanation:expI !== -1 && row[expI] ? String(row[expI]).replace(/\\n/g,"\n") : "解説はありません。"
+          id: idI !== -1 && row[idI] ? Number(row[idI]) || r : r,
+          theme: theme,
+          question: String(row[qI] || "").replace(/\\n/g, "\n"),
+          options: options,
+          correctAnswer: correctAnswer,
+          explanation: expI !== -1 && row[expI] ? String(row[expI]).replace(/\\n/g, "\n") : "解説はありません。"
         });
-      }
-
-      if(out.length){
-        console.log("CSV headers:", headers);
-        console.log("Parsed first question:", out[0]);
-        console.log("First options count:", out[0].options ? out[0].options.length : 0);
       }
       return out;
     }
 
-    function formatText(text,isQuestion){
-      if(!text) return "";
+    function formatText(text, isQuestion) {
+      if (!text) return "";
       var re = /([a-zA-ZÀ-ÿ0-9\-.]+([\s][a-zA-ZÀ-ÿ0-9\-.]+)*)（([^）]+)）/g;
-      if(isQuestion) return String(text).replace(re,"$1");
-      return String(text).replace(re,function(match,word){
+      if (isQuestion) return String(text).replace(re, "$1");
+      return String(text).replace(re, function(match, word) {
         var w = String(word || "").trim().toLowerCase();
-        if(state.seenWords.has(w)) return word;
+        if (state.seenWords.has(w)) return word;
         state.seenWords.add(w);
         return match;
       });
     }
 
-    function themes(){
-      if(!state.quizData.length) return ["すべて"];
+    // 👑 テーマ選択のプルダウンを「あいうえお（五十音）順」にソートする
+    function themes() {
+      if (!state.quizData.length) return ["すべて"];
       var set = new Set();
-      state.quizData.forEach(function(q){if(q.theme)set.add(q.theme)});
-      return ["すべて"].concat(Array.from(set).sort(function(a,b){return String(a).localeCompare(String(b),"ja")}));
+      state.quizData.forEach(function(q) { if (q.theme) set.add(q.theme); });
+      return ["すべて"].concat(Array.from(set).sort(function(a, b) {
+        return String(a).localeCompare(String(b), "ja");
+      }));
     }
 
-    function logoHtml(cls){
+    function logoHtml(cls) {
       return '<img src="' + esc(DEFAULT_LOGO_URL) + '" alt="メインロゴ" class="' + esc(cls || "logo") + '" id="mainLogo">';
     }
 
-    function titleHtml(){
+    function titleHtml() {
       var ts = themes();
       var html = "";
       html += '<div class="center animate"><div class="card">';
       html += '<div class="hero">' + logoHtml("logo") + '<h1>ソムリエ / ワインエキスパート</h1><p class="subtitle">試験対策ドリル <strong>byブラインド川西</strong></p></div>';
       html += '<div class="body">';
 
-      if(state.isInitialLoading){
-        html += '<div class="loading"><div class="spinner"></div><div>問題データを取得中...</div></div>';
-      }else{
+      if (state.isInitialLoading) {
+        html += '<div class="loading">' + Icons.Loader2 + '<div>最新の問題データを自動読み込み中...</div></div>';
+      } else {
         html += '<div class="field"><label class="label">出題テーマを選択（現在 ' + esc(state.quizData.length) + ' 問）</label><select id="themeSelect">';
-        ts.forEach(function(t){
+        ts.forEach(function(t) {
           html += '<option value="' + esc(t) + '"' + (t === state.selectedTheme ? " selected" : "") + '>' + esc(t) + '</option>';
         });
         html += '</select></div>';
 
         html += '<div class="field"><label class="label">出題の順番</label><div class="toggle">';
-        html += '<button id="orderNormal" class="' + (!state.isRandomOrder ? "active" : "") + '">五十音順（体系的）</button>';
-        html += '<button id="orderRandom" class="' + (state.isRandomOrder ? "active" : "") + '">ランダム（テスト）</button>';
+        html += '<button id="orderNormal" class="' + (!state.isRandomOrder ? "active" : "") + '">' + Icons.ListOrdered + ' 五十音順（体系的）</button>';
+        html += '<button id="orderRandom" class="' + (state.isRandomOrder ? "active" : "") + '">' + Icons.Shuffle + ' ランダム（テスト）</button>';
         html += '</div></div>';
 
-        html += '<button class="btn btnPrimary" id="startBtn" ' + (!state.quizData.length || state.isLoading ? "disabled" : "") + '>📖 学習を始める</button>';
+        html += '<button class="btn btnPrimary" id="startBtn" ' + (!state.quizData.length || state.isLoading ? "disabled" : "") + '>' + Icons.BookOpen + ' 学習を始める</button>';
       }
 
-      if(state.message){
+      if (state.message) {
         html += '<div class="message ' + (state.messageIsError ? "err" : "ok") + '">' + esc(state.message) + '</div>';
       }
 
-      if(state.showAdminTools){
-        html += '<div class="admin animate"><h3>⬇ 管理者用ツール（手動更新）</h3>';
-        html += '<div class="adminRow"><input id="importUrlInput" type="text" placeholder="別URLから一時読込..." value="' + esc(state.importUrl) + '"><button id="importBtn" class="btn btnDark" ' + (state.isLoading ? "disabled" : "") + '>読込</button></div>';
-        html += '<label class="fileLabel">📁 端末のファイルから一時読込（.txt/.csv）<input id="fileInput" type="file" accept=".txt,.csv"></label>';
+      if (state.showAdminTools) {
+        html += '<div class="admin animate"><h3>' + Icons.DownloadCloud + ' 管理者用ツール（手動更新）</h3>';
+        html += '<div class="adminRow"><div class="relative flex-1">' + Icons.LinkIcon + '<input id="importUrlInput" type="text" class="pl-9" placeholder="別URLから一時読込..." value="' + esc(state.importUrl) + '"></div><button id="importBtn" class="btn btnDark" ' + (state.isLoading ? "disabled" : "") + '>読込</button></div>';
+        html += '<label class="fileLabel">' + Icons.Upload + '端末のファイルから一時読込（.txt/.csv）<input id="fileInput" type="file" accept=".txt,.csv"></label>';
         html += '</div>';
       }
 
@@ -529,29 +1020,29 @@
       return html;
     }
 
-    function quizHtml(){
+    function quizHtml() {
       var q = state.questions[state.currentIndex];
-      if(!q){
+      if (!q) {
         return '<div class="center"><div class="card"><div class="body"><div class="message err">問題データがありません。タイトルに戻って再読み込みしてください。</div><button class="btn btnPrimary" id="backTitleBtn">タイトルへ戻る</button></div></div></div>';
       }
 
       var answered = state.userAnswers[state.currentIndex] !== undefined;
       var selected = state.userAnswers[state.currentIndex];
-      var correct = answerMatches(selected,q.correctAnswer);
+      var correct = answerMatches(selected, q.correctAnswer);
       var totalProgress = state.currentBatchIndex * QUESTIONS_PER_BATCH + state.currentIndex + 1;
 
       var html = "";
       html += '<div class="quizPage animate"><div class="quizWrap">';
-      html += '<div class="quizTop"><span class="themePill">' + esc(q.theme) + '</span><div class="topActions"><div class="counter">Q ' + esc(state.currentIndex + 1) + ' <small>/ ' + esc(state.questions.length) + '</small><div class="progress">進捗: ' + esc(totalProgress) + ' / ' + esc(state.sessionQuestions.length) + '</div></div><button class="homeBtn" id="homeBtn">⌂ ホーム</button></div></div>';
-      html += '<div class="qCard"><p class="qText">' + esc(formatText(q.question,true)) + '</p></div>';
+      html += '<div class="quizTop"><span class="themePill">' + esc(q.theme) + '</span><div class="topActions"><div class="counter">Q ' + esc(state.currentIndex + 1) + ' <small>/ ' + esc(state.questions.length) + '</small><div class="progress font-sans">進捗: ' + esc(totalProgress) + ' / ' + esc(state.sessionQuestions.length) + '</div></div><button class="homeBtn" id="homeBtn">' + Icons.Home + ' ホーム</button></div></div>';
+      html += '<div class="qCard"><p class="qText">' + esc(formatText(q.question, true)) + '</p></div>';
       html += '<div class="options">';
 
-      q.options.forEach(function(opt,i){
+      q.options.forEach(function(opt, i) {
         var cls = "option";
         var mark = "";
-        if(answered){
-          if(answerMatches(opt,q.correctAnswer)){cls += " correct";mark = "✅"}
-          else if(opt === selected){cls += " wrong";mark = "❌"}
+        if (answered) {
+          if (answerMatches(opt, q.correctAnswer)) { cls += " correct"; mark = "✅"; }
+          else if (opt === selected) { cls += " wrong"; mark = "❌"; }
           else cls += " muted";
         }
         html += '<button class="' + cls + '" data-option="' + esc(i) + '" ' + (answered ? "disabled" : "") + '><span class="optionInner"><span>' + esc(opt) + '</span><span>' + mark + '</span></span></button>';
@@ -559,34 +1050,34 @@
 
       html += '</div>';
 
-      if(answered){
-        html += '<div class="answer ' + (correct ? "correct" : "wrong") + ' animate"><h3>' + (correct ? "✅ 正解！" : "❌ 不正解...") + '</h3><h4>【解説】</h4><p>' + esc(formatText(q.explanation,false)) + '</p></div>';
+      if (answered) {
+        html += '<div class="answer ' + (correct ? "correct" : "wrong") + ' animate"><h3>' + (correct ? "✅ 正解！" : "❌ 不正解...") + '</h3><h4>【解説】</h4><p>' + esc(formatText(q.explanation, false)) + '</p></div>';
         html += '<div class="nav">';
-        if(state.currentIndex > 0) html += '<button class="btn btnOutline" id="prevBtn">← 前の問題</button>';
+        if (state.currentIndex > 0) html += '<button class="btn btnOutline" id="prevBtn">← 前の問題</button>';
         html += '<button class="btn btnDark" id="nextBtn">' + (state.currentIndex < state.questions.length - 1 ? "次の問題へ →" : "結果を見る →") + '</button></div>';
-      }else if(state.currentIndex > 0){
+      } else if (state.currentIndex > 0) {
         html += '<button class="btn btnOutline" id="prevBtn">← 前の問題に戻る</button>';
       }
 
       html += '</div>';
-      if(state.showHomeConfirm) html += modalHtml();
+      if (state.showHomeConfirm) html += modalHtml();
       html += '</div>';
       return html;
     }
 
-    function modalHtml(){
+    function modalHtml() {
       return '<div class="modalBack animate"><div class="modal"><h3>タイトルに戻りますか？</h3><p>現在のクイズセット（第 ' + esc(state.currentBatchIndex + 1) + ' セット）の進行状況やスコアはリセットされます。</p><div class="nav"><button class="btn btnLight" id="cancelHomeBtn">キャンセル</button><button class="btn btnPrimary" id="confirmHomeBtn">タイトルに戻る</button></div></div></div>';
     }
 
-    function score(){
-      return state.questions.reduce(function(acc,q,i){
-        return acc + (answerMatches(state.userAnswers[i],q.correctAnswer) ? 1 : 0);
-      },0);
+    function score() {
+      return state.questions.reduce(function(acc, q, i) {
+        return acc + (answerMatches(state.userAnswers[i], q.correctAnswer) ? 1 : 0);
+      }, 0);
     }
 
-    function resultHtml(){
+    function resultHtml() {
       var hasNext = (state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH < state.sessionQuestions.length;
-      var progressCount = Math.min((state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH,state.sessionQuestions.length);
+      var progressCount = Math.min((state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH, state.sessionQuestions.length);
       var sc = score();
       var msg = sc <= 3 ? "まだまだ勉強不足" : sc <= 6 ? "やるやん！この調子やで！" : sc <= 9 ? "このまま頑張ったら試験受かるんちゃう？" : "天才かよ…継続こそが\n大切です！";
 
@@ -596,43 +1087,43 @@
       html += '<h2>結果発表</h2><p>' + esc(state.selectedTheme) + '（第 ' + esc(state.currentBatchIndex + 1) + ' セット）</p>';
       html += '<div class="progressPill">進捗: ' + esc(progressCount) + ' / ' + esc(state.sessionQuestions.length) + ' 問</div>';
       html += '<div class="score">' + esc(sc) + ' <span>/ ' + esc(state.questions.length) + '</span></div>';
-      if(hasNext) html += '<button class="btn btnPrimary" id="nextBatchBtn">次の10問へ進む →</button>';
+      if (hasNext) html += '<button class="btn btnPrimary" id="nextBatchBtn">次の10問へ進む →</button>';
       else html += '<div class="complete">🎉 このテーマの全問題をコンプリートしました！</div>';
       html += '<div style="height:12px"></div><button class="btn ' + (hasNext ? "btnLight" : "btnDark") + '" id="resultTitleBtn">↻ タイトルへ戻る</button>';
       html += '</div></div>';
       return html;
     }
 
-    function render(){
+    function render() {
       var root = document.getElementById("root");
-      if(!root) return;
+      if (!root) return;
 
-      if(state.screen === "title"){
+      if (state.screen === "title") {
         root.innerHTML = titleHtml();
         bindTitle();
-      }else if(state.screen === "quiz"){
+      } else if (state.screen === "quiz") {
         root.innerHTML = quizHtml();
         bindQuiz();
-      }else{
+      } else {
         root.innerHTML = resultHtml();
         bindResult();
       }
       bindLogo();
     }
 
-    function bindLogo(){
+    function bindLogo() {
       var logo = document.getElementById("mainLogo");
-      if(!logo) return;
-      logo.addEventListener("click",function(){
-        if(state.showAdminTools) return;
+      if (!logo) return;
+      logo.addEventListener("click", function() {
+        if (state.showAdminTools) return;
         state.logoClickCount++;
-        if(state.logoClickCount >= 5){
+        if (state.logoClickCount >= 5) {
           state.showAdminTools = true;
-          setMessage("🔑 管理者用ツールを開放しました。",false);
+          setMessage("🔑 管理者用ツールを開放しました。", false);
         }
         render();
       });
-      logo.addEventListener("error",function(){
+      logo.addEventListener("error", function() {
         var d = document.createElement("div");
         d.className = logo.className.includes("resultLogo") ? "fallbackLogo resultLogo" : "fallbackLogo";
         d.innerHTML = '<div class="wine">🍷</div><div>川西</div>';
@@ -640,39 +1131,39 @@
       });
     }
 
-    function bindTitle(){
+    function bindTitle() {
       var s = document.getElementById("themeSelect");
-      if(s) s.addEventListener("change",function(e){state.selectedTheme=e.target.value;render()});
+      if (s) s.addEventListener("change", function(e) { state.selectedTheme = e.target.value; render(); });
 
       var n = document.getElementById("orderNormal");
-      if(n) n.addEventListener("click",function(){state.isRandomOrder=false;render()});
+      if (n) n.addEventListener("click", function() { state.isRandomOrder = false; render(); });
 
       var r = document.getElementById("orderRandom");
-      if(r) r.addEventListener("click",function(){state.isRandomOrder=true;render()});
+      if (r) r.addEventListener("click", function() { state.isRandomOrder = true; render(); });
 
       var st = document.getElementById("startBtn");
-      if(st) st.addEventListener("click",startQuiz);
+      if (st) st.addEventListener("click", startQuiz);
 
       var input = document.getElementById("importUrlInput");
-      if(input) input.addEventListener("input",function(e){state.importUrl=e.target.value});
+      if (input) input.addEventListener("input", function(e) { state.importUrl = e.target.value; });
 
       var imp = document.getElementById("importBtn");
-      if(imp) imp.addEventListener("click",handleUrlImport);
+      if (imp) imp.addEventListener("click", handleUrlImport);
 
       var file = document.getElementById("fileInput");
-      if(file) file.addEventListener("change",handleFileUpload);
+      if (file) file.addEventListener("change", handleFileUpload);
     }
 
-    function bindQuiz(){
+    function bindQuiz() {
       var back = document.getElementById("backTitleBtn");
-      if(back) back.addEventListener("click",function(){state.screen="title";render()});
+      if (back) back.addEventListener("click", function() { state.screen = "title"; render(); });
 
-      document.querySelectorAll("[data-option]").forEach(function(btn){
-        btn.addEventListener("click",function(){
+      document.querySelectorAll("[data-option]").forEach(function(btn) {
+        btn.addEventListener("click", function() {
           var i = Number(btn.getAttribute("data-option"));
           var q = state.questions[state.currentIndex];
-          if(!q || !q.options[i]) return;
-          if(state.userAnswers[state.currentIndex] !== undefined) return;
+          if (!q || !q.options[i]) return;
+          if (state.userAnswers[state.currentIndex] !== undefined) return;
           state.userAnswers[state.currentIndex] = q.options[i];
           state.seenWords = new Set();
           render();
@@ -680,35 +1171,35 @@
       });
 
       var next = document.getElementById("nextBtn");
-      if(next) next.addEventListener("click",function(){
-        if(state.currentIndex < state.questions.length - 1) state.currentIndex++;
+      if (next) next.addEventListener("click", function() {
+        if (state.currentIndex < state.questions.length - 1) state.currentIndex++;
         else state.screen = "result";
         state.seenWords = new Set();
         render();
       });
 
       var prev = document.getElementById("prevBtn");
-      if(prev) prev.addEventListener("click",function(){
-        if(state.currentIndex > 0) state.currentIndex--;
+      if (prev) prev.addEventListener("click", function() {
+        if (state.currentIndex > 0) state.currentIndex--;
         state.seenWords = new Set();
         render();
       });
 
       var home = document.getElementById("homeBtn");
-      if(home) home.addEventListener("click",function(){state.showHomeConfirm=true;render()});
+      if (home) home.addEventListener("click", function() { state.showHomeConfirm = true; render(); });
 
       var cancel = document.getElementById("cancelHomeBtn");
-      if(cancel) cancel.addEventListener("click",function(){state.showHomeConfirm=false;render()});
+      if (cancel) cancel.addEventListener("click", function() { state.showHomeConfirm = false; render(); });
 
       var confirm = document.getElementById("confirmHomeBtn");
-      if(confirm) confirm.addEventListener("click",function(){state.showHomeConfirm=false;state.screen="title";render()});
+      if (confirm) confirm.addEventListener("click", function() { state.showHomeConfirm = false; state.screen = "title"; render(); });
     }
 
-    function bindResult(){
+    function bindResult() {
       var nb = document.getElementById("nextBatchBtn");
-      if(nb) nb.addEventListener("click",function(){
+      if (nb) nb.addEventListener("click", function() {
         state.currentBatchIndex++;
-        state.questions = state.sessionQuestions.slice(state.currentBatchIndex * QUESTIONS_PER_BATCH,(state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH);
+        state.questions = state.sessionQuestions.slice(state.currentBatchIndex * QUESTIONS_PER_BATCH, (state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH);
         state.currentIndex = 0;
         state.userAnswers = {};
         state.seenWords = new Set();
@@ -717,23 +1208,23 @@
       });
 
       var title = document.getElementById("resultTitleBtn");
-      if(title) title.addEventListener("click",function(){state.screen="title";render()});
+      if (title) title.addEventListener("click", function() { state.screen = "title"; render(); });
     }
 
-    function startQuiz(){
-      var filtered = state.selectedTheme === "すべて" ? state.quizData.slice() : state.quizData.filter(function(q){return q.theme === state.selectedTheme});
-      if(state.isRandomOrder){
-        filtered.sort(function(){return Math.random() - .5});
-      }else{
-        filtered.sort(function(a,b){
-          var c = String(a.theme).localeCompare(String(b.theme),"ja");
-          if(c !== 0) return c;
+    function startQuiz() {
+      var filtered = state.selectedTheme === "すべて" ? state.quizData.slice() : state.quizData.filter(function(q) { return q.theme === state.selectedTheme; });
+      if (state.isRandomOrder) {
+        filtered.sort(function() { return Math.random() - .5; });
+      } else {
+        filtered.sort(function(a, b) {
+          var c = String(a.theme).localeCompare(String(b.theme), "ja");
+          if (c !== 0) return c;
           return (Number(a.id) || 0) - (Number(b.id) || 0);
         });
       }
       state.sessionQuestions = filtered;
       state.currentBatchIndex = 0;
-      state.questions = filtered.slice(0,QUESTIONS_PER_BATCH);
+      state.questions = filtered.slice(0, QUESTIONS_PER_BATCH);
       state.currentIndex = 0;
       state.userAnswers = {};
       state.seenWords = new Set();
@@ -741,97 +1232,97 @@
       render();
     }
 
-    async function loadInitial(){
+    async function loadInitial() {
       state.isInitialLoading = true;
-      setMessage("🔄 最新の問題データを自動読み込み中...",false);
+      setMessage("🔄 最新の問題データを自動読み込み中...", false);
       render();
 
-      try{
+      try {
         var res = await safeFetch(DEFAULT_IMPORT_URL);
-        if(!res.ok) throw new Error("NETWORK_" + res.status);
+        if (!res.ok) throw new Error("NETWORK_" + res.status);
         var text = await res.text();
         var data = parseData(text);
-        if(!data.length) throw new Error("EMPTY_DATA");
+        if (!data.length) throw new Error("EMPTY_DATA");
         state.quizData = data;
-        setMessage("🎉 " + data.length + " 件の問題を自動で読み込みました！",false);
-      }catch(e){
-        console.error("データ読み込みエラー:",e);
-        if(e && e.message === "HTML_RESPONSE_ERROR"){
-          setMessage("⚠️ 共有設定エラー：スプレッドシートのアクセス権が「制限付き」になっている可能性があります。\nGoogleスプレッドシートの共有を「リンクを知っている全員（閲覧者）」にしてください。\n\n一時的にサンプル問題で起動します。",true);
-        }else if(e && e.message === "EMPTY_DATA"){
-          setMessage("⚠️ 形式エラー：読み込んだデータ内に有効な問題が見つかりませんでした。\n\n一時的にサンプル問題で起動します。",true);
-        }else{
-          setMessage("⚠️ 自動読み込みに失敗しました。通信環境、またはスプレッドシートの共有設定をご確認ください。\n\n一時的にサンプル問題で起動します。",true);
+        setMessage("🎉 " + data.length + " 件の問題を自動で読み込みました！", false);
+      } catch (e) {
+        console.error("データ読み込みエラー:", e);
+        if (e && e.message === "HTML_RESPONSE_ERROR") {
+          setMessage("⚠️ 共有設定エラー：スプレッドシートのアクセス権が「制限付き」になっている可能性があります。\nGoogleスプレッドシートの共有を「リンクを知っている全員（閲覧者）」にしてください。\n\n一時的にサンプル問題で起動します。", true);
+        } else if (e && e.message === "EMPTY_DATA") {
+          setMessage("⚠️ 形式エラー：読み込んだデータ内に有効な問題が見つかりませんでした。\n\n一時的にサンプル問題で起動します。", true);
+        } else {
+          setMessage("⚠️ 自動読み込みに失敗しました。通信環境、またはスプレッドシートの共有設定をご確認ください。\n\n一時的にサンプル問題で起動します。", true);
         }
-        try{state.quizData = parseData(defaultSampleData)}catch(_){state.quizData=[]}
-      }finally{
+        try { state.quizData = parseData(defaultSampleData); } catch (_) { state.quizData = []; }
+      } finally {
         state.isInitialLoading = false;
         render();
       }
     }
 
-    async function handleUrlImport(){
+    async function handleUrlImport() {
       var input = document.getElementById("importUrlInput");
       var url = input ? input.value.trim() : state.importUrl.trim();
-      if(!url) return;
+      if (!url) return;
 
       state.isLoading = true;
       state.importUrl = url;
-      setMessage("🔄 外部データを読み込み中...",false);
+      setMessage("🔄 外部データを読み込み中...", false);
       render();
 
-      try{
+      try {
         var res = await safeFetch(url);
-        if(!res.ok) throw new Error("NETWORK_" + res.status);
+        if (!res.ok) throw new Error("NETWORK_" + res.status);
         var text = await res.text();
         var data = parseData(text);
-        if(!data.length) throw new Error("EMPTY_DATA");
+        if (!data.length) throw new Error("EMPTY_DATA");
         state.quizData = data;
         state.selectedTheme = "すべて";
         state.importUrl = "";
-        setMessage("🎉 手動参照成功: " + data.length + " 件を読み込みました！",false);
-      }catch(e){
+        setMessage("🎉 手動参照成功: " + data.length + " 件を読み込みました！", false);
+      } catch (e) {
         console.error(e);
-        setMessage("エラー：URLからデータを取得できませんでした。URL、共有設定、CSV形式をご確認ください。",true);
-      }finally{
+        setMessage("エラー：URLからデータを取得できませんでした。URL、共有設定、CSV形式をご確認ください。", true);
+      } finally {
         state.isLoading = false;
         render();
       }
     }
 
-    function handleFileUpload(e){
+    function handleFileUpload(e) {
       var file = e.target.files && e.target.files[0];
-      if(!file) return;
+      if (!file) return;
 
       state.isLoading = true;
-      setMessage("🔄 ファイルを読み込み中...",false);
+      setMessage("🔄 ファイルを読み込み中...", false);
       render();
 
       var reader = new FileReader();
-      reader.onload = function(ev){
-        try{
+      reader.onload = function(ev) {
+        try {
           var data = parseData(ev.target.result);
-          if(!data.length) throw new Error("EMPTY_DATA");
+          if (!data.length) throw new Error("EMPTY_DATA");
           state.quizData = data;
           state.selectedTheme = "すべて";
-          setMessage("🎉 ファイルから " + data.length + " 件を読み込みました！",false);
-        }catch(err){
+          setMessage("🎉 ファイルから " + data.length + " 件を読み込みました！", false);
+        } catch (err) {
           console.error(err);
-          setMessage("エラー：ファイルを読み込めませんでした。CSVまたはテキスト形式をご確認ください。",true);
-        }finally{
+          setMessage("エラー：ファイルを読み込めませんでした。CSVまたはテキスト形式をご確認ください。", true);
+        } finally {
           state.isLoading = false;
           render();
         }
       };
-      reader.onerror = function(){
+      reader.onerror = function() {
         state.isLoading = false;
-        setMessage("エラー：ファイルの読み込みに失敗しました。",true);
+        setMessage("エラー：ファイルの読み込みに失敗しました。", true);
         render();
       };
-      reader.readAsText(file,"UTF-8");
+      reader.readAsText(file, "UTF-8");
     }
 
-    document.addEventListener("DOMContentLoaded",function(){
+    document.addEventListener("DOMContentLoaded", function() {
       render();
       loadInitial();
     });
