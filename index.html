@@ -357,12 +357,28 @@
       var headers = rows[0].map(function(x){return String(x || "").trim()});
 
       function idx(cands){
+        // 完全一致を最優先する。「問題」を探しているのに「問題番号」に先に当たる事故を防ぐ。
         for(var c=0;c<cands.length;c++){
-          var cand = String(cands[c]).toLowerCase();
+          var candRaw = String(cands[c]);
+          var cand = candRaw.toLowerCase();
           for(var i=0;i<headers.length;i++){
             var h = String(headers[i] || "").trim();
-            var lower = h.toLowerCase();
-            if(lower === cand || h.includes(cands[c])) return i;
+            if(h.toLowerCase() === cand) return i;
+          }
+        }
+
+        // 完全一致がない場合だけ部分一致。ただし「問題」は「問題番号」に一致させない。
+        for(var c2=0;c2<cands.length;c2++){
+          var candRaw2 = String(cands[c2]);
+          var cand2 = candRaw2.toLowerCase();
+          for(var j=0;j<headers.length;j++){
+            var h2 = String(headers[j] || "").trim();
+            var lower2 = h2.toLowerCase();
+
+            if(candRaw2 === "問題" && (h2 === "問題番号" || h2.includes("問題番号"))) continue;
+            if(candRaw2 === "番号" && (h2 === "問題" || h2.includes("問題文"))) continue;
+
+            if(lower2.includes(cand2)) return j;
           }
         }
         return -1;
@@ -372,7 +388,7 @@
       var themeI = idx(["title","chapterTitle","章","タイトル","テーマ"]);
       if(themeI === -1) themeI = 0;
 
-      var qI = idx(["questionSentence","問題","question","問題文"]);
+      var qI = idx(["questionSentence","問題文","問題","question"]);
       var expI = idx(["explanation","解説","説明"]);
       var caI = idx(["correctAnswers.0","correctAnswer","正解","解答","答え"]);
 
@@ -443,6 +459,11 @@
         });
       }
 
+      if(out.length){
+        console.log("CSV headers:", headers);
+        console.log("Parsed first question:", out[0]);
+        console.log("First options count:", out[0].options ? out[0].options.length : 0);
+      }
       return out;
     }
 
