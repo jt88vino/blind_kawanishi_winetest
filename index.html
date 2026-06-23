@@ -32,8 +32,112 @@
     function parseData(raw){raw=norm(raw);var trimmed=raw.trim();if(!trimmed)return[];if(looksHtml(trimmed))throw new Error("HTML_RESPONSE_ERROR");var lines=trimmed.split("\n").map(function(line){var l=line.trim().replace(/^"|"$/g,"").trim();if(l.includes("ID:")||l.includes("章:")||l.includes("問題:")||l.includes("選択肢:")||l.includes("正解:")||l.includes("解説:")||l.startsWith("---")){l=l.replace(/,+$/g,"").trim().replace(/^"|"$/g,"").trim()}return l});var cleaned=lines.join("\n");if(cleaned.includes("ID:")||cleaned.includes("章:")||cleaned.includes("問題:"))return processTextData(cleaned);return processCSVData(raw)}
     function processTextData(text){var blocks=text.split(/-{10,}/),out=[];blocks.forEach(function(block,i){if(!block.trim())return;function ex(prefix){var re=new RegExp("^[\\s\",]*"+prefix.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\s*([\\s\\S]*?)(?=(?:^[\\s\",]*(?:ID|章|問題|選択肢|正解|解説):|$))","m");var m=block.match(re);return(m?m[1].trim():"").replace(/^"+|"+$/g,"").trim()}var id=ex("ID:" )||i+1,theme=ex("章:")||"その他",q=ex("問題:"),ops=ex("選択肢:"),ca=ex("正解:"),exp=ex("解説:");if(!q||!ops)return;if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)}))return;var options=ops.split(",").map(function(o){return o.replace(/^"+|"+$/g,"").trim()}).filter(Boolean);if(!options.length)return;out.push({id:Number(id)||i+1,theme:theme,question:q,options:options,correctAnswer:(ca||options[0]).replace(/^"+|"+$/g,"").trim(),explanation:exp||"解説はありません。"})});return out}
     function csvRows(csv){var rows=[],row=[],q=false,val="",t=norm(csv);for(var i=0;i<t.length;i++){var c=t[i];if(c==='"'){if(q&&i+1<t.length&&t[i+1]==='"'){val+='"';i++}else q=!q}else if(c===","&&!q){row.push(val);val=""}else if(c==="\n"&&!q){row.push(val);rows.push(row);row=[];val=""}else val+=c}if(val!==""||row.length){row.push(val);rows.push(row)}return rows}
-    function processCSVData(csv){var rows=csvRows(csv).filter(function(r){return r.some(function(c){return String(c||"").trim()!==""})});if(rows.length<2)return[];var h=rows[0].map(function(x){return String(x||"").trim()});function idx(cands){for(var c=0;c<cands.length;c++){var cand=String(cands[c]).toLowerCase();for(var i=0;i<h.length;i++){var lower=h[i].toLowerCase();if(lower===cand||h[i].includes(cands[c]))return i}}return-1}var idI=idx(["id","ID","番号","問題番号"]),themeI=idx(["title","chapterTitle","章","タイトル","テーマ"]);if(themeI===-1)themeI=0;var qI=idx(["questionSentence","問題","question","問題文"]),expI=idx(["explanation","解説","説明"]),caI=idx(["correctAnswers.0","correctAnswer","正解","解答"]);if(qI===-1)qI=h.length>3?3:-1;if(qI===-1)return[];if(expI===-1)expI=h.length>5?5:-1;var optI=[];for(var n=0;n<20;n++){var found=h.findIndex(function(x){var l=String(x||"").trim().toLowerCase();return l==="options."+n||l==="option."+n||x==="選択肢"+n||x==="選択肢."+n});if(found!==-1)optI.push(found)}var joined=idx(["選択肢","options","option"]);if(optI.length===0&&joined!==-1&&joined!==qI)optI.push(joined);if(optI.length===0){h.forEach(function(_,i){if(i!==idI&&i!==themeI&&i!==qI&&i!==expI&&i!==caI)optI.push(i)})}var out=[];for(var r=1;r<rows.length;r++){var row=rows[r];if(!String(row[qI]||"").trim())continue;var theme=String(row[themeI]||"その他").trim()||"その他";if(theme===h[themeI]||theme.toLowerCase()==="title"||theme.toLowerCase()==="chaptertitle"||theme==="章")continue;if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)}))continue;var options=[];optI.forEach(function(i){var cell=String(row[i]||"").trim();if(!cell)return;if(optI.length===1&&/(?:\\n|\n|、|,|\d+\.|[①②③④⑤⑥⑦⑧⑨⑩])/.test(cell)){cell.replace(/\\n/g,"\n").split(/\n|、|,(?=\s*\S)|(?=\s*[①②③④⑤⑥⑦⑧⑨⑩])|(?=\s*\d+\.)/).map(function(x){return x.trim()}).filter(Boolean).forEach(function(x){options.push(x)})}else options.push(cell)});options=options.map(function(x){return x.replace(/^"+|"+$/g,"").trim()}).filter(Boolean);if(!options.length)options=["選択肢1","選択肢2","選択肢3","選択肢4"];out.push({id:idI!==-1&&row[idI]?Number(row[idI])||r:r,theme:theme,question:String(row[qI]||"").replace(/\\n/g,"\n"),options:options,correctAnswer:caI!==-1&&row[caI]?String(row[caI]).trim():options[0],explanation:expI!==-1&&row[expI]?String(row[expI]).replace(/\\n/g,"\n"):"解説はありません。"})}return out}
+    function splitOptionCell(cell){
+      var text=String(cell||"").replace(/\\n/g,"\n").replace(/\r\n/g,"\n").replace(/\r/g,"\n").trim();
+      if(!text)return[];
+      text=text.replace(/[０-９]/g,function(ch){return String.fromCharCode(ch.charCodeAt(0)-65248)});
+      text=text.replace(/．/g,".");
+      text=text.replace(/（/g,"(").replace(/）/g,")");
+      var parts=[];
+      if(text.indexOf("\n")!==-1){
+        parts=text.split(/\n+/);
+      }else if(/[①②③④⑤⑥⑦⑧⑨⑩]/.test(text)){
+        parts=text.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
+      }else if(/\d+\s*[.)、]/.test(text)){
+        parts=text.split(/(?=\s*\d+\s*[.)、])/);
+      }else if(text.indexOf("、")!==-1){
+        parts=text.split("、");
+      }else if(text.indexOf(",")!==-1){
+        parts=text.split(",");
+      }else{
+        parts=[text];
+      }
+      return parts.map(function(x){return x.trim().replace(/^["']+|["']+$/g,"")}).filter(Boolean);
+    }
+    function processCSVData(csv){
+      var rows=csvRows(csv).filter(function(r){return r.some(function(c){return String(c||"").trim()!==""})});
+      if(rows.length<2)return[];
+      var h=rows[0].map(function(x){return String(x||"").trim()});
+      function idx(cands){
+        for(var c=0;c<cands.length;c++){
+          var cand=String(cands[c]).toLowerCase();
+          for(var i=0;i<h.length;i++){
+            var lower=String(h[i]||"").toLowerCase();
+            if(lower===cand||String(h[i]||"").includes(cands[c]))return i;
+          }
+        }
+        return-1;
+      }
+      var idI=idx(["id","ID","番号","問題番号"]);
+      var themeI=idx(["title","chapterTitle","章","タイトル","テーマ"]);
+      if(themeI===-1)themeI=0;
+      var qI=idx(["questionSentence","問題文","問題","question"]);
+      var expI=idx(["explanation","解説","説明"]);
+      var caI=idx(["correctAnswers.0","correctAnswer","正解","解答"]);
+      if(qI===-1)qI=h.length>2?2:-1;
+      if(qI===-1)return[];
+      if(expI===-1)expI=h.length>5?5:-1;
 
+      var optI=[];
+      for(var n=0;n<20;n++){
+        var found=h.findIndex(function(x){
+          var raw=String(x||"").trim();
+          var l=raw.toLowerCase();
+          return l==="options."+n||l==="option."+n||raw==="選択肢"+n||raw==="選択肢."+n||raw==="選択肢"+(n+1);
+        });
+        if(found!==-1&&optI.indexOf(found)===-1)optI.push(found);
+      }
+
+      var joined=idx(["選択肢","options","option"]);
+      if(joined!==-1 && joined!==qI && joined!==caI && joined!==expI && optI.indexOf(joined)===-1){
+        optI.unshift(joined);
+      }
+
+      if(optI.length===0){
+        h.forEach(function(_,i){
+          if(i!==idI&&i!==themeI&&i!==qI&&i!==expI&&i!==caI)optI.push(i);
+        });
+      }
+
+      var out=[];
+      for(var r=1;r<rows.length;r++){
+        var row=rows[r];
+        if(!String(row[qI]||"").trim())continue;
+        var theme=String(row[themeI]||"その他").trim()||"その他";
+        if(theme===h[themeI]||theme.toLowerCase()==="title"||theme.toLowerCase()==="chaptertitle"||theme==="章")continue;
+        if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)}))continue;
+
+        var options=[];
+        optI.forEach(function(i){
+          var cell=String(row[i]||"").trim();
+          if(!cell)return;
+          var split=splitOptionCell(cell);
+          split.forEach(function(x){options.push(x)});
+        });
+
+        options=options.map(function(x){return x.replace(/^"+|"+$/g,"").trim()}).filter(Boolean);
+
+        /* もし「選択肢」列以外まで拾ってしまった場合の保険。解答・解説っぽい長文は除外。 */
+        options=options.filter(function(x){
+          if(caI!==-1&&String(row[caI]||"").trim()===x)return true;
+          if(x.length>180)return false;
+          return true;
+        });
+
+        if(!options.length)options=["選択肢1","選択肢2","選択肢3","選択肢4"];
+
+        var correctAnswer=caI!==-1&&row[caI]?String(row[caI]).trim():options[0];
+        out.push({
+          id:idI!==-1&&row[idI]?Number(row[idI])||r:r,
+          theme:theme,
+          question:String(row[qI]||"").replace(/\\n/g,"\n"),
+          options:options,
+          correctAnswer:correctAnswer,
+          explanation:expI!==-1&&row[expI]?String(row[expI]).replace(/\\n/g,"\n"):"解説はありません。"
+        });
+      }
+      return out;
+    }
     function formatText(text,isQ){if(!text)return"";var re=/([a-zA-ZÀ-ÿ0-9\-.]+([\s][a-zA-ZÀ-ÿ0-9\-.]+)*)（([^）]+)）/g;if(isQ)return String(text).replace(re,"$1");return String(text).replace(re,function(m,w){var n=String(w||"").trim().toLowerCase();if(state.seenWords.has(n))return w;state.seenWords.add(n);return m})}
     function themes(){if(!state.quizData.length)return["すべて"];var s=new Set;state.quizData.forEach(function(q){if(q.theme)s.add(q.theme)});return["すべて"].concat(Array.from(s).sort(function(a,b){return String(a).localeCompare(String(b),"ja")}))}
     function logo(cls){return '<img src="'+esc(DEFAULT_LOGO_URL)+'" alt="メインロゴ" class="'+esc(cls||"logo")+'" id="mainLogo">'}
