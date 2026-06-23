@@ -5,162 +5,815 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ソムリエ / ワインエキスパート 試験対策ドリル byブラインド川西</title>
   <style>
-    *{box-sizing:border-box}body{margin:0;background:#fafaf9;color:#44403c;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif}button,select,input{font-family:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}.center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}.quizPage{min-height:100vh;padding:40px 16px;display:flex;justify-content:center}.card{width:100%;max-width:448px;background:#fff;border:1px solid #e7e5e4;border-radius:22px;box-shadow:0 20px 55px rgba(0,0,0,.13);overflow:hidden}.hero{background:#881337;color:white;text-align:center;padding:32px}.logo{width:80px;height:80px;border-radius:999px;object-fit:cover;border:2px solid rgba(255,255,255,.25);display:block;margin:0 auto 16px;box-shadow:0 8px 24px rgba(0,0,0,.24)}.logoFallback{width:80px;height:80px;border-radius:999px;background:#4c0519;color:#ffe4e6;border:2px solid #fecdd3;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 16px;font-weight:900}.hero h1{margin:0;font-size:24px;line-height:1.35}.sub{margin:8px 0 0;color:#fecdd3;font-size:14px;font-weight:700}.body{padding:24px}.field{margin-bottom:18px}.label{display:block;margin-bottom:8px;font-size:14px;color:#78716c;font-weight:900}select,input[type=text]{width:100%;padding:12px;border:1px solid #d6d3d1;border-radius:10px;background:#fafaf9;font-size:15px;outline:none}select:focus,input[type=text]:focus{border-color:#9f1239;box-shadow:0 0 0 3px rgba(159,18,57,.15)}.toggle{display:flex;gap:4px;padding:4px;border:1px solid #e7e5e4;border-radius:12px;background:#f5f5f4}.toggle button{flex:1;border:0;background:transparent;border-radius:9px;padding:10px 8px;color:#78716c;font-size:13px;font-weight:900}.toggle button.active{background:#fff;color:#9f1239;box-shadow:0 2px 8px rgba(0,0,0,.08)}.btn{border:0;border-radius:12px;padding:14px 18px;font-size:16px;font-weight:900}.primary{width:100%;background:#9f1239;color:#fff;box-shadow:0 8px 18px rgba(159,18,57,.24)}.primary:hover{background:#881337}.dark{background:#44403c;color:#fff}.light{background:#e7e5e4;color:#57534e}.outline{background:#fff;color:#57534e;border:2px solid #d6d3d1}.msg{margin-top:18px;padding:12px;border-radius:10px;font-size:12px;font-weight:800;line-height:1.6;white-space:pre-wrap}.ok{background:#dcfce7;color:#166534}.err{background:#fee2e2;color:#991b1b}.loading{text-align:center;padding:36px 0;color:#a8a29e;font-weight:900}.spin{width:42px;height:42px;border-radius:999px;border:4px solid #ffe4e6;border-top-color:#9f1239;margin:0 auto 14px;animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.in{animation:fade .25s ease-out both}.admin{margin:24px -24px -24px;padding:22px 24px 24px;border-top:1px solid #e7e5e4;background:#fafaf9}.admin h3{margin:0 0 14px;color:#a8a29e;font-size:12px}.row{display:flex;gap:8px;margin-bottom:12px}.row input{flex:1;font-size:12px}.row button{white-space:nowrap;padding:10px 14px;font-size:12px}.fileLabel{display:block;width:100%;text-align:center;border:1px solid #d6d3d1;border-radius:10px;background:#fff;color:#57534e;padding:11px;font-size:12px;font-weight:900;cursor:pointer}.fileLabel input{display:none}.wrap{width:100%;max-width:672px}.top{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #e7e5e4;font-weight:900}.pill{max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;padding:7px 12px;border-radius:999px;background:#ffe4e6;color:#881337;font-size:13px}.count{text-align:right;color:#57534e;font-size:18px;line-height:1.2}.count small{color:#a8a29e;font-size:12px;font-weight:500}.progress{color:#a8a29e;font-size:11px;font-weight:600;margin-top:4px}.topActions{display:flex;align-items:center;gap:10px}.homeBtn{border:0;background:#e7e5e4;color:#57534e;border-radius:11px;padding:9px 12px;font-size:12px;font-weight:900}.qCard{background:#fff;border:1px solid #e7e5e4;border-radius:18px;box-shadow:0 3px 12px rgba(0,0,0,.04);padding:24px;margin-bottom:22px}.qText{margin:0;font-size:19px;line-height:1.85;font-weight:700;white-space:pre-wrap}.options{display:grid;gap:12px;margin-bottom:28px}.opt{width:100%;text-align:left;padding:16px;border-radius:14px;border:2px solid #e7e5e4;background:#fff;color:#57534e;font-size:17px;font-weight:800;line-height:1.5}.opt:hover:not(:disabled){border-color:#fda4af;background:#fff1f2}.correct{border-color:#16a34a!important;background:#f0fdf4!important;color:#166534!important}.wrong{border-color:#f87171!important;background:#fef2f2!important;color:#991b1b!important}.muted{background:#fafaf9!important;color:#a8a29e!important;opacity:.7}.optInner{display:flex;justify-content:space-between;gap:12px;align-items:center}.ans{border-radius:18px;padding:24px;margin-bottom:22px;box-shadow:0 4px 18px rgba(0,0,0,.08)}.ans h3{margin:0 0 14px;font-size:20px}.ans p{white-space:pre-wrap;line-height:1.8;margin:0}.nav{display:flex;gap:12px}.nav .btn{flex:1}.result{width:100%;max-width:448px;background:#fff;border:1px solid #e7e5e4;border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.12);padding:32px;text-align:center}.bubble{position:relative;display:inline-block;margin:0 auto 18px;max-width:100%;background:#fff;border:2px solid #9f1239;color:#9f1239;font-size:20px;font-weight:900;line-height:1.45;padding:12px 22px;border-radius:14px;white-space:pre-wrap;box-shadow:0 6px 16px rgba(0,0,0,.12)}.bubble:after{content:"";position:absolute;width:14px;height:14px;background:#fff;border-right:2px solid #9f1239;border-bottom:2px solid #9f1239;bottom:-9px;left:50%;transform:translateX(-50%) rotate(45deg)}.resultLogo{width:128px;height:128px;border-radius:999px;border:4px solid rgba(136,19,55,.1);margin:0 auto 26px;object-fit:cover;box-shadow:0 10px 28px rgba(0,0,0,.16)}.score{margin:14px 0 28px;color:#881337;font-size:52px;line-height:1;font-weight:900}.score span{color:#a8a29e;font-size:24px;font-weight:500}.progressPill{display:inline-block;margin:8px 0 18px;padding:6px 12px;border-radius:999px;background:#f5f5f4;color:#a8a29e;font-size:12px;font-weight:900}.complete{margin-bottom:14px;padding:14px;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;border-radius:12px;font-weight:900}.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:999}.modal{width:100%;max-width:360px;background:#fff;border-radius:18px;border:1px solid #e7e5e4;padding:24px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.25)}.modal h3{margin:0 0 8px;font-size:18px}.modal p{margin:0 0 22px;color:#78716c;font-size:14px;line-height:1.7}.debug{max-width:980px;margin:20px auto;padding:20px;border-radius:12px;background:#fff5f5;border:1px solid #fecaca;color:#991b1b;white-space:pre-wrap;line-height:1.6;font-family:monospace}@media(max-width:520px){.center{padding:16px}.hero{padding:26px 20px}.hero h1{font-size:21px}.body{padding:20px}.admin{margin-left:-20px;margin-right:-20px;margin-bottom:-20px;padding-left:20px;padding-right:20px}.toggle button{font-size:12px}.top{align-items:start}.pill{max-width:42%}.qText{font-size:17px}.opt{font-size:16px}.nav{flex-direction:column}}
+    :root{
+      --rose900:#881337;--rose800:#9f1239;--rose100:#ffe4e6;
+      --stone900:#292524;--stone800:#44403c;--stone700:#57534e;--stone600:#78716c;
+      --stone500:#a8a29e;--stone400:#d6d3d1;--stone300:#d6d3d1;--stone200:#e7e5e4;
+      --stone100:#f5f5f4;--stone50:#fafaf9;
+      --green800:#166534;--green600:#16a34a;--green100:#dcfce7;--green50:#f0fdf4;
+      --red800:#991b1b;--red500:#ef4444;--red100:#fee2e2;--red50:#fef2f2;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--stone50);color:var(--stone800);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","YuGothic","Noto Sans JP",sans-serif}
+    button,select,input{font-family:inherit}
+    button{cursor:pointer}
+    button:disabled{cursor:not-allowed;opacity:.55}
+    .center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .quizPage{min-height:100vh;padding:40px 16px;display:flex;justify-content:center}
+    .card{width:100%;max-width:448px;background:#fff;border:1px solid var(--stone200);border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.12);overflow:hidden}
+    .body{padding:24px}
+    .hero{background:var(--rose900);color:#fff;padding:32px;text-align:center}
+    .logo{width:80px;height:80px;display:block;margin:0 auto 16px;border-radius:999px;border:2px solid rgba(255,255,255,.22);object-fit:cover;box-shadow:0 8px 22px rgba(0,0,0,.25);user-select:none}
+    .fallbackLogo{width:80px;height:80px;margin:0 auto 16px;border-radius:999px;border:2px solid #fecdd3;background:#4c0519;color:#ffe4e6;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:900;user-select:none}
+    .fallbackLogo .wine{font-size:28px;line-height:1;margin-bottom:2px}
+    h1{margin:0;font-size:24px;line-height:1.35;letter-spacing:.04em}
+    .subtitle{margin:8px 0 0;color:#fecdd3;font-size:14px;font-weight:700}
+    .field{margin-bottom:18px}
+    .label{display:block;margin-bottom:8px;color:var(--stone600);font-size:14px;font-weight:800}
+    select,input[type=text]{width:100%;padding:12px;border:1px solid var(--stone300);border-radius:10px;background:var(--stone50);color:var(--stone800);font-size:15px;outline:none}
+    select:focus,input[type=text]:focus{border-color:var(--rose800);box-shadow:0 0 0 3px rgba(159,18,57,.15)}
+    .toggle{display:flex;gap:4px;padding:4px;border:1px solid var(--stone200);border-radius:12px;background:var(--stone100)}
+    .toggle button{flex:1;border:0;background:transparent;color:var(--stone600);padding:10px 8px;border-radius:9px;font-size:13px;font-weight:900}
+    .toggle button.active{background:#fff;color:var(--rose800);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    .btn{border:0;border-radius:12px;padding:14px 18px;font-size:16px;font-weight:900;transition:transform .05s ease,background .2s ease}
+    .btn:active{transform:scale(.99)}
+    .btnPrimary{width:100%;background:var(--rose800);color:#fff;box-shadow:0 8px 18px rgba(159,18,57,.24)}
+    .btnPrimary:hover{background:var(--rose900)}
+    .btnDark{background:var(--stone800);color:#fff}
+    .btnDark:hover{background:var(--stone900)}
+    .btnLight{background:var(--stone200);color:var(--stone700)}
+    .btnLight:hover{background:var(--stone300)}
+    .btnOutline{background:#fff;border:2px solid var(--stone300);color:var(--stone700)}
+    .message{margin-top:18px;padding:12px;border-radius:10px;font-size:12px;font-weight:800;line-height:1.6;white-space:pre-wrap}
+    .message.ok{background:var(--green100);color:var(--green800)}
+    .message.err{background:var(--red100);color:var(--red800)}
+    .loading{text-align:center;padding:36px 0;color:var(--stone500);font-weight:900}
+    .spinner{width:42px;height:42px;border-radius:999px;border:4px solid var(--rose100);border-top-color:var(--rose800);margin:0 auto 14px;animation:spin .9s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .animate{animation:fadeIn .25s ease-out both}
+    .admin{margin:24px -24px -24px;padding:22px 24px 24px;border-top:1px solid var(--stone200);background:var(--stone50)}
+    .admin h3{margin:0 0 14px;color:var(--stone500);font-size:12px}
+    .adminRow{display:flex;gap:8px;margin-bottom:12px}
+    .adminRow input{flex:1;font-size:12px;padding:10px}
+    .adminRow button{white-space:nowrap;padding:10px 14px;font-size:12px;border-radius:10px}
+    .fileLabel{display:block;width:100%;text-align:center;border:1px solid var(--stone300);border-radius:10px;background:#fff;color:var(--stone700);padding:11px;font-size:12px;font-weight:900;cursor:pointer}
+    .fileLabel input{display:none}
+    .quizWrap{width:100%;max-width:672px}
+    .quizTop{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--stone200);color:var(--stone500);font-weight:900}
+    .themePill{max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;padding:7px 12px;border-radius:999px;background:var(--rose100);color:var(--rose900);font-size:13px}
+    .topActions{display:flex;align-items:center;gap:10px}
+    .counter{text-align:right;color:var(--stone700);font-size:18px;line-height:1.2}
+    .counter small{color:var(--stone400);font-size:12px;font-weight:500}
+    .progress{color:var(--stone400);font-size:11px;font-weight:600;margin-top:4px}
+    .homeBtn{border:0;background:var(--stone200);color:var(--stone700);border-radius:11px;padding:9px 12px;font-size:12px;font-weight:900}
+    .qCard{background:#fff;border:1px solid var(--stone200);border-radius:18px;box-shadow:0 3px 12px rgba(0,0,0,.04);padding:24px;margin-bottom:22px}
+    .qText{margin:0;font-size:19px;line-height:1.85;font-weight:700;white-space:pre-wrap}
+    .options{display:grid;gap:12px;margin-bottom:28px}
+    .option{width:100%;text-align:left;padding:16px;border-radius:14px;border:2px solid var(--stone200);background:#fff;color:var(--stone700);font-size:17px;font-weight:800;line-height:1.5}
+    .option:hover:not(:disabled){border-color:#fda4af;background:#fff1f2}
+    .option.correct{border-color:var(--green600);background:var(--green50);color:var(--green800)}
+    .option.wrong{border-color:#f87171;background:var(--red50);color:var(--red800)}
+    .option.muted{background:var(--stone50);color:var(--stone400);opacity:.7}
+    .optionInner{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .answer{border-radius:18px;padding:24px;margin-bottom:22px;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+    .answer.correct{background:var(--green50);border:1px solid #bbf7d0}
+    .answer.wrong{background:var(--red50);border:1px solid #fecaca}
+    .answer h3{margin:0 0 14px;font-size:20px}
+    .answer.correct h3{color:var(--green800)}
+    .answer.wrong h3{color:var(--red800)}
+    .answer p{white-space:pre-wrap;line-height:1.8;margin:0}
+    .nav{display:flex;gap:12px}
+    .nav .btn{flex:1}
+    .result{width:100%;max-width:448px;background:#fff;border:1px solid var(--stone200);border-radius:20px;box-shadow:0 18px 50px rgba(0,0,0,.12);padding:32px;text-align:center}
+    .bubble{position:relative;display:inline-block;margin:0 auto 18px;max-width:100%;background:#fff;border:2px solid var(--rose800);color:var(--rose800);font-size:20px;font-weight:900;line-height:1.45;padding:12px 22px;border-radius:14px;white-space:pre-wrap;box-shadow:0 6px 16px rgba(0,0,0,.12)}
+    .bubble:after{content:"";position:absolute;width:14px;height:14px;background:#fff;border-right:2px solid var(--rose800);border-bottom:2px solid var(--rose800);bottom:-9px;left:50%;transform:translateX(-50%) rotate(45deg)}
+    .resultLogo{width:128px;height:128px;border-radius:999px;border:4px solid rgba(136,19,55,.1);margin:0 auto 26px;object-fit:cover;box-shadow:0 10px 28px rgba(0,0,0,.16)}
+    .score{margin:14px 0 28px;color:var(--rose900);font-size:52px;line-height:1;font-weight:900}
+    .score span{color:var(--stone500);font-size:24px;font-weight:500}
+    .progressPill{display:inline-block;margin:8px 0 18px;padding:6px 12px;border-radius:999px;background:var(--stone100);color:var(--stone500);font-size:12px;font-weight:900}
+    .complete{margin-bottom:14px;padding:14px;background:var(--green50);border:1px solid #bbf7d0;color:var(--green800);border-radius:12px;font-weight:900}
+    .modalBack{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:999}
+    .modal{width:100%;max-width:360px;background:#fff;border-radius:18px;border:1px solid var(--stone200);padding:24px;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.25)}
+    .modal h3{margin:0 0 8px;font-size:18px}
+    .modal p{margin:0 0 22px;color:var(--stone500);font-size:14px;line-height:1.7}
+    .debug{max-width:980px;margin:20px auto;padding:20px;border-radius:12px;background:#fff5f5;border:1px solid #fecaca;color:#991b1b;white-space:pre-wrap;line-height:1.6;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    @media(max-width:520px){
+      .center{padding:16px}.hero{padding:26px 20px}h1{font-size:21px}.body{padding:20px}
+      .admin{margin-left:-20px;margin-right:-20px;margin-bottom:-20px;padding-left:20px;padding-right:20px}
+      .toggle button{font-size:12px}.quizTop{align-items:start}.themePill{max-width:42%}.qText{font-size:17px}.option{font-size:16px}.nav{flex-direction:column}
+    }
   </style>
 </head>
 <body>
-  <div id="root"><div class="center"><div class="loading"><div class="spin"></div>アプリを起動中...</div></div></div>
+  <div id="root">
+    <div class="center"><div class="loading"><div class="spinner"></div>アプリを起動中...</div></div>
+  </div>
+
   <script>
     "use strict";
-    function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
-    window.addEventListener("error",function(e){var r=document.getElementById("root");if(r)r.innerHTML='<div class="debug">JavaScript Error\n\n'+esc(e.message)+'\n'+esc(e.filename)+':'+esc(e.lineno)+'\n\nこの表示が出た場合は、この赤いエラー文を共有してください。</div>'});
-    window.addEventListener("unhandledrejection",function(e){console.error(e.reason)});
 
-    var DEFAULT_IMPORT_URL="https://docs.google.com/spreadsheets/d/10_r8UZXOqXkbZZcBMyrci3gsg6t-2zVapaIFOET3GDA/export?format=csv&gid=1571684716";
-    var DEFAULT_LOGO_URL="https://assets.st-note.com/production/uploads/images/233954636/profile_9ee7939ab1c2b0d090f5668ffb7d3155.png?width=80&height=80&dpr=2&crop=1:1,smart";
-    var QUESTIONS_PER_BATCH=10;
-    var EXCLUDED_KEYWORDS=["システム","管理","テスト","ダミー"];
-    var defaultSampleData="ID: 1\n章: ワイン概論 - 基礎\n問題: アプリの「出題順」を『五十音順』にすると、テーマ名があいうえお順に並び替えられます。\n選択肢: 素晴らしい, 便利だ\n正解: 素晴らしい\n解説: 出題テーマを選択するプルダウンが五十音順に並び替わるように修正しました。\n----------------------------------------\nID: 2\n章: フランス - ボルドー地方\n問題: 五十音順にすることで、解きたいテーマをすぐに見つけ出せます。\n選択肢: なるほど, わかった\n正解: なるほど\n解説: 「すべて」のテーマを選んで五十音順に解けば、頭文字順に試験範囲を総ざらいできます。\n----------------------------------------\nID: 3\n章: イタリア - ピエモンテ州\n問題: もちろん、テーマをランダムにシャッフルして解くモードも選ぶことができます。\n選択肢: 完璧だ, すごい\n正解: 完璧だ\n解説: 用途に合わせて「五十音順」と「ランダム出題」を使い分けてください！";
+    window.addEventListener("error", function(e){
+      var root = document.getElementById("root");
+      if(!root) return;
+      root.innerHTML = '<div class="debug">JavaScript Error\n\n' + esc(e.message || "不明なエラー") + "\n" + esc(e.filename || "") + ":" + esc(String(e.lineno || "")) + "\n\nこの表示が出た場合は、表示されたエラー文をそのまま共有してください。</div>";
+    });
 
-    var state={screen:"title",quizData:[],selectedTheme:"すべて",isRandomOrder:false,sessionQuestions:[],currentBatchIndex:0,questions:[],currentIndex:0,userAnswers:{},seenWords:new Set(),message:"",messageIsError:false,importUrl:"",isLoading:false,isInitialLoading:true,logoClickCount:0,showAdminTools:false,showHomeConfirm:false};
-    var messageTimer=null;
+    window.addEventListener("unhandledrejection", function(e){
+      console.error(e.reason);
+    });
 
-    function setMsg(text,isErr){state.message=text||"";state.messageIsError=!!isErr;if(messageTimer)clearTimeout(messageTimer);if(state.message&&!state.message.includes("読込中")&&!state.message.includes("お待ち")&&!state.isInitialLoading){messageTimer=setTimeout(function(){state.message="";render()},7000)}}
-    function norm(t){return String(t==null?"":t).replace(/\r\n/g,"\n").replace(/\r/g,"\n")}
-    function looksHtml(t){var s=String(t||"").trim().slice(0,140).toLowerCase();return s.startsWith("<!doctype")||s.startsWith("<html")||s.startsWith("<script")}
+    var DEFAULT_IMPORT_URL = "https://docs.google.com/spreadsheets/d/10_r8UZXOqXkbZZcBMyrci3gsg6t-2zVapaIFOET3GDA/export?format=csv&gid=1571684716";
+    var DEFAULT_LOGO_URL = "https://assets.st-note.com/production/uploads/images/233954636/profile_9ee7939ab1c2b0d090f5668ffb7d3155.png?width=80&height=80&dpr=2&crop=1:1,smart";
+    var QUESTIONS_PER_BATCH = 10;
+    var EXCLUDED_KEYWORDS = ["システム","管理","テスト","ダミー"];
 
-    function parseData(raw){raw=norm(raw);var trimmed=raw.trim();if(!trimmed)return[];if(looksHtml(trimmed))throw new Error("HTML_RESPONSE_ERROR");var lines=trimmed.split("\n").map(function(line){var l=line.trim().replace(/^"|"$/g,"").trim();if(l.includes("ID:")||l.includes("章:")||l.includes("問題:")||l.includes("選択肢:")||l.includes("正解:")||l.includes("解説:")||l.startsWith("---")){l=l.replace(/,+$/g,"").trim().replace(/^"|"$/g,"").trim()}return l});var cleaned=lines.join("\n");if(cleaned.includes("ID:")||cleaned.includes("章:")||cleaned.includes("問題:"))return processTextData(cleaned);return processCSVData(raw)}
-    function processTextData(text){var blocks=text.split(/-{10,}/),out=[];blocks.forEach(function(block,i){if(!block.trim())return;function ex(prefix){var re=new RegExp("^[\\s\",]*"+prefix.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"\\s*([\\s\\S]*?)(?=(?:^[\\s\",]*(?:ID|章|問題|選択肢|正解|解説):|$))","m");var m=block.match(re);return(m?m[1].trim():"").replace(/^"+|"+$/g,"").trim()}var id=ex("ID:" )||i+1,theme=ex("章:")||"その他",q=ex("問題:"),ops=ex("選択肢:"),ca=ex("正解:"),exp=ex("解説:");if(!q||!ops)return;if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)}))return;var options=ops.split(",").map(function(o){return o.replace(/^"+|"+$/g,"").trim()}).filter(Boolean);if(!options.length)return;out.push({id:Number(id)||i+1,theme:theme,question:q,options:options,correctAnswer:(ca||options[0]).replace(/^"+|"+$/g,"").trim(),explanation:exp||"解説はありません。"})});return out}
-    function csvRows(csv){var rows=[],row=[],q=false,val="",t=norm(csv);for(var i=0;i<t.length;i++){var c=t[i];if(c==='"'){if(q&&i+1<t.length&&t[i+1]==='"'){val+='"';i++}else q=!q}else if(c===","&&!q){row.push(val);val=""}else if(c==="\n"&&!q){row.push(val);rows.push(row);row=[];val=""}else val+=c}if(val!==""||row.length){row.push(val);rows.push(row)}return rows}
-    function splitOptionCell(cell){
-      var text=String(cell||"").replace(/\\n/g,"\n").replace(/\r\n/g,"\n").replace(/\r/g,"\n").trim();
-      if(!text)return[];
-      text=text.replace(/[０-９]/g,function(ch){return String.fromCharCode(ch.charCodeAt(0)-65248)});
-      text=text.replace(/．/g,".");
-      text=text.replace(/（/g,"(").replace(/）/g,")");
-      var parts=[];
-      if(text.indexOf("\n")!==-1){
-        parts=text.split(/\n+/);
-      }else if(/[①②③④⑤⑥⑦⑧⑨⑩]/.test(text)){
-        parts=text.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
-      }else if(/\d+\s*[.)、]/.test(text)){
-        parts=text.split(/(?=\s*\d+\s*[.)、])/);
-      }else if(text.indexOf("、")!==-1){
-        parts=text.split("、");
-      }else if(text.indexOf(",")!==-1){
-        parts=text.split(",");
-      }else{
-        parts=[text];
-      }
-      return parts.map(function(x){return x.trim().replace(/^["']+|["']+$/g,"")}).filter(Boolean);
+    var defaultSampleData =
+      "タイトル,問題番号,問題,選択肢,解答,解説\n" +
+      "ワイン概論,1,日本の酒税法において粉末酒はどれに分類されるか、1つ選べ。,1.混成酒類2.発泡性酒類3.蒸留酒4.醸造酒類,混成酒類,粉末酒は混成酒類に分類されます。\n" +
+      "フランス,2,次のうちボルドー地方の主要品種を1つ選べ。,1.カベルネ・ソーヴィニヨン2.ネッビオーロ3.サンジョヴェーゼ4.テンプラニーリョ,カベルネ・ソーヴィニヨン,ボルドー地方ではカベルネ・ソーヴィニヨンやメルロが主要品種です。";
+
+    var state = {
+      screen:"title",
+      quizData:[],
+      selectedTheme:"すべて",
+      isRandomOrder:false,
+      sessionQuestions:[],
+      currentBatchIndex:0,
+      questions:[],
+      currentIndex:0,
+      userAnswers:{},
+      seenWords:new Set(),
+      message:"",
+      messageIsError:false,
+      importUrl:"",
+      isLoading:false,
+      isInitialLoading:true,
+      logoClickCount:0,
+      showAdminTools:false,
+      showHomeConfirm:false
+    };
+
+    var messageTimer = null;
+
+    function esc(v){
+      return String(v == null ? "" : v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
     }
-    function processCSVData(csv){
-      var rows=csvRows(csv).filter(function(r){return r.some(function(c){return String(c||"").trim()!==""})});
-      if(rows.length<2)return[];
-      var h=rows[0].map(function(x){return String(x||"").trim()});
-      function idx(cands){
-        for(var c=0;c<cands.length;c++){
-          var cand=String(cands[c]).toLowerCase();
-          for(var i=0;i<h.length;i++){
-            var lower=String(h[i]||"").toLowerCase();
-            if(lower===cand||String(h[i]||"").includes(cands[c]))return i;
-          }
+
+    function normalizeText(v){
+      return String(v == null ? "" : v).replace(/\r\n/g,"\n").replace(/\r/g,"\n");
+    }
+
+    function setMessage(text,isError){
+      state.message = text || "";
+      state.messageIsError = !!isError;
+      if(messageTimer){clearTimeout(messageTimer);messageTimer=null}
+      if(state.message && !state.message.includes("読込中") && !state.message.includes("お待ち") && !state.isInitialLoading){
+        messageTimer = setTimeout(function(){state.message="";render()},7000);
+      }
+    }
+
+    function safeFetch(url){
+      return fetch(url,{method:"GET",cache:"no-store",mode:"cors",credentials:"omit"});
+    }
+
+    function looksHtml(text){
+      var t = String(text || "").trim().slice(0,160).toLowerCase();
+      return t.startsWith("<!doctype") || t.startsWith("<html") || t.startsWith("<script");
+    }
+
+    function parseData(raw){
+      raw = normalizeText(raw);
+      if(!raw.trim()) return [];
+      if(looksHtml(raw)) throw new Error("HTML_RESPONSE_ERROR");
+
+      var cleaned = raw.split("\n").map(function(line){
+        var l = line.trim().replace(/^"|"$/g,"").trim();
+        if(l.includes("ID:") || l.includes("章:") || l.includes("問題:") || l.includes("選択肢:") || l.includes("正解:") || l.includes("解説:") || l.startsWith("---")){
+          l = l.replace(/,+$/g,"").trim().replace(/^"|"$/g,"").trim();
         }
-        return-1;
+        return l;
+      }).join("\n");
+
+      if(cleaned.includes("ID:") || cleaned.includes("章:") || cleaned.includes("問題:")){
+        var textData = processTextData(cleaned);
+        if(textData.length) return textData;
       }
-      var idI=idx(["id","ID","番号","問題番号"]);
-      var themeI=idx(["title","chapterTitle","章","タイトル","テーマ"]);
-      if(themeI===-1)themeI=0;
-      var qI=idx(["questionSentence","問題文","問題","question"]);
-      var expI=idx(["explanation","解説","説明"]);
-      var caI=idx(["correctAnswers.0","correctAnswer","正解","解答"]);
-      if(qI===-1)qI=h.length>2?2:-1;
-      if(qI===-1)return[];
-      if(expI===-1)expI=h.length>5?5:-1;
+      return processCSVData(raw);
+    }
 
-      var optI=[];
-      for(var n=0;n<20;n++){
-        var found=h.findIndex(function(x){
-          var raw=String(x||"").trim();
-          var l=raw.toLowerCase();
-          return l==="options."+n||l==="option."+n||raw==="選択肢"+n||raw==="選択肢."+n||raw==="選択肢"+(n+1);
-        });
-        if(found!==-1&&optI.indexOf(found)===-1)optI.push(found);
-      }
+    function processTextData(text){
+      var blocks = text.split(/-{10,}/);
+      var out = [];
+      blocks.forEach(function(block,index){
+        if(!block.trim()) return;
 
-      var joined=idx(["選択肢","options","option"]);
-      if(joined!==-1 && joined!==qI && joined!==caI && joined!==expI && optI.indexOf(joined)===-1){
-        optI.unshift(joined);
-      }
+        function extract(prefix){
+          var escaped = prefix.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+          var re = new RegExp("^[\\s\\\",]*" + escaped + "\\s*([\\s\\S]*?)(?=(?:^[\\s\\\",]*(?:ID|章|問題|選択肢|正解|解説):|$))","m");
+          var m = block.match(re);
+          return m ? m[1].trim().replace(/^"+|"+$/g,"").trim() : "";
+        }
 
-      if(optI.length===0){
-        h.forEach(function(_,i){
-          if(i!==idI&&i!==themeI&&i!==qI&&i!==expI&&i!==caI)optI.push(i);
-        });
-      }
+        var id = extract("ID:") || index + 1;
+        var theme = extract("章:") || "その他";
+        var question = extract("問題:");
+        var optionsRaw = extract("選択肢:");
+        var correct = extract("正解:");
+        var explanation = extract("解説:");
 
-      var out=[];
-      for(var r=1;r<rows.length;r++){
-        var row=rows[r];
-        if(!String(row[qI]||"").trim())continue;
-        var theme=String(row[themeI]||"その他").trim()||"その他";
-        if(theme===h[themeI]||theme.toLowerCase()==="title"||theme.toLowerCase()==="chaptertitle"||theme==="章")continue;
-        if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)}))continue;
+        if(!question || !optionsRaw) return;
+        if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)})) return;
 
-        var options=[];
-        optI.forEach(function(i){
-          var cell=String(row[i]||"").trim();
-          if(!cell)return;
-          var split=splitOptionCell(cell);
-          split.forEach(function(x){options.push(x)});
-        });
+        var options = splitOptionsFromCell(optionsRaw);
+        if(!options.length) return;
 
-        options=options.map(function(x){return x.replace(/^"+|"+$/g,"").trim()}).filter(Boolean);
-
-        /* もし「選択肢」列以外まで拾ってしまった場合の保険。解答・解説っぽい長文は除外。 */
-        options=options.filter(function(x){
-          if(caI!==-1&&String(row[caI]||"").trim()===x)return true;
-          if(x.length>180)return false;
-          return true;
-        });
-
-        if(!options.length)options=["選択肢1","選択肢2","選択肢3","選択肢4"];
-
-        var correctAnswer=caI!==-1&&row[caI]?String(row[caI]).trim():options[0];
         out.push({
-          id:idI!==-1&&row[idI]?Number(row[idI])||r:r,
+          id:Number(id) || index + 1,
           theme:theme,
-          question:String(row[qI]||"").replace(/\\n/g,"\n"),
+          question:question,
           options:options,
-          correctAnswer:correctAnswer,
-          explanation:expI!==-1&&row[expI]?String(row[expI]).replace(/\\n/g,"\n"):"解説はありません。"
+          correctAnswer:normalizeAnswer(correct || options[0]),
+          explanation:explanation || "解説はありません。"
         });
-      }
+      });
       return out;
     }
-    function formatText(text,isQ){if(!text)return"";var re=/([a-zA-ZÀ-ÿ0-9\-.]+([\s][a-zA-ZÀ-ÿ0-9\-.]+)*)（([^）]+)）/g;if(isQ)return String(text).replace(re,"$1");return String(text).replace(re,function(m,w){var n=String(w||"").trim().toLowerCase();if(state.seenWords.has(n))return w;state.seenWords.add(n);return m})}
-    function themes(){if(!state.quizData.length)return["すべて"];var s=new Set;state.quizData.forEach(function(q){if(q.theme)s.add(q.theme)});return["すべて"].concat(Array.from(s).sort(function(a,b){return String(a).localeCompare(String(b),"ja")}))}
-    function logo(cls){return '<img src="'+esc(DEFAULT_LOGO_URL)+'" alt="メインロゴ" class="'+esc(cls||"logo")+'" id="mainLogo">'}
 
-    function title(){var ts=themes(),html='<div class="center in"><div class="card"><div class="hero">'+logo("logo")+'<h1>ソムリエ / ワインエキスパート</h1><p class="sub">試験対策ドリル <strong>byブラインド川西</strong></p></div><div class="body">';if(state.isInitialLoading){html+='<div class="loading"><div class="spin"></div><div>問題データを取得中...</div></div>'}else{html+='<div class="field"><label class="label">出題テーマを選択（現在 '+esc(state.quizData.length)+' 問）</label><select id="themeSelect">';ts.forEach(function(t){html+='<option value="'+esc(t)+'"'+(t===state.selectedTheme?' selected':'')+'>'+esc(t)+'</option>'});html+='</select></div><div class="field"><label class="label">出題の順番</label><div class="toggle"><button id="orderNormal" class="'+(!state.isRandomOrder?'active':'')+'">五十音順（体系的）</button><button id="orderRandom" class="'+(state.isRandomOrder?'active':'')+'">ランダム（テスト）</button></div></div><button class="btn primary" id="startQuizBtn" '+(!state.quizData.length||state.isLoading?'disabled':'')+'>📖 学習を始める</button>'}if(state.message)html+='<div class="msg '+(state.messageIsError?'err':'ok')+'">'+esc(state.message)+'</div>';if(state.showAdminTools){html+='<div class="admin in"><h3>⬇ 管理者用ツール（手動更新）</h3><div class="row"><input id="importUrlInput" type="text" placeholder="別URLから一時読込..." value="'+esc(state.importUrl)+'"><button id="importUrlBtn" class="btn dark" '+(state.isLoading?'disabled':'')+'>読込</button></div><label class="fileLabel">📁 端末のファイルから一時読込（.txt/.csv）<input id="fileInput" type="file" accept=".txt,.csv"></label></div>'}return html+'</div></div></div>'}
-    function quiz(){var q=state.questions[state.currentIndex];if(!q)return'<div class="center"><div class="card"><div class="body"><div class="msg err">問題データがありません。</div><button class="btn primary" id="backTitleBtn">タイトルへ戻る</button></div></div></div>';var ans=state.userAnswers[state.currentIndex]!==undefined,sel=state.userAnswers[state.currentIndex],ok=sel===q.correctAnswer,total=state.currentBatchIndex*QUESTIONS_PER_BATCH+state.currentIndex+1,html='<div class="quizPage in"><div class="wrap"><div class="top"><span class="pill">'+esc(q.theme)+'</span><div class="topActions"><div class="count">Q '+esc(state.currentIndex+1)+' <small>/ '+esc(state.questions.length)+'</small><div class="progress">進捗: '+esc(total)+' / '+esc(state.sessionQuestions.length)+'</div></div><button class="homeBtn" id="homeConfirmBtn">⌂ ホーム</button></div></div><div class="qCard"><p class="qText">'+esc(formatText(q.question,true))+'</p></div><div class="options">';q.options.forEach(function(o,i){var cls='opt',mark='';if(ans){if(o===q.correctAnswer){cls+=' correct';mark='✅'}else if(o===sel){cls+=' wrong';mark='❌'}else cls+=' muted'}html+='<button class="'+cls+'" data-option="'+i+'" '+(ans?'disabled':'')+'><span class="optInner"><span>'+esc(o)+'</span><span>'+mark+'</span></span></button>'});html+='</div>';if(ans){html+='<div class="ans '+(ok?'correct':'wrong')+' in"><h3>'+(ok?'✅ 正解！':'❌ 不正解...')+'</h3><h4>【解説】</h4><p>'+esc(formatText(q.explanation,false))+'</p></div><div class="nav">';if(state.currentIndex>0)html+='<button class="btn outline" id="prevBtn">← 前の問題</button>';html+='<button class="btn dark" id="nextBtn">'+(state.currentIndex<state.questions.length-1?'次の問題へ →':'結果を見る →')+'</button></div>'}else if(state.currentIndex>0){html+='<button class="btn outline" id="prevBtn">← 前の問題に戻る</button>'}html+='</div>';if(state.showHomeConfirm)html+=modal();return html+'</div>'}
-    function modal(){return'<div class="backdrop in"><div class="modal"><h3>タイトルに戻りますか？</h3><p>現在のクイズセット（第 '+esc(state.currentBatchIndex+1)+' セット）の進行状況やスコアはリセットされます。</p><div class="nav"><button class="btn light" id="cancelHomeBtn">キャンセル</button><button class="btn primary" id="confirmHomeBtn">タイトルに戻る</button></div></div></div>'}
-    function score(){return state.questions.reduce(function(a,q,i){return a+(state.userAnswers[i]===q.correctAnswer?1:0)},0)}
-    function result(){var hasNext=(state.currentBatchIndex+1)*QUESTIONS_PER_BATCH<state.sessionQuestions.length,progress=Math.min((state.currentBatchIndex+1)*QUESTIONS_PER_BATCH,state.sessionQuestions.length),s=score(),msg=s<=3?'まだまだ勉強不足':s<=6?'やるやん！この調子やで！':s<=9?'このまま頑張ったら試験受かるんちゃう？':'天才かよ…継続こそが\n大切です！',html='<div class="center in"><div class="result"><div class="bubble">'+esc(msg)+'</div>'+logo("resultLogo")+'<h2>結果発表</h2><p>'+esc(state.selectedTheme)+'（第 '+esc(state.currentBatchIndex+1)+' セット）</p><div class="progressPill">進捗: '+esc(progress)+' / '+esc(state.sessionQuestions.length)+' 問</div><div class="score">'+esc(s)+' <span>/ '+esc(state.questions.length)+'</span></div>';if(hasNext)html+='<button class="btn primary" id="nextBatchBtn">次の10問へ進む →</button>';else html+='<div class="complete">🎉 このテーマの全問題をコンプリートしました！</div>';html+='<div style="height:12px"></div><button class="btn '+(hasNext?'light':'dark')+'" id="resultBackTitleBtn">↻ タイトルへ戻る</button></div></div>';return html}
+    function csvRows(csvText){
+      var text = normalizeText(csvText);
+      var rows = [];
+      var row = [];
+      var val = "";
+      var inQuotes = false;
 
-    function render(){var r=document.getElementById("root");if(!r)return;r.innerHTML=state.screen==="title"?title():state.screen==="quiz"?quiz():result();bind();bindLogo()}
-    function bindLogo(){var l=document.getElementById("mainLogo");if(!l)return;l.addEventListener("click",function(){if(state.showAdminTools)return;state.logoClickCount++;if(state.logoClickCount>=5){state.showAdminTools=true;setMsg("🔑 管理者用ツールを開放しました。",false)}render()});l.addEventListener("error",function(){var d=document.createElement("div");d.className=l.className.includes("resultLogo")?"logoFallback resultLogo":"logoFallback";d.innerHTML='<div style="font-size:28px">🍷</div><div>川西</div>';d.addEventListener("click",function(){state.logoClickCount++;if(state.logoClickCount>=5){state.showAdminTools=true;setMsg("🔑 管理者用ツールを開放しました。",false)}render()});l.replaceWith(d)})}
-    function bind(){var el;if(el=document.getElementById("themeSelect"))el.addEventListener("change",function(e){state.selectedTheme=e.target.value;render()});if(el=document.getElementById("orderNormal"))el.addEventListener("click",function(){state.isRandomOrder=false;render()});if(el=document.getElementById("orderRandom"))el.addEventListener("click",function(){state.isRandomOrder=true;render()});if(el=document.getElementById("startQuizBtn"))el.addEventListener("click",startQuiz);if(el=document.getElementById("importUrlInput"))el.addEventListener("input",function(e){state.importUrl=e.target.value});if(el=document.getElementById("importUrlBtn"))el.addEventListener("click",importUrl);if(el=document.getElementById("fileInput"))el.addEventListener("change",fileUpload);if(el=document.getElementById("backTitleBtn"))el.addEventListener("click",function(){state.screen="title";render()});document.querySelectorAll("[data-option]").forEach(function(b){b.addEventListener("click",function(){var q=state.questions[state.currentIndex],i=Number(b.getAttribute("data-option"));if(q&&q.options[i])answer(q.options[i])})});if(el=document.getElementById("nextBtn"))el.addEventListener("click",next);if(el=document.getElementById("prevBtn"))el.addEventListener("click",prev);if(el=document.getElementById("homeConfirmBtn"))el.addEventListener("click",function(){state.showHomeConfirm=true;render()});if(el=document.getElementById("cancelHomeBtn"))el.addEventListener("click",function(){state.showHomeConfirm=false;render()});if(el=document.getElementById("confirmHomeBtn"))el.addEventListener("click",function(){state.showHomeConfirm=false;state.screen="title";render()});if(el=document.getElementById("nextBatchBtn"))el.addEventListener("click",nextBatch);if(el=document.getElementById("resultBackTitleBtn"))el.addEventListener("click",function(){state.screen="title";render()})}
-    function startQuiz(){var f=state.selectedTheme==="すべて"?state.quizData.slice():state.quizData.filter(function(q){return q.theme===state.selectedTheme});if(state.isRandomOrder)f.sort(function(){return Math.random()-.5});else f.sort(function(a,b){var c=String(a.theme).localeCompare(String(b.theme),"ja");return c!==0?c:(Number(a.id)||0)-(Number(b.id)||0)});state.sessionQuestions=f;state.currentBatchIndex=0;state.questions=f.slice(0,QUESTIONS_PER_BATCH);state.currentIndex=0;state.userAnswers={};state.seenWords=new Set;state.screen="quiz";render()}
-    function answer(o){if(state.userAnswers[state.currentIndex]!==undefined)return;state.userAnswers[state.currentIndex]=o;state.seenWords=new Set;render()}
-    function next(){if(state.currentIndex<state.questions.length-1)state.currentIndex++;else state.screen="result";render()}
-    function prev(){if(state.currentIndex>0)state.currentIndex--;state.seenWords=new Set;render()}
-    function nextBatch(){state.currentBatchIndex++;state.questions=state.sessionQuestions.slice(state.currentBatchIndex*QUESTIONS_PER_BATCH,(state.currentBatchIndex+1)*QUESTIONS_PER_BATCH);state.currentIndex=0;state.userAnswers={};state.seenWords=new Set;state.screen="quiz";render()}
-    async function safeFetch(url){return fetch(url,{method:"GET",cache:"no-store",mode:"cors",credentials:"omit"})}
-    async function loadInitial(){state.isInitialLoading=true;setMsg("🔄 最新の問題データを自動読み込み中...",false);render();try{var res=await safeFetch(DEFAULT_IMPORT_URL);if(!res.ok)throw new Error("NETWORK_"+res.status);var text=await res.text(),data=parseData(text);if(!data.length)throw new Error("EMPTY_DATA");state.quizData=data;setMsg("🎉 "+data.length+" 件の問題を自動で読み込みました！",false)}catch(e){console.error(e);try{state.quizData=parseData(defaultSampleData)}catch(_){state.quizData=[]}setMsg("⚠️ 自動読み込みに失敗しました。スプレッドシートの共有設定、またはCSV形式をご確認ください。\n\n一時的にサンプル問題で起動します。",true)}finally{state.isInitialLoading=false;render()}}
-    async function importUrl(){var input=document.getElementById("importUrlInput"),url=(input?input.value:state.importUrl).trim();if(!url)return;state.isLoading=true;state.importUrl=url;setMsg("🔄 外部データを読み込み中...",false);render();try{var res=await safeFetch(url);if(!res.ok)throw new Error("NETWORK_"+res.status);var data=parseData(await res.text());if(!data.length)throw new Error("EMPTY_DATA");state.quizData=data;state.selectedTheme="すべて";state.importUrl="";setMsg("🎉 手動参照成功: "+data.length+" 件を読み込みました！",false)}catch(e){console.error(e);setMsg("エラー：URLからデータを取得できませんでした。URL、共有設定、CSV形式をご確認ください。",true)}finally{state.isLoading=false;render()}}
-    function fileUpload(e){var file=e.target.files&&e.target.files[0];if(!file)return;state.isLoading=true;setMsg("🔄 ファイルを読み込み中...",false);render();var reader=new FileReader;reader.onload=function(ev){try{var data=parseData(ev.target.result);if(!data.length)throw new Error("EMPTY_DATA");state.quizData=data;state.selectedTheme="すべて";setMsg("🎉 ファイルから "+data.length+" 件を読み込みました！",false)}catch(err){console.error(err);setMsg("エラー：ファイルを読み込めませんでした。CSVまたはテキスト形式をご確認ください。",true)}finally{state.isLoading=false;render()}};reader.onerror=function(){state.isLoading=false;setMsg("エラー：ファイルの読み込みに失敗しました。",true);render()};reader.readAsText(file,"UTF-8")}
-    document.addEventListener("DOMContentLoaded",function(){render();loadInitial()});
+      for(var i=0;i<text.length;i++){
+        var ch = text[i];
+        if(ch === '"'){
+          if(inQuotes && text[i+1] === '"'){
+            val += '"';
+            i++;
+          }else{
+            inQuotes = !inQuotes;
+          }
+        }else if(ch === "," && !inQuotes){
+          row.push(val);
+          val = "";
+        }else if(ch === "\n" && !inQuotes){
+          row.push(val);
+          rows.push(row);
+          row = [];
+          val = "";
+        }else{
+          val += ch;
+        }
+      }
+      if(val !== "" || row.length){
+        row.push(val);
+        rows.push(row);
+      }
+      return rows;
+    }
+
+    function toHalfWidthNumber(s){
+      return String(s).replace(/[０-９]/g,function(ch){
+        return String.fromCharCode(ch.charCodeAt(0)-0xFEE0);
+      });
+    }
+
+    function stripOptionMarker(s){
+      return String(s || "")
+        .trim()
+        .replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/,"")
+        .replace(/^[0-9０-９]{1,2}\s*[\.\．\)\）:：]\s*/,"")
+        .trim();
+    }
+
+    function normalizeAnswer(s){
+      return stripOptionMarker(String(s || "").replace(/^"+|"+$/g,"").trim());
+    }
+
+    function splitOptionsFromCell(cell){
+      if(cell == null) return [];
+
+      var text = String(cell)
+        .replace(/^"+|"+$/g,"")
+        .replace(/\\r\\n/g,"\n")
+        .replace(/\\n/g,"\n")
+        .replace(/\r\n/g,"\n")
+        .replace(/\r/g,"\n")
+        .trim();
+
+      if(!text) return [];
+
+      text = text.replace(/[；;]/g,"\n");
+
+      var parts = [];
+
+      if(text.includes("\n")){
+        parts = text.split("\n");
+      }else if(/[①②③④⑤⑥⑦⑧⑨⑩]/.test(text)){
+        parts = text.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
+      }else if(/[0-9０-９]{1,2}\s*[\.\．\)\）:：]/.test(text)){
+        parts = text.split(/(?=[0-9０-９]{1,2}\s*[\.\．\)\）:：])/);
+      }else if(/(?:^|[\s　])(?:[1-9１-９])[\s　]+/.test(text)){
+        parts = text.split(/(?=(?:^|[\s　])[1-9１-９][\s　]+)/);
+      }else if(text.includes(",") || text.includes("、")){
+        parts = text.split(/,|、/);
+      }else{
+        parts = [text];
+      }
+
+      parts = parts
+        .map(function(x){return String(x || "").trim()})
+        .filter(Boolean);
+
+      var cleaned = parts.map(function(x){
+        return x.replace(/^"+|"+$/g,"").trim();
+      }).filter(Boolean);
+
+      return cleaned;
+    }
+
+    function answerMatches(selected, correct){
+      var a = normalizeAnswer(selected);
+      var b = normalizeAnswer(correct);
+      if(a === b) return true;
+      if(String(selected).trim() === String(correct).trim()) return true;
+
+      var selectedNumber = String(selected).trim().match(/^[0-9０-９]{1,2}/);
+      var correctNumber = String(correct).trim().match(/^[0-9０-９]{1,2}/);
+      if(selectedNumber && correctNumber && toHalfWidthNumber(selectedNumber[0]) === toHalfWidthNumber(correctNumber[0])) return true;
+
+      return false;
+    }
+
+    function processCSVData(csv){
+      var rows = csvRows(csv).filter(function(r){
+        return r.some(function(c){return String(c || "").trim() !== ""});
+      });
+      if(rows.length < 2) return [];
+
+      var headers = rows[0].map(function(x){return String(x || "").trim()});
+
+      function idx(cands){
+        for(var c=0;c<cands.length;c++){
+          var cand = String(cands[c]).toLowerCase();
+          for(var i=0;i<headers.length;i++){
+            var h = String(headers[i] || "").trim();
+            var lower = h.toLowerCase();
+            if(lower === cand || h.includes(cands[c])) return i;
+          }
+        }
+        return -1;
+      }
+
+      var idI = idx(["id","ID","番号","問題番号"]);
+      var themeI = idx(["title","chapterTitle","章","タイトル","テーマ"]);
+      if(themeI === -1) themeI = 0;
+
+      var qI = idx(["questionSentence","問題","question","問題文"]);
+      var expI = idx(["explanation","解説","説明"]);
+      var caI = idx(["correctAnswers.0","correctAnswer","正解","解答","答え"]);
+
+      if(qI === -1) qI = headers.length > 2 ? 2 : -1;
+      if(qI === -1) return [];
+
+      if(expI === -1) expI = headers.length > 5 ? 5 : -1;
+
+      var optionColumns = [];
+      for(var n=0;n<20;n++){
+        var found = headers.findIndex(function(x){
+          var l = String(x || "").trim().toLowerCase();
+          return l === "options." + n || l === "option." + n || x === "選択肢" + n || x === "選択肢." + n;
+        });
+        if(found !== -1) optionColumns.push(found);
+      }
+
+      var joinedOptionsI = idx(["選択肢","options","option"]);
+      if(optionColumns.length === 0 && joinedOptionsI !== -1 && joinedOptionsI !== qI && joinedOptionsI !== caI){
+        optionColumns.push(joinedOptionsI);
+      }
+
+      if(optionColumns.length === 0){
+        headers.forEach(function(_h,i){
+          if(i !== idI && i !== themeI && i !== qI && i !== expI && i !== caI){
+            optionColumns.push(i);
+          }
+        });
+      }
+
+      var out = [];
+
+      for(var r=1;r<rows.length;r++){
+        var row = rows[r];
+        if(!String(row[qI] || "").trim()) continue;
+
+        var theme = String(row[themeI] || "その他").trim() || "その他";
+        if(theme === headers[themeI] || theme.toLowerCase() === "title" || theme.toLowerCase() === "chaptertitle" || theme === "章") continue;
+        if(EXCLUDED_KEYWORDS.some(function(k){return theme.includes(k)})) continue;
+
+        var options = [];
+        optionColumns.forEach(function(colIndex){
+          var cell = String(row[colIndex] || "").trim();
+          if(!cell) return;
+
+          splitOptionsFromCell(cell).forEach(function(opt){
+            if(opt) options.push(opt);
+          });
+        });
+
+        options = options
+          .map(function(x){return String(x || "").replace(/^"+|"+$/g,"").trim()})
+          .filter(Boolean);
+
+        if(!options.length){
+          options = ["選択肢1","選択肢2","選択肢3","選択肢4"];
+        }
+
+        var correctAnswer = caI !== -1 && row[caI] ? String(row[caI]).trim() : options[0];
+
+        out.push({
+          id:idI !== -1 && row[idI] ? Number(row[idI]) || r : r,
+          theme:theme,
+          question:String(row[qI] || "").replace(/\\n/g,"\n"),
+          options:options,
+          correctAnswer:correctAnswer,
+          explanation:expI !== -1 && row[expI] ? String(row[expI]).replace(/\\n/g,"\n") : "解説はありません。"
+        });
+      }
+
+      return out;
+    }
+
+    function formatText(text,isQuestion){
+      if(!text) return "";
+      var re = /([a-zA-ZÀ-ÿ0-9\-.]+([\s][a-zA-ZÀ-ÿ0-9\-.]+)*)（([^）]+)）/g;
+      if(isQuestion) return String(text).replace(re,"$1");
+      return String(text).replace(re,function(match,word){
+        var w = String(word || "").trim().toLowerCase();
+        if(state.seenWords.has(w)) return word;
+        state.seenWords.add(w);
+        return match;
+      });
+    }
+
+    function themes(){
+      if(!state.quizData.length) return ["すべて"];
+      var set = new Set();
+      state.quizData.forEach(function(q){if(q.theme)set.add(q.theme)});
+      return ["すべて"].concat(Array.from(set).sort(function(a,b){return String(a).localeCompare(String(b),"ja")}));
+    }
+
+    function logoHtml(cls){
+      return '<img src="' + esc(DEFAULT_LOGO_URL) + '" alt="メインロゴ" class="' + esc(cls || "logo") + '" id="mainLogo">';
+    }
+
+    function titleHtml(){
+      var ts = themes();
+      var html = "";
+      html += '<div class="center animate"><div class="card">';
+      html += '<div class="hero">' + logoHtml("logo") + '<h1>ソムリエ / ワインエキスパート</h1><p class="subtitle">試験対策ドリル <strong>byブラインド川西</strong></p></div>';
+      html += '<div class="body">';
+
+      if(state.isInitialLoading){
+        html += '<div class="loading"><div class="spinner"></div><div>問題データを取得中...</div></div>';
+      }else{
+        html += '<div class="field"><label class="label">出題テーマを選択（現在 ' + esc(state.quizData.length) + ' 問）</label><select id="themeSelect">';
+        ts.forEach(function(t){
+          html += '<option value="' + esc(t) + '"' + (t === state.selectedTheme ? " selected" : "") + '>' + esc(t) + '</option>';
+        });
+        html += '</select></div>';
+
+        html += '<div class="field"><label class="label">出題の順番</label><div class="toggle">';
+        html += '<button id="orderNormal" class="' + (!state.isRandomOrder ? "active" : "") + '">五十音順（体系的）</button>';
+        html += '<button id="orderRandom" class="' + (state.isRandomOrder ? "active" : "") + '">ランダム（テスト）</button>';
+        html += '</div></div>';
+
+        html += '<button class="btn btnPrimary" id="startBtn" ' + (!state.quizData.length || state.isLoading ? "disabled" : "") + '>📖 学習を始める</button>';
+      }
+
+      if(state.message){
+        html += '<div class="message ' + (state.messageIsError ? "err" : "ok") + '">' + esc(state.message) + '</div>';
+      }
+
+      if(state.showAdminTools){
+        html += '<div class="admin animate"><h3>⬇ 管理者用ツール（手動更新）</h3>';
+        html += '<div class="adminRow"><input id="importUrlInput" type="text" placeholder="別URLから一時読込..." value="' + esc(state.importUrl) + '"><button id="importBtn" class="btn btnDark" ' + (state.isLoading ? "disabled" : "") + '>読込</button></div>';
+        html += '<label class="fileLabel">📁 端末のファイルから一時読込（.txt/.csv）<input id="fileInput" type="file" accept=".txt,.csv"></label>';
+        html += '</div>';
+      }
+
+      html += '</div></div></div>';
+      return html;
+    }
+
+    function quizHtml(){
+      var q = state.questions[state.currentIndex];
+      if(!q){
+        return '<div class="center"><div class="card"><div class="body"><div class="message err">問題データがありません。タイトルに戻って再読み込みしてください。</div><button class="btn btnPrimary" id="backTitleBtn">タイトルへ戻る</button></div></div></div>';
+      }
+
+      var answered = state.userAnswers[state.currentIndex] !== undefined;
+      var selected = state.userAnswers[state.currentIndex];
+      var correct = answerMatches(selected,q.correctAnswer);
+      var totalProgress = state.currentBatchIndex * QUESTIONS_PER_BATCH + state.currentIndex + 1;
+
+      var html = "";
+      html += '<div class="quizPage animate"><div class="quizWrap">';
+      html += '<div class="quizTop"><span class="themePill">' + esc(q.theme) + '</span><div class="topActions"><div class="counter">Q ' + esc(state.currentIndex + 1) + ' <small>/ ' + esc(state.questions.length) + '</small><div class="progress">進捗: ' + esc(totalProgress) + ' / ' + esc(state.sessionQuestions.length) + '</div></div><button class="homeBtn" id="homeBtn">⌂ ホーム</button></div></div>';
+      html += '<div class="qCard"><p class="qText">' + esc(formatText(q.question,true)) + '</p></div>';
+      html += '<div class="options">';
+
+      q.options.forEach(function(opt,i){
+        var cls = "option";
+        var mark = "";
+        if(answered){
+          if(answerMatches(opt,q.correctAnswer)){cls += " correct";mark = "✅"}
+          else if(opt === selected){cls += " wrong";mark = "❌"}
+          else cls += " muted";
+        }
+        html += '<button class="' + cls + '" data-option="' + esc(i) + '" ' + (answered ? "disabled" : "") + '><span class="optionInner"><span>' + esc(opt) + '</span><span>' + mark + '</span></span></button>';
+      });
+
+      html += '</div>';
+
+      if(answered){
+        html += '<div class="answer ' + (correct ? "correct" : "wrong") + ' animate"><h3>' + (correct ? "✅ 正解！" : "❌ 不正解...") + '</h3><h4>【解説】</h4><p>' + esc(formatText(q.explanation,false)) + '</p></div>';
+        html += '<div class="nav">';
+        if(state.currentIndex > 0) html += '<button class="btn btnOutline" id="prevBtn">← 前の問題</button>';
+        html += '<button class="btn btnDark" id="nextBtn">' + (state.currentIndex < state.questions.length - 1 ? "次の問題へ →" : "結果を見る →") + '</button></div>';
+      }else if(state.currentIndex > 0){
+        html += '<button class="btn btnOutline" id="prevBtn">← 前の問題に戻る</button>';
+      }
+
+      html += '</div>';
+      if(state.showHomeConfirm) html += modalHtml();
+      html += '</div>';
+      return html;
+    }
+
+    function modalHtml(){
+      return '<div class="modalBack animate"><div class="modal"><h3>タイトルに戻りますか？</h3><p>現在のクイズセット（第 ' + esc(state.currentBatchIndex + 1) + ' セット）の進行状況やスコアはリセットされます。</p><div class="nav"><button class="btn btnLight" id="cancelHomeBtn">キャンセル</button><button class="btn btnPrimary" id="confirmHomeBtn">タイトルに戻る</button></div></div></div>';
+    }
+
+    function score(){
+      return state.questions.reduce(function(acc,q,i){
+        return acc + (answerMatches(state.userAnswers[i],q.correctAnswer) ? 1 : 0);
+      },0);
+    }
+
+    function resultHtml(){
+      var hasNext = (state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH < state.sessionQuestions.length;
+      var progressCount = Math.min((state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH,state.sessionQuestions.length);
+      var sc = score();
+      var msg = sc <= 3 ? "まだまだ勉強不足" : sc <= 6 ? "やるやん！この調子やで！" : sc <= 9 ? "このまま頑張ったら試験受かるんちゃう？" : "天才かよ…継続こそが\n大切です！";
+
+      var html = "";
+      html += '<div class="center animate"><div class="result">';
+      html += '<div class="bubble">' + esc(msg) + '</div>' + logoHtml("resultLogo");
+      html += '<h2>結果発表</h2><p>' + esc(state.selectedTheme) + '（第 ' + esc(state.currentBatchIndex + 1) + ' セット）</p>';
+      html += '<div class="progressPill">進捗: ' + esc(progressCount) + ' / ' + esc(state.sessionQuestions.length) + ' 問</div>';
+      html += '<div class="score">' + esc(sc) + ' <span>/ ' + esc(state.questions.length) + '</span></div>';
+      if(hasNext) html += '<button class="btn btnPrimary" id="nextBatchBtn">次の10問へ進む →</button>';
+      else html += '<div class="complete">🎉 このテーマの全問題をコンプリートしました！</div>';
+      html += '<div style="height:12px"></div><button class="btn ' + (hasNext ? "btnLight" : "btnDark") + '" id="resultTitleBtn">↻ タイトルへ戻る</button>';
+      html += '</div></div>';
+      return html;
+    }
+
+    function render(){
+      var root = document.getElementById("root");
+      if(!root) return;
+
+      if(state.screen === "title"){
+        root.innerHTML = titleHtml();
+        bindTitle();
+      }else if(state.screen === "quiz"){
+        root.innerHTML = quizHtml();
+        bindQuiz();
+      }else{
+        root.innerHTML = resultHtml();
+        bindResult();
+      }
+      bindLogo();
+    }
+
+    function bindLogo(){
+      var logo = document.getElementById("mainLogo");
+      if(!logo) return;
+      logo.addEventListener("click",function(){
+        if(state.showAdminTools) return;
+        state.logoClickCount++;
+        if(state.logoClickCount >= 5){
+          state.showAdminTools = true;
+          setMessage("🔑 管理者用ツールを開放しました。",false);
+        }
+        render();
+      });
+      logo.addEventListener("error",function(){
+        var d = document.createElement("div");
+        d.className = logo.className.includes("resultLogo") ? "fallbackLogo resultLogo" : "fallbackLogo";
+        d.innerHTML = '<div class="wine">🍷</div><div>川西</div>';
+        logo.replaceWith(d);
+      });
+    }
+
+    function bindTitle(){
+      var s = document.getElementById("themeSelect");
+      if(s) s.addEventListener("change",function(e){state.selectedTheme=e.target.value;render()});
+
+      var n = document.getElementById("orderNormal");
+      if(n) n.addEventListener("click",function(){state.isRandomOrder=false;render()});
+
+      var r = document.getElementById("orderRandom");
+      if(r) r.addEventListener("click",function(){state.isRandomOrder=true;render()});
+
+      var st = document.getElementById("startBtn");
+      if(st) st.addEventListener("click",startQuiz);
+
+      var input = document.getElementById("importUrlInput");
+      if(input) input.addEventListener("input",function(e){state.importUrl=e.target.value});
+
+      var imp = document.getElementById("importBtn");
+      if(imp) imp.addEventListener("click",handleUrlImport);
+
+      var file = document.getElementById("fileInput");
+      if(file) file.addEventListener("change",handleFileUpload);
+    }
+
+    function bindQuiz(){
+      var back = document.getElementById("backTitleBtn");
+      if(back) back.addEventListener("click",function(){state.screen="title";render()});
+
+      document.querySelectorAll("[data-option]").forEach(function(btn){
+        btn.addEventListener("click",function(){
+          var i = Number(btn.getAttribute("data-option"));
+          var q = state.questions[state.currentIndex];
+          if(!q || !q.options[i]) return;
+          if(state.userAnswers[state.currentIndex] !== undefined) return;
+          state.userAnswers[state.currentIndex] = q.options[i];
+          state.seenWords = new Set();
+          render();
+        });
+      });
+
+      var next = document.getElementById("nextBtn");
+      if(next) next.addEventListener("click",function(){
+        if(state.currentIndex < state.questions.length - 1) state.currentIndex++;
+        else state.screen = "result";
+        state.seenWords = new Set();
+        render();
+      });
+
+      var prev = document.getElementById("prevBtn");
+      if(prev) prev.addEventListener("click",function(){
+        if(state.currentIndex > 0) state.currentIndex--;
+        state.seenWords = new Set();
+        render();
+      });
+
+      var home = document.getElementById("homeBtn");
+      if(home) home.addEventListener("click",function(){state.showHomeConfirm=true;render()});
+
+      var cancel = document.getElementById("cancelHomeBtn");
+      if(cancel) cancel.addEventListener("click",function(){state.showHomeConfirm=false;render()});
+
+      var confirm = document.getElementById("confirmHomeBtn");
+      if(confirm) confirm.addEventListener("click",function(){state.showHomeConfirm=false;state.screen="title";render()});
+    }
+
+    function bindResult(){
+      var nb = document.getElementById("nextBatchBtn");
+      if(nb) nb.addEventListener("click",function(){
+        state.currentBatchIndex++;
+        state.questions = state.sessionQuestions.slice(state.currentBatchIndex * QUESTIONS_PER_BATCH,(state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH);
+        state.currentIndex = 0;
+        state.userAnswers = {};
+        state.seenWords = new Set();
+        state.screen = "quiz";
+        render();
+      });
+
+      var title = document.getElementById("resultTitleBtn");
+      if(title) title.addEventListener("click",function(){state.screen="title";render()});
+    }
+
+    function startQuiz(){
+      var filtered = state.selectedTheme === "すべて" ? state.quizData.slice() : state.quizData.filter(function(q){return q.theme === state.selectedTheme});
+      if(state.isRandomOrder){
+        filtered.sort(function(){return Math.random() - .5});
+      }else{
+        filtered.sort(function(a,b){
+          var c = String(a.theme).localeCompare(String(b.theme),"ja");
+          if(c !== 0) return c;
+          return (Number(a.id) || 0) - (Number(b.id) || 0);
+        });
+      }
+      state.sessionQuestions = filtered;
+      state.currentBatchIndex = 0;
+      state.questions = filtered.slice(0,QUESTIONS_PER_BATCH);
+      state.currentIndex = 0;
+      state.userAnswers = {};
+      state.seenWords = new Set();
+      state.screen = "quiz";
+      render();
+    }
+
+    async function loadInitial(){
+      state.isInitialLoading = true;
+      setMessage("🔄 最新の問題データを自動読み込み中...",false);
+      render();
+
+      try{
+        var res = await safeFetch(DEFAULT_IMPORT_URL);
+        if(!res.ok) throw new Error("NETWORK_" + res.status);
+        var text = await res.text();
+        var data = parseData(text);
+        if(!data.length) throw new Error("EMPTY_DATA");
+        state.quizData = data;
+        setMessage("🎉 " + data.length + " 件の問題を自動で読み込みました！",false);
+      }catch(e){
+        console.error("データ読み込みエラー:",e);
+        if(e && e.message === "HTML_RESPONSE_ERROR"){
+          setMessage("⚠️ 共有設定エラー：スプレッドシートのアクセス権が「制限付き」になっている可能性があります。\nGoogleスプレッドシートの共有を「リンクを知っている全員（閲覧者）」にしてください。\n\n一時的にサンプル問題で起動します。",true);
+        }else if(e && e.message === "EMPTY_DATA"){
+          setMessage("⚠️ 形式エラー：読み込んだデータ内に有効な問題が見つかりませんでした。\n\n一時的にサンプル問題で起動します。",true);
+        }else{
+          setMessage("⚠️ 自動読み込みに失敗しました。通信環境、またはスプレッドシートの共有設定をご確認ください。\n\n一時的にサンプル問題で起動します。",true);
+        }
+        try{state.quizData = parseData(defaultSampleData)}catch(_){state.quizData=[]}
+      }finally{
+        state.isInitialLoading = false;
+        render();
+      }
+    }
+
+    async function handleUrlImport(){
+      var input = document.getElementById("importUrlInput");
+      var url = input ? input.value.trim() : state.importUrl.trim();
+      if(!url) return;
+
+      state.isLoading = true;
+      state.importUrl = url;
+      setMessage("🔄 外部データを読み込み中...",false);
+      render();
+
+      try{
+        var res = await safeFetch(url);
+        if(!res.ok) throw new Error("NETWORK_" + res.status);
+        var text = await res.text();
+        var data = parseData(text);
+        if(!data.length) throw new Error("EMPTY_DATA");
+        state.quizData = data;
+        state.selectedTheme = "すべて";
+        state.importUrl = "";
+        setMessage("🎉 手動参照成功: " + data.length + " 件を読み込みました！",false);
+      }catch(e){
+        console.error(e);
+        setMessage("エラー：URLからデータを取得できませんでした。URL、共有設定、CSV形式をご確認ください。",true);
+      }finally{
+        state.isLoading = false;
+        render();
+      }
+    }
+
+    function handleFileUpload(e){
+      var file = e.target.files && e.target.files[0];
+      if(!file) return;
+
+      state.isLoading = true;
+      setMessage("🔄 ファイルを読み込み中...",false);
+      render();
+
+      var reader = new FileReader();
+      reader.onload = function(ev){
+        try{
+          var data = parseData(ev.target.result);
+          if(!data.length) throw new Error("EMPTY_DATA");
+          state.quizData = data;
+          state.selectedTheme = "すべて";
+          setMessage("🎉 ファイルから " + data.length + " 件を読み込みました！",false);
+        }catch(err){
+          console.error(err);
+          setMessage("エラー：ファイルを読み込めませんでした。CSVまたはテキスト形式をご確認ください。",true);
+        }finally{
+          state.isLoading = false;
+          render();
+        }
+      };
+      reader.onerror = function(){
+        state.isLoading = false;
+        setMessage("エラー：ファイルの読み込みに失敗しました。",true);
+        render();
+      };
+      reader.readAsText(file,"UTF-8");
+    }
+
+    document.addEventListener("DOMContentLoaded",function(){
+      render();
+      loadInitial();
+    });
   </script>
 </body>
 </html>
