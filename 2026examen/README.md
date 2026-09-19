@@ -15,8 +15,8 @@ GitHub → Vercel Hobby → Neon Free の構成で公開する回答集計アプ
 ## 初回公開
 
 1. このディレクトリをVercelのRoot Directoryに設定し、Next.jsとしてインポートします。
-2. Vercel Marketplaceからこのプロジェクト専用のNeonデータベースをFreeプランで接続します。`DATABASE_URL` が自動登録されます。
-3. VercelのEnvironment Variablesに `ADMIN_PASSWORD`（16文字以上）と `SESSION_SECRET`（32文字以上の十分ランダムな値）を登録します。値をGitHubに保存しないでください。
+2. Vercel Marketplaceからこのプロジェクト専用のNeonデータベースをFreeプランで接続します。接続時の接頭辞を `NEON` にすると `NEON_DATABASE_URL` が自動登録されます。接頭辞なしの `DATABASE_URL` にも対応しています。
+3. VercelのEnvironment Variablesに `ADMIN_PASSWORD`（10文字以上）と `SESSION_SECRET`（32文字以上の十分ランダムな値）を登録します。値をGitHubに保存しないでください。
 4. 再デプロイします。初回アクセスで `bk_` 接頭辞のテーブルを作成します。
 5. `/admin` で問題構成を設定してください。初期構成は仮設定です。
 
