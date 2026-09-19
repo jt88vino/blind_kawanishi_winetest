@@ -15,3 +15,15 @@ export function normalizeOptions(q: Question): Partial<Choices> {
   }
   return result;
 }
+
+export type SharedChoices = Record<Question['type'], Partial<Choices>>;
+export function defaultSharedChoices(): SharedChoices {
+  return Object.fromEntries(['white','red','spirit'].map(type=>[type,normalizeOptions({id:'',label:'',type:type as Question['type']})])) as SharedChoices;
+}
+export function normalizeSharedChoices(input: SharedChoices): SharedChoices {
+  if (!input || typeof input !== 'object') throw Error('選択肢が不正です。');
+  return Object.fromEntries(['white','red','spirit'].map(type=>{
+    if (!input[type as Question['type']]) throw Error('3種類すべての選択肢を設定してください。');
+    return [type,normalizeOptions({id:'',label:'',type:type as Question['type'],options:input[type as Question['type']]})];
+  })) as SharedChoices;
+}
