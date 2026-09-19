@@ -5,6 +5,6 @@ export const YEARS=Array.from({length:8},(_,i)=>String(2025-i));
 export const SPIRITS=['ジン','ウォッカ','ラム','テキーラ','ウイスキー','バーボン','コニャック','アルマニャック','カルヴァドス','グラッパ','マール','キルシュ','アクアヴィット','焼酎（芋）','焼酎（麦）','焼酎（米）','泡盛','日本酒','梅酒','紹興酒','ポート','シェリー','マデイラ','ヴェルモット','カンパリ','シャルトリューズ（緑）','シャルトリューズ（黄）','ベネディクティン','ドランブイ','コアントロー','グラン・マルニエ','アマレット','サンブーカ','ペルノ','クレーム・ド・カシス','その他','わからない'];
 export const EXAMS={sommelier:'ソムリエ',expert:'ワインエキスパート'};
 export type Exam=keyof typeof EXAMS;
-export type Question={id:string,type:'white'|'red'|'spirit',label:string};
+export type Question={id:string,type:'white'|'red'|'spirit',label:string,options?:Partial<{country:string[],grape:string[],year:string[],drink:string[]}>};
 export const TYPES={white:'白ワイン',red:'赤ワイン',spirit:'その他の飲料'};
 export const initial=(e:Exam):Question[]=>(e==='sommelier'?['white','white','red','spirit','spirit']:['white','white','red','red','spirit']).map((type,i)=>({id:e+'-'+i,type:type as Question['type'],label:'第'+(i+1)+'問'}));
