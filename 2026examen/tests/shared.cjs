@@ -6,7 +6,8 @@ function compile(file,requireFn){const mod={exports:{}};vm.runInNewContext(ts.tr
  const query=async(...args)=>(await db.query(...args)).rows;
  const server=compile('lib/server.ts',id=>id==='@neondatabase/serverless'?{neon:()=>({query})}:id==='./exam'?exam:id==='./options'?opts:{admin:async()=>allowed});
  process.env.DATABASE_URL='test';
- const route=compile('app/api/exam/route.ts',id=>id==='@/lib/server'?server:id==='@/lib/exam'?exam:opts);
+ const results=compile('lib/results.ts',require);
+ const route=compile('app/api/exam/route.ts',id=>id==='@/lib/server'?server:id==='@/lib/exam'?exam:id==='@/lib/results'?results:opts);
  const request=(b,id=crypto.randomUUID())=>new Request('https://example.test/api/exam',{method:'POST',headers:{origin:'https://example.test',cookie:'bk_device='+id},body:JSON.stringify(b)});
  const old=await server.config('sommelier');await server.config('expert');
  const shared=opts.defaultSharedChoices();shared.white={country:['日本'],grape:['甲州'],year:['2025']};
@@ -19,5 +20,10 @@ function compile(file,requireFn){const mod={exports:{}};vm.runInNewContext(ts.tr
  body.sharedRevision=2;const device=crypto.randomUUID();assert.equal((await route.POST(request(body,device))).status,200);assert.equal((await route.POST(request(body,device))).status,409);
  shared.white.grape=['シャルドネ'];assert.equal((await route.POST(request({action:'choices',exam:'expert',options:shared,sharedRevision:2}))).status,200);
  const saved=await query('SELECT answers FROM bk_submissions');assert.equal(saved[0].answers[0].values.grape,'甲州');
+ allowed=false;assert.equal((await route.POST(request({action:'reset',exam:'sommelier',confirm:'回答データをクリア'}))).status,403);allowed=true;
+ assert.equal((await route.POST(request({action:'reset',exam:'sommelier',confirm:'wrong'}))).status,400);
+ assert.equal((await route.POST(request({action:'reset',exam:'sommelier',confirm:'回答データをクリア'}))).status,200);
+ assert.equal((await query('SELECT * FROM bk_submissions')).length,0);assert.equal((await query('SELECT * FROM bk_submission_archive')).length,1);
+ const latest=await server.config('sommelier');body.sharedRevision=latest.shared_revision;body.answers[0].values.grape='シャルドネ';body.answers[1].values.grape='シャルドネ';assert.equal((await route.POST(request(body,device))).status,200);
  console.log('PASS: shared choices across both exams and all same-type questions, authorization, stale edits and submissions, retained historical answers');
 }finally{await db.close()}})().catch(e=>{console.error(e);process.exitCode=1});

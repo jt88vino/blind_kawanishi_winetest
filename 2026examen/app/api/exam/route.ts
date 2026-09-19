@@ -1,3 +1,4 @@
+import {combinationQuery,resetQuery} from '@/lib/results';
 import {choices,normalizeSharedChoices} from '@/lib/options';
 import {sql,admin,config,json,originOk,device} from '@/lib/server';
 import {EXAMS,type Exam,type Question} from '@/lib/exam';
@@ -6,13 +7,17 @@ export async function GET(r:Request){try{
  const url=new URL(r.url),exam=url.searchParams.get('exam') as Exam;if(!Object.hasOwn(EXAMS,exam))return json({error:'試験区分が不正です'},400);
  const c=await config(exam),q=sql(),id=device(r)||crypto.randomUUID();
  const found=await q.query('SELECT exam FROM bk_submissions WHERE device=$1',[id]);const done=found[0]||null,isAdmin=await admin();let results=null;
- if(done||isAdmin){const counts=await q.query('SELECT count(*)::int AS n FROM bk_submissions WHERE exam=$1',[exam]);const rows=await q.query(`SELECT a->>'id' AS id,a->>'label' AS label,a->>'type' AS type,f.key AS field,f.value AS value,count(*)::int AS n FROM bk_submissions s CROSS JOIN LATERAL jsonb_array_elements(s.answers) a CROSS JOIN LATERAL jsonb_each_text(a->'values') f WHERE s.exam=$1 GROUP BY a->>'id',a->>'label',a->>'type',f.key,f.value ORDER BY n DESC`,[exam]);results={count:counts[0].n,rows};}
+ if(done||isAdmin){const counts=await q.query('SELECT count(*)::int AS n FROM bk_submissions WHERE exam=$1',[exam]);const rows=await q.query(`SELECT a->>'id' AS id,a->>'label' AS label,a->>'type' AS type,f.key AS field,f.value AS value,count(*)::int AS n FROM bk_submissions s CROSS JOIN LATERAL jsonb_array_elements(s.answers) a CROSS JOIN LATERAL jsonb_each_text(a->'values') f WHERE s.exam=$1 GROUP BY a->>'id',a->>'label',a->>'type',f.key,f.value ORDER BY n DESC`,[exam]);const combinations=await q.query(combinationQuery,[exam]);results={count:counts[0].n,rows,combinations};}
  const res=json({config:c,done,admin:isAdmin,results});res.headers.set('Set-Cookie',`bk_device=${id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=63072000${process.env.NODE_ENV==='production'?'; Secure':''}`);return res;
  }catch(err){console.error('exam read failed',err instanceof Error?err.name:'error');return json({error:'読み込めませんでした。時間をおいて再試行してください。'},503)}}
 export async function POST(r:Request){try{
  if(!originOk(r))return json({error:'アクセスを確認できません'},403);const raw=await r.text();if(raw.length>2000000)return json({error:'データが大きすぎます'},413);let b:any;try{b=JSON.parse(raw)}catch{return json({error:'入力が不正です'},400)}if(!b||!Object.hasOwn(EXAMS,b.exam))return json({error:'試験区分が不正です'},400);const exam=b.exam as Exam;
- if(['configure','choices'].includes(b.action)&&!await admin())return json({error:'管理者のみ操作できます'},403);
+ if(['configure','choices','reset'].includes(b.action)&&!await admin())return json({error:'管理者のみ操作できます'},403);
  const c=await config(exam),q=sql();
+ if(b.action==='reset'){
+  if(b.confirm!=='回答データをクリア')return json({error:'確認文を正しく入力してください。'},400);
+  const removed=await q.query(resetQuery,[crypto.randomUUID()]);return json({ok:true,count:removed.length});
+ }
  if(b.action==='choices'){
   let options;try{options=normalizeSharedChoices(b.options)}catch(e){return json({error:e instanceof Error?e.message:'選択肢が不正です。'},400)}
   const updated=await q.query("UPDATE bk_settings SET questions=$1::jsonb,revision=revision+1 WHERE exam='shared' AND revision=$2 RETURNING revision",[JSON.stringify(options),b.sharedRevision]);
