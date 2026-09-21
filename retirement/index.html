@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f8fa">
+<title>かんたん老後資産シミュレーター</title>
+<style>
+:root{
+  --bg:#f6f8fb;--card:#ffffff;--text:#1f2937;--muted:#667085;--border:#e4e7ec;
+  --blue:#4f7cff;--blue-soft:#edf3ff;--green:#36a269;--green-soft:#ecf8f1;
+  --orange:#d8892e;--orange-soft:#fff5e8;--purple:#7a65c7;--purple-soft:#f3f0ff;
+  --red:#c94b4b;--shadow:0 8px 24px rgba(16,24,40,.06)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif;line-height:1.6}
+button,input,summary{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1180px,calc(100% - 24px));margin:22px auto 48px}
+.hero{background:linear-gradient(135deg,#f7fbff,#f7f8fb);border:1px solid var(--border);border-radius:24px;padding:22px 22px 18px;margin-bottom:16px}
+.hero h1{font-size:clamp(24px,4vw,38px);line-height:1.25;margin:0 0 8px}
+.hero p{margin:0;color:var(--muted);font-size:15px}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.side{position:sticky;top:12px}
+.section{border-top:1px solid var(--border);padding-top:18px;margin-top:18px}
+.section:first-child{border-top:0;padding-top:0;margin-top:0}
+.section-title{font-weight:750;font-size:17px;margin-bottom:5px}
+.sub{font-size:13px;color:var(--muted)}
+.inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.full{grid-column:1/-1}
+label{display:block;font-size:13px;font-weight:600}
+.input{width:100%;min-height:48px;margin-top:5px;border:1px solid #d0d5dd;border-radius:12px;background:#fff;color:var(--text);padding:9px 11px;font-size:16px;outline:none}
+.input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,124,255,.12)}
+.preset{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.preset button,.normal-btn{min-height:48px;border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--text);padding:7px 8px}
+.preset button.active{border-color:var(--blue);background:var(--blue-soft);color:#2f5bd4;font-weight:700}
+.alloc{border-radius:16px;padding:12px;margin-top:10px}
+.alloc.eq{background:var(--blue-soft)}
+.alloc.bond{background:var(--green-soft)}
+.alloc.cash{background:var(--orange-soft)}
+.alloc-top{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.alloc-name{font-weight:750}
+.alloc-role{font-size:12px;color:var(--muted)}
+.percent-box{display:flex;align-items:center;gap:5px}
+.percent-box input{width:74px;min-height:44px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;padding:7px;text-align:right;font-size:16px}
+input[type="range"]{width:100%;min-height:36px;margin-top:8px;accent-color:var(--blue)}
+.alloc.bond input[type="range"]{accent-color:var(--green)}
+.alloc.cash input[type="range"]{accent-color:var(--orange)}
+.bar{display:flex;height:16px;border-radius:999px;overflow:hidden;background:#eef0f4;margin-top:12px}
+.bar>div:nth-child(1){background:var(--blue)}
+.bar>div:nth-child(2){background:var(--green)}
+.bar>div:nth-child(3){background:var(--orange)}
+.details{border-top:1px solid var(--border);margin-top:18px;padding-top:16px}
+details summary{cursor:pointer;font-weight:750;min-height:44px;display:flex;align-items:center}
+.check{display:flex;gap:10px;align-items:flex-start;background:#f8f9fb;border-radius:12px;padding:11px;margin-top:10px;font-size:13px}
+.check input{width:20px;height:20px;margin:2px 0 0}
+.results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.result{border-radius:16px;padding:14px;min-width:0}
+.result.gray{background:#f1f3f6}.result.blue{background:var(--blue-soft)}.result.green{background:var(--green-soft)}.result.orange{background:var(--orange-soft)}
+.result-label{font-size:12px;color:var(--muted);margin-bottom:4px}
+.result-value{font-size:clamp(20px,3vw,28px);line-height:1.2;font-weight:800;font-variant-numeric:tabular-nums;word-break:break-word}
+.message{margin-top:12px;background:#f8f9fb;border-radius:14px;padding:13px 14px;font-size:15px;line-height:1.8}
+.info-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.info-mini{border:1px solid var(--border);border-radius:14px;padding:12px;background:#fff}
+.info-mini b{font-size:18px}
+.chart-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}
+svg{display:block;width:100%;min-width:640px;height:auto}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:var(--blue)}
+.age-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.age-card{border:1px solid var(--border);border-radius:16px;padding:13px;background:#fff}
+.age-card.now{background:#f8f9fb}
+.age-head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.age{font-size:19px;font-weight:800}.years{font-size:11px;color:var(--muted)}
+.age-money{font-size:24px;line-height:1.2;font-weight:800;margin-top:7px;font-variant-numeric:tabular-nums}
+.age-real{font-size:12px;color:var(--muted);margin-top:4px}
+.mini-bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:#eef0f4;margin-top:10px}
+.mini-bar span:nth-child(1){background:var(--blue)}.mini-bar span:nth-child(2){background:var(--green)}.mini-bar span:nth-child(3){background:var(--orange)}
+.infl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.infl-card{border-radius:16px;padding:14px;background:#f5f6f8;border:1px solid transparent}
+.infl-card.standard{background:var(--green-soft);border-color:#caebd8}
+.infl-card .value{font-size:23px;font-weight:800;margin-top:4px}
+.note{font-size:12px;color:var(--muted);line-height:1.8}
+.warning{color:var(--red);font-weight:700}
+footer{margin-top:18px;padding:0 4px}
+@media(max-width:960px){
+ .grid{grid-template-columns:1fr}.side{position:static}.results{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+ .wrap{width:min(100% - 14px,1180px);margin-top:8px}.hero{padding:17px 15px;border-radius:18px}
+ .card{padding:14px;border-radius:18px}.inputs{gap:8px}.results{gap:8px}
+ .result{padding:12px}.age-grid{grid-template-columns:1fr 1fr}.infl-grid{grid-template-columns:1fr}
+ .info-strip{grid-template-columns:1fr}.age-money{font-size:21px}.hero p{font-size:14px}
+}
+@media(max-width:380px){.age-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="hero">
+    <h1>かんたん老後資産シミュレーター</h1>
+    <p>オルカン・個人向け国債・現金をどう分けると、将来どのくらい残るかを確認できます。スマホでも使えます。</p>
+  </section>
+
+  <div class="grid">
+    <aside class="card side">
+      <section class="section">
+        <div class="section-title">① 基本条件</div>
+        <div class="sub">まずは資産額と年齢だけでも確認できます。</div>
+        <div class="inputs">
+          <label>現在の年齢
+            <input id="age" class="input" type="number" inputmode="numeric" min="18" max="100" value="68">
+          </label>
+          <label>何歳まで見る？
+            <input id="endAge" class="input" type="number" inputmode="numeric" min="19" max="110" value="90">
+          </label>
+          <label class="full">運用するお金（万円）
+            <input id="principal" class="input" type="number" inputmode="decimal" min="0" step="10" value="1000">
+          </label>
+          <label>毎月取り崩す額（万円）
+            <input id="draw" class="input" type="number" inputmode="decimal" min="0" step=".1" value="0">
+          </label>
+          <label>年間の追加投資（万円）
+            <input id="add" class="input" type="number" inputmode="decimal" min="0" step="1" value="0">
+          </label>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">② 物価の上がり方</div>
+        <div class="sub">長期間で平均して、毎年どのくらい物価が上がるかを設定します。</div>
+        <div class="preset">
+          <button type="button" class="infl" data-v="1">1%<br><span class="sub">低め</span></button>
+          <button type="button" class="infl active" data-v="2">2%<br><span class="sub">標準</span></button>
+          <button type="button" class="infl" data-v="3">3%<br><span class="sub">高め</span></button>
+        </div>
+        <label style="margin-top:9px">細かく設定する場合（年平均%）
+          <input id="inflation" class="input" type="number" inputmode="decimal" min="0" max="10" step=".1" value="2">
+        </label>
+      </section>
+
+      <section class="section">
+        <div class="alloc-top">
+          <div>
+            <div class="section-title" style="margin:0">③ お金の分け方</div>
+            <div class="sub">合計100%になるように設定します。</div>
+          </div>
+          <button id="normalize" type="button" class="normal-btn">100%に整える</button>
+        </div>
+
+        <div class="alloc eq">
+          <div class="alloc-top">
+            <div><div class="alloc-name">オルカン</div><div class="alloc-role">増やす役割</div></div>
+            <div class="percent-box"><input id="eqNum" type="number" inputmode="numeric" min="0" max="100" value="40"><span>%</span></div>
+          </div>
+          <input id="eq" type="range" min="0" max="100" value="40">
+        </div>
+
+        <div class="alloc bond">
+          <div class="alloc-top">
+            <div><div class="alloc-name">個人向け国債</div><div class="alloc-role">守る役割</div></div>
+            <div class="percent-box"><input id="bondNum" type="number" inputmode="numeric" min="0" max="100" value="40"><span>%</span></div>
+          </div>
+          <input id="bond" type="range" min="0" max="100" value="40">
+        </div>
+
+        <div class="alloc cash">
+          <div class="alloc-top">
+            <div><div class="alloc-name">現金</div><div class="alloc-role">すぐ使う役割</div></div>
+            <div class="percent-box"><input id="cashNum" type="number" inputmode="numeric" min="0" max="100" value="20"><span>%</span></div>
+          </div>
+          <input id="cash" type="range" min="0" max="100" value="20">
+        </div>
+
+        <div class="bar"><div id="barEq"></div><div id="barBond"></div><div id="barCash"></div></div>
+        <div id="sumLabel" class="sub" style="margin-top:7px"></div>
+      </section>
+
+      <details class="details">
+        <summary>詳しい設定</summary>
+        <div class="sub">分からなければ初期設定のままで大丈夫です。</div>
+        <div class="inputs" style="grid-template-columns:repeat(3,1fr)">
+          <label>オルカン年率
+            <input id="eqRate" class="input" type="number" inputmode="decimal" step=".1" value="5">
+          </label>
+          <label>国債年率
+            <input id="bondRate" class="input" type="number" inputmode="decimal" step=".1" value="2">
+          </label>
+          <label>現金年率
+            <input id="cashRate" class="input" type="number" inputmode="decimal" step=".1" value=".5">
+          </label>
+        </div>
+        <label class="check">
+          <input id="crash" type="checkbox">
+          <span>最初の年にオルカンが30%下落した場合も見る</span>
+        </label>
+      </details>
+      <div id="validation" class="sub" aria-live="polite" style="margin-top:8px"></div>
+    </aside>
+
+    <section>
+      <div class="card">
+        <div class="section-title" style="font-size:20px">まずここを確認</div>
+        <div class="results">
+          <div class="result gray"><div class="result-label">今の資産</div><div id="startAsset" class="result-value">-</div></div>
+          <div class="result blue"><div class="result-label">終了時の資産</div><div id="finalNominal" class="result-value">-</div></div>
+          <div class="result green"><div class="result-label">今のお金の価値に直すと</div><div id="finalReal" class="result-value">-</div></div>
+          <div class="result orange"><div class="result-label">資産は持つ？</div><div id="depletion" class="result-value">-</div></div>
+        </div>
+        <div id="simpleMessage" class="message"></div>
+        <div class="info-strip">
+          <div class="info-mini">
+            <div class="sub">設定中の物価上昇</div>
+            <b id="inflationMeaning">年平均2%</b>
+            <div id="inflationExample" class="sub" style="margin-top:3px"></div>
+          </div>
+          <div class="info-mini">
+            <div class="sub">資産配分から見た想定年率</div>
+            <b id="weighted">-</b>
+            <div class="sub" style="margin-top:3px">利益にも翌年以降の運用がかかる複利計算です。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="section-title" style="font-size:20px">資産の増え方・減り方</div>
+        <div id="chartNote" class="sub"></div>
+        <div class="chart-wrap">
+          <svg id="chart" viewBox="0 0 760 330" role="img" aria-label="2年ごとの資産推移グラフ"></svg>
+        </div>
+        <div class="legend"><span><i class="dot"></i>実際の資産額</span><span>− − 物価上昇を考えた「今のお金の価値」</span></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="section-title" style="font-size:20px">2年ごとの資産推移</div>
+        <div class="sub">「その年齢のとき、どのくらい残っているか」を2年ごとに表示します。</div>
+        <div id="ageCards" class="age-grid"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="section-title" style="font-size:20px">物価が違うとどうなる？</div>
+        <div class="sub">終了時の資産を「今のお金の価値」で比べます。</div>
+        <div id="inflCards" class="infl-grid"></div>
+      </div>
+
+      <footer class="note">
+        このシミュレーションは将来の運用成果を保証するものではありません。オルカンは価格変動があり、元本割れすることがあります。国債・現金を含めた配分、生活費、年金、医療・介護費なども合わせてご検討ください。オルカン部分をNISAで保有する想定で、税金・手数料などは簡略化しています。
+      </footer>
+    </section>
+  </div>
+</main>
+
+<script>
+(function(){
+  var root=document;
+  function $(id){return root.getElementById(id)}
+  var E={
+    age:$("age"),endAge:$("endAge"),principal:$("principal"),draw:$("draw"),add:$("add"),
+    inflation:$("inflation"),eq:$("eq"),bond:$("bond"),cash:$("cash"),
+    eqNum:$("eqNum"),bondNum:$("bondNum"),cashNum:$("cashNum"),
+    barEq:$("barEq"),barBond:$("barBond"),barCash:$("barCash"),sumLabel:$("sumLabel"),
+    eqRate:$("eqRate"),bondRate:$("bondRate"),cashRate:$("cashRate"),crash:$("crash"),
+    normalize:$("normalize"),validation:$("validation"),startAsset:$("startAsset"),
+    finalNominal:$("finalNominal"),finalReal:$("finalReal"),depletion:$("depletion"),
+    simpleMessage:$("simpleMessage"),inflationMeaning:$("inflationMeaning"),
+    inflationExample:$("inflationExample"),weighted:$("weighted"),
+    chart:$("chart"),chartNote:$("chartNote"),ageCards:$("ageCards"),inflCards:$("inflCards")
+  };
+  function num(el,d){var v=Number(el.value);return Number.isFinite(v)?v:(d||0)}
+  function clamp(v,min,max){return Math.min(max,Math.max(min,v))}
+  function money(v){return new Intl.NumberFormat("ja-JP",{maximumFractionDigits:0}).format(Math.max(0,v))+"万円"}
+  function getCfg(){
+    var age=Math.round(clamp(num(E.age,68),18,100));
+    var endAge=Math.round(clamp(num(E.endAge,90),age+1,110));
+    return {
+      age:age,endAge:endAge,years:endAge-age,p:Math.max(0,num(E.principal,1000)),
+      draw:Math.max(0,num(E.draw,0)),add:Math.max(0,num(E.add,0)),
+      infl:clamp(num(E.inflation,2),0,10),
+      eq:clamp(num(E.eqNum,40),0,100),bond:clamp(num(E.bondNum,40),0,100),cash:clamp(num(E.cashNum,20),0,100),
+      eqR:clamp(num(E.eqRate,5),-30,30),bondR:clamp(num(E.bondRate,2),-10,15),cashR:clamp(num(E.cashRate,.5),-5,10),
+      crash:E.crash.checked
+    };
+  }
+  function simulate(c,inflOverride){
+    var sum=c.eq+c.bond+c.cash;
+    var fe=sum?c.eq/sum:0,fb=sum?c.bond/sum:0,fc=sum?c.cash/sum:0;
+    var eq=c.p*fe,bond=c.p*fb,cash=c.p*fc,drawn=0,depletion=null;
+    var infl=inflOverride==null?c.infl:inflOverride;
+    var req=Math.pow(Math.max(.0001,1+c.eqR/100),1/12)-1;
+    var rb=Math.pow(Math.max(.0001,1+c.bondR/100),1/12)-1;
+    var rc=Math.pow(Math.max(.0001,1+c.cashR/100),1/12)-1;
+    var s=[{year:0,age:c.age,eq:eq,bond:bond,cash:cash,total:eq+bond+cash,real:eq+bond+cash}];
+    for(var m=1;m<=c.years*12;m++){
+      if(c.crash&&m===1)eq*=.7;
+      eq*=1+req;bond*=1+rb;cash*=1+rc;
+      var add=c.add/12;eq+=add*fe;bond+=add*fb;cash+=add*fc;
+      var need=c.draw,t=Math.min(cash,need);cash-=t;need-=t;
+      t=Math.min(bond,need);bond-=t;need-=t;
+      t=Math.min(eq,need);eq-=t;need-=t;
+      drawn+=c.draw-need;
+      if(eq+bond+cash<=.00001&&depletion===null&&c.draw>0){depletion=c.age+m/12;eq=0;bond=0;cash=0}
+      if(m%12===0){
+        var y=m/12,total=eq+bond+cash;
+        s.push({year:y,age:c.age+y,eq:eq,bond:bond,cash:cash,total:total,real:total/Math.pow(1+infl/100,y)});
+      }
+    }
+    return {s:s,drawn:drawn,depletion:depletion,final:s[s.length-1],fe:fe,fb:fb,fc:fc};
+  }
+  function drawChart(series){
+    var points=series.filter(function(d,i){return i===0||d.year%2===0||i===series.length-1});
+    var W=760,H=330,L=66,R=20,T=20,B=46,iw=W-L-R,ih=H-T-B;
+    var values=[];series.forEach(function(d){values.push(d.total,d.real)});
+    var maxV=Math.max.apply(null,[1].concat(values))*1.08,maxY=Math.max(1,series[series.length-1].year);
+    function x(v){return L+v/maxY*iw}function y(v){return T+ih-v/maxV*ih}
+    var h="";
+    for(var i=0;i<=4;i++){
+      var v=maxV*i/4,yy=y(v);
+      h+='<line x1="'+L+'" y1="'+yy+'" x2="'+(W-R)+'" y2="'+yy+'" stroke="#e4e7ec"/>';
+      h+='<text x="'+(L-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="12" fill="#667085">'+Math.round(v)+'万</text>';
+    }
+    points.forEach(function(d){
+      h+='<text x="'+x(d.year)+'" y="'+(H-14)+'" text-anchor="middle" font-size="12" fill="#667085">'+Math.round(d.age)+'歳</text>';
+    });
+    var p1=series.map(function(d,i){return(i?"L":"M")+x(d.year).toFixed(1)+" "+y(d.total).toFixed(1)}).join(" ");
+    var p2=series.map(function(d,i){return(i?"L":"M")+x(d.year).toFixed(1)+" "+y(d.real).toFixed(1)}).join(" ");
+    h+='<path d="'+p1+'" fill="none" stroke="#4f7cff" stroke-width="4" stroke-linecap="round"/>';
+    h+='<path d="'+p2+'" fill="none" stroke="#98a2b3" stroke-width="3" stroke-dasharray="9 7" stroke-linecap="round"/>';
+    points.forEach(function(d){
+      h+='<circle cx="'+x(d.year)+'" cy="'+y(d.total)+'" r="5" fill="#4f7cff"/>';
+      h+='<circle cx="'+x(d.year)+'" cy="'+y(d.real)+'" r="4" fill="#fff" stroke="#98a2b3" stroke-width="2"/>';
+    });
+    E.chart.innerHTML=h;
+  }
+  function normalize(){
+    var a=[Math.max(0,num(E.eqNum)),Math.max(0,num(E.bondNum)),Math.max(0,num(E.cashNum))];
+    var s=a[0]+a[1]+a[2];
+    if(s<=0)a=[40,40,20];
+    else{
+      a=a.map(function(v){return v/s*100});
+      var x=Math.round(a[0]),y=Math.round(a[1]);a=[x,y,100-x-y];
+    }
+    [E.eqNum,E.bondNum,E.cashNum].forEach(function(el,i){el.value=a[i]});
+    [E.eq,E.bond,E.cash].forEach(function(el,i){el.value=a[i]});
+    render();
+  }
+  function syncPair(range,numBox){
+    range.addEventListener("input",function(){numBox.value=range.value;render()});
+    numBox.addEventListener("input",function(){range.value=numBox.value;render()});
+  }
+  function render(){
+    var c=getCfg(),sum=c.eq+c.bond+c.cash;
+    var fe=sum?c.eq/sum*100:0,fb=sum?c.bond/sum*100:0,fc=sum?c.cash/sum*100:0;
+    E.barEq.style.width=fe+"%";E.barBond.style.width=fb+"%";E.barCash.style.width=fc+"%";
+    E.sumLabel.textContent="合計 "+sum.toFixed(0)+"%"+(Math.round(sum)===100?"":"（計算時は自動で比率換算）");
+    if(sum<=0){E.validation.innerHTML='<span class="warning">資産配分を設定してください。</span>';return}
+    E.validation.textContent="";
+    var r=simulate(c);
+    E.startAsset.textContent=money(c.p);
+    E.finalNominal.textContent=money(r.final.total);
+    E.finalReal.textContent=money(r.final.real);
+    E.depletion.textContent=r.depletion===null?"最後まで残る":Math.floor(r.depletion)+"歳頃に0";
+    var wr=r.fe*c.eqR+r.fb*c.bondR+r.fc*c.cashR;
+    E.weighted.textContent="約"+wr.toFixed(1)+"%／年";
+    E.inflationMeaning.textContent="年平均"+c.infl+"%";
+    var future10=100*Math.pow(1+c.infl/100,10);
+    E.inflationExample.textContent="今100万円で買えるものが、10年後には約"+Math.round(future10)+"万円必要になる想定です。";
+    E.chartNote.textContent=c.age+"歳から"+c.endAge+"歳まで・2年ごと表示・物価上昇は年平均"+c.infl+"%"+(c.crash?"・初年度オルカン30%下落ケース":"");
+    var diff=r.final.real-c.p;
+    if(r.depletion!==null){
+      E.simpleMessage.textContent="この条件では、約"+Math.floor(r.depletion)+"歳で資産がなくなる計算です。毎月の取り崩し額や資産配分を見直してみてください。";
+    }else if(diff>=0){
+      E.simpleMessage.textContent=c.endAge+"歳時点でも、物価上昇を考えた「今のお金の価値」は現在の資産額以上を維持する計算です。";
+    }else{
+      E.simpleMessage.textContent=c.endAge+"歳時点でも資産は残ります。ただし物価上昇を考えると、今より買える量は少なくなる計算です。";
+    }
+    drawChart(r.s);
+    var rows=[];
+    for(var a=c.age;a<=c.endAge;a+=2){
+      var d=r.s.find(function(x){return Math.round(x.age)===a});
+      if(d)rows.push(d);
+    }
+    if(rows.length&&Math.round(rows[rows.length-1].age)!==c.endAge){
+      var last=r.s.find(function(x){return Math.round(x.age)===c.endAge});if(last)rows.push(last);
+    }
+    E.ageCards.innerHTML=rows.map(function(d,i){
+      var total=d.total||1,eqW=d.total?d.eq/total*100:0,bondW=d.total?d.bond/total*100:0,cashW=d.total?d.cash/total*100:0;
+      return '<div class="age-card '+(i===0?'now':'')+'">'+
+        '<div class="age-head"><div class="age">'+Math.round(d.age)+'歳</div><div class="years">'+(d.year===0?'現在':d.year+'年後')+'</div></div>'+
+        '<div class="age-money">'+money(d.total)+'</div>'+
+        '<div class="age-real">今のお金の価値：'+money(d.real)+'</div>'+
+        '<div class="mini-bar"><span style="width:'+eqW+'%"></span><span style="width:'+bondW+'%"></span><span style="width:'+cashW+'%"></span></div>'+
+      '</div>';
+    }).join("");
+    E.inflCards.innerHTML=[1,2,3].map(function(v){
+      var z=simulate(c,v);
+      return '<div class="infl-card '+(v===2?'standard':'')+'"><div class="sub">年平均 '+v+'%'+(v===2?'・標準':'')+'</div><div class="value">'+money(z.final.real)+'</div><div class="sub">'+c.endAge+'歳時点の実質価値</div></div>';
+    }).join("");
+    document.querySelectorAll(".infl").forEach(function(b){
+      b.classList.toggle("active",Number(b.dataset.v)===Number(c.infl));
+    });
+  }
+  syncPair(E.eq,E.eqNum);syncPair(E.bond,E.bondNum);syncPair(E.cash,E.cashNum);
+  [E.age,E.endAge,E.principal,E.draw,E.add,E.inflation,E.eqRate,E.bondRate,E.cashRate,E.crash].forEach(function(el){
+    el.addEventListener("input",render);el.addEventListener("change",render);
+  });
+  document.querySelectorAll(".infl").forEach(function(b){b.addEventListener("click",function(){E.inflation.value=b.dataset.v;render()})});
+  E.normalize.addEventListener("click",normalize);
+  render();
+})();
+</script>
+</body>
+</html>
