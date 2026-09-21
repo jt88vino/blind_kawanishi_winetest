@@ -1,1331 +1,414 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ソムリエ / ワインエキスパート 試験対策ドリル byブラインド川西</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Google Fonts: Noto Sans JP -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --rose900: #881337;
-      --rose800: #9f1239;
-      --rose100: #ffe4e6;
-      --stone900: #292524;
-      --stone800: #44403c;
-      --stone700: #57534e;
-      --stone600: #78716c;
-      --stone500: #a8a29e;
-      --stone400: #d6d3d1;
-      --stone300: #d6d3d1;
-      --stone200: #e7e5e4;
-      --stone100: #f5f5f4;
-      --stone50: #fafaf9;
-      --green800: #166534;
-      --green600: #16a34a;
-      --green100: #dcfce7;
-      --green50: #f0fdf4;
-      --red800: #991b1b;
-      --red500: #ef4444;
-      --red100: #fee2e2;
-      --red50: #fef2f2;
-    }
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      margin: 0;
-      background: var(--stone50);
-      color: var(--stone800);
-    }
-    button, select, input {
-      font-family: inherit;
-    }
-    button {
-      cursor: pointer;
-    }
-    button:disabled {
-      cursor: not-allowed;
-      opacity: 0.55;
-    }
-    .center {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .quizPage {
-      min-height: 100vh;
-      padding: 40px 16px;
-      display: flex;
-      justify-content: center;
-    }
-    .card {
-      width: 100%;
-      max-width: 448px;
-      background: #fff;
-      border: 1px solid var(--stone200);
-      border-radius: 20px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.12);
-      overflow: hidden;
-    }
-    .body {
-      padding: 24px;
-    }
-    .hero {
-      background: var(--rose900);
-      color: #fff;
-      padding: 32px;
-      text-align: center;
-    }
-    .logo {
-      width: 80px;
-      height: 80px;
-      display: block;
-      margin: 0 auto 16px;
-      border-radius: 999px;
-      border: 2px solid rgba(255,255,255,0.22);
-      object-fit: cover;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.25);
-      user-select: none;
-    }
-    .fallbackLogo {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto 16px;
-      border-radius: 999px;
-      border: 2px solid #fecdd3;
-      background: #4c0519;
-      color: #ffe4e6;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 900;
-      user-select: none;
-    }
-    .fallbackLogo .wine {
-      font-size: 28px;
-      line-height: 1;
-      margin-bottom: 2px;
-    }
-    h1 {
-      margin: 0;
-      font-size: 24px;
-      line-height: 1.35;
-      letter-spacing: 0.04em;
-    }
-    .subtitle {
-      margin: 8px 0 0;
-      color: #fecdd3;
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .field {
-      margin-bottom: 18px;
-    }
-    .label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--stone600);
-      font-size: 14px;
-      font-weight: 800;
-    }
-    select, input[type=text] {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--stone300);
-      border-radius: 10px;
-      background: var(--stone50);
-      color: var(--stone800);
-      font-size: 15px;
-      outline: none;
-    }
-    select:focus, input[type=text]:focus {
-      border-color: var(--rose800);
-      box-shadow: 0 0 0 3px rgba(159,18,57,0.15);
-    }
-    .toggle {
-      display: flex;
-      gap: 4px;
-      padding: 4px;
-      border: 1px solid var(--stone200);
-      border-radius: 12px;
-      background: var(--stone100);
-    }
-    .toggle button {
-      flex: 1;
-      border: 0;
-      background: transparent;
-      color: var(--stone600);
-      padding: 10px 8px;
-      border-radius: 9px;
-      font-size: 13px;
-      font-weight: 900;
-    }
-    .toggle button.active {
-      background: #fff;
-      color: var(--rose800);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    .btn {
-      border: 0;
-      border-radius: 12px;
-      padding: 14px 18px;
-      font-size: 16px;
-      font-weight: 900;
-      transition: transform 0.05s ease, background 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .btn:active {
-      transform: scale(0.99);
-    }
-    .btnPrimary {
-      width: 100%;
-      background: var(--rose800);
-      color: #fff;
-      box-shadow: 0 8px 18px rgba(159,18,57,0.24);
-    }
-    .btnPrimary:hover {
-      background: var(--rose900);
-    }
-    .btnDark {
-      background: var(--stone800);
-      color: #fff;
-    }
-    .btnDark:hover {
-      background: var(--stone900);
-    }
-    .btnLight {
-      background: var(--stone200);
-      color: var(--stone700);
-    }
-    .btnLight:hover {
-      background: var(--stone300);
-    }
-    .btnOutline {
-      background: #fff;
-      border: 2px solid var(--stone300);
-      color: var(--stone700);
-    }
-    .message {
-      margin-top: 18px;
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 800;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-    .message.ok {
-      background: var(--green100);
-      color: var(--green800);
-    }
-    .message.err {
-      background: var(--red100);
-      color: var(--red800);
-    }
-    .loading {
-      text-align: center;
-      padding: 36px 0;
-      color: var(--stone500);
-      font-weight: 900;
-    }
-    .spinner {
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      border: 4px solid var(--rose100);
-      border-top-color: var(--rose800);
-      margin: 0 auto 14px;
-      animation: spin 0.9s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate {
-      animation: fadeIn 0.25s ease-out both;
-    }
-    .admin {
-      margin: 24px -24px -24px;
-      padding: 22px 24px 24px;
-      border-top: 1px solid var(--stone200);
-      background: var(--stone50);
-    }
-    .admin h3 {
-      margin: 0 0 14px;
-      color: var(--stone500);
-      font-size: 12px;
-    }
-    .adminRow {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .adminRow input {
-      flex: 1;
-      font-size: 12px;
-      padding: 10px;
-    }
-    .adminRow button {
-      white-space: nowrap;
-      padding: 10px 14px;
-      font-size: 12px;
-      border-radius: 10px;
-    }
-    .fileLabel {
-      display: block;
-      width: 100%;
-      text-align: center;
-      border: 1px solid var(--stone300);
-      border-radius: 10px;
-      background: #fff;
-      color: var(--stone700);
-      padding: 11px;
-      font-size: 12px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-    .fileLabel input {
-      display: none;
-    }
-    .quizWrap {
-      width: 100%;
-      max-width: 672px;
-    }
-    .quizTop {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--stone200);
-      color: var(--stone500);
-      font-weight: 900;
-    }
-    .themePill {
-      max-width: 45%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      display: inline-block;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: var(--rose100);
-      color: var(--rose900);
-      font-size: 13px;
-    }
-    .topActions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .counter {
-      text-align: right;
-      color: var(--stone700);
-      font-size: 18px;
-      line-height: 1.2;
-    }
-    .counter small {
-      color: var(--stone400);
-      font-size: 12px;
-      font-weight: 500;
-    }
-    .progress {
-      color: var(--stone400);
-      font-size: 11px;
-      font-weight: 600;
-      margin-top: 4px;
-    }
-    .homeBtn {
-      border: 0;
-      background: var(--stone200);
-      color: var(--stone700);
-      border-radius: 11px;
-      padding: 9px 12px;
-      font-size: 12px;
-      font-weight: 900;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .qCard {
-      background: #fff;
-      border: 1px solid var(--stone200);
-      border-radius: 18px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.04);
-      padding: 24px;
-      margin-bottom: 22px;
-    }
-    .qText {
-      margin: 0;
-      font-size: 19px;
-      line-height: 1.85;
-      font-weight: 700;
-      white-space: pre-wrap;
-    }
-    .options {
-      display: grid;
-      gap: 12px;
-      margin-bottom: 28px;
-    }
-    .option {
-      width: 100%;
-      text-align: left;
-      padding: 16px;
-      border-radius: 14px;
-      border: 2px solid var(--stone200);
-      background: #fff;
-      color: var(--stone700);
-      font-size: 17px;
-      font-weight: 800;
-      line-height: 1.5;
-    }
-    .option:hover:not(:disabled) {
-      border-color: #fda4af;
-      background: #fff1f2;
-    }
-    .option.correct {
-      border-color: var(--green600);
-      background: var(--green50);
-      color: var(--green800);
-    }
-    .option.wrong{
-      border-color: #f87171;
-      background: var(--red50);
-      color: var(--red800);
-    }
-    .option.muted{
-      background: var(--stone50);
-      color: var(--stone400);
-      opacity: .7;
-    }
-    .optionInner {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-    }
-    .answer {
-      border-radius: 18px;
-      padding: 24px;
-      margin-bottom: 22px;
-      box-shadow: 0 4px 18px rgba(0,0,0,.08);
-    }
-    .answer.correct {
-      background: var(--green50);
-      border: 1px solid #bbf7d0;
-    }
-    .answer.wrong {
-      background: var(--red50);
-      border: 1px solid #fecaca;
-    }
-    .answer h3 {
-      margin: 0 0 14px;
-      font-size: 20px;
-    }
-    .answer.correct h3 {
-      color: var(--green800);
-    }
-    .answer.wrong h3 {
-      color: var(--red800);
-    }
-    .answer p {
-      white-space: pre-wrap;
-      line-height: 1.8;
-      margin: 0;
-    }
-    .nav {
-      display: flex;
-      gap: 12px;
-    }
-    .nav .btn {
-      flex: 1;
-    }
-    .result {
-      width: 100%;
-      max-width: 448px;
-      background: #fff;
-      border: 1px solid var(--stone200);
-      border-radius: 20px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.12);
-      padding: 32px;
-      text-align: center;
-    }
-    .bubble {
-      position: relative;
-      display: inline-block;
-      margin: 0 auto 18px;
-      max-width: 100%;
-      background: #fff;
-      border: 2px solid var(--rose800);
-      color: var(--rose800);
-      font-size: 20px;
-      font-weight: 900;
-      line-height: 1.45;
-      padding: 12px 22px;
-      border-radius: 14px;
-      white-space: pre-wrap;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-    }
-    .bubble:after {
-      content: "";
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      background: #fff;
-      border-right: 2px solid var(--rose800);
-      border-bottom: 2px solid var(--rose800);
-      bottom: -9px;
-      left: 50%;
-      transform: translateX(-50%) rotate(45deg);
-    }
-    .resultLogo {
-      width: 128px;
-      height: 128px;
-      border-radius: 999px;
-      border: 4px solid rgba(136,19,55,.1);
-      margin: 0 auto 26px;
-      object-fit: cover;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.16);
-    }
-    .score {
-      margin: 14px 0 28px;
-      color: var(--rose900);
-      font-size: 52px;
-      line-height: 1;
-      font-weight: 900;
-    }
-    .score span {
-      color: var(--stone500);
-      font-size: 24px;
-      font-weight: 500;
-    }
-    .progressPill {
-      display: inline-block;
-      margin: 8px 0 18px;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: var(--stone100);
-      color: var(--stone500);
-      font-size: 12px;
-      font-weight: 900;
-    }
-    .complete {
-      margin-bottom: 14px;
-      padding: 14px;
-      background: var(--green50);
-      border: 1px solid #bbf7d0;
-      color: var(--green800);
-      border-radius: 12px;
-      font-weight: 900;
-    }
-    .modalBack {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 999;
-    }
-    .modal {
-      width: 100%;
-      max-width: 360px;
-      background: #fff;
-      border-radius: 18px;
-      border: 1px solid var(--stone200);
-      padding: 24px;
-      text-align: center;
-      box-shadow: 0 24px 70px rgba(0,0,0,0.25);
-    }
-    .modal h3 {
-      margin: 0 0 8px;
-      font-size: 18px;
-      font-weight: 900;
-    }
-    .modal p {
-      margin: 0 0 22px;
-      color: var(--stone500);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-    .debug {
-      max-width: 980px;
-      margin: 20px auto;
-      padding: 20px;
-      border-radius: 12px;
-      background: #fff5f5;
-      border: 1px solid #fecaca;
-      color: #991b1b;
-      white-space: pre-wrap;
-      line-height: 1.6;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
-    @media(max-width: 520px) {
-      .center { padding: 16px; }
-      .hero { padding: 26px 20px; }
-      h1 { font-size: 21px; }
-      .body { padding: 20px; }
-      .admin { margin-left: -20px; margin-right: -20px; margin-bottom: -20px; padding-left: 20px; padding-right: 20px; }
-      .toggle button { font-size: 12px; }
-      .quizTop { align-items: start; }
-      .themePill { max-width: 42%; }
-      .qText { font-size: 17px; }
-      .option { font-size: 16px; }
-      .nav { flex-direction: column; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f8fa">
+<title>かんたん老後資産シミュレーター</title>
+<style>
+:root{
+  --bg:#f6f8fb;--card:#ffffff;--text:#1f2937;--muted:#667085;--border:#e4e7ec;
+  --blue:#4f7cff;--blue-soft:#edf3ff;--green:#36a269;--green-soft:#ecf8f1;
+  --orange:#d8892e;--orange-soft:#fff5e8;--purple:#7a65c7;--purple-soft:#f3f0ff;
+  --red:#c94b4b;--shadow:0 8px 24px rgba(16,24,40,.06)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI",Meiryo,sans-serif;line-height:1.6}
+button,input,summary{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1180px,calc(100% - 24px));margin:22px auto 48px}
+.hero{background:linear-gradient(135deg,#f7fbff,#f7f8fb);border:1px solid var(--border);border-radius:24px;padding:22px 22px 18px;margin-bottom:16px}
+.hero h1{font-size:clamp(24px,4vw,38px);line-height:1.25;margin:0 0 8px}
+.hero p{margin:0;color:var(--muted);font-size:15px}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:18px;box-shadow:var(--shadow)}
+.side{position:sticky;top:12px}
+.section{border-top:1px solid var(--border);padding-top:18px;margin-top:18px}
+.section:first-child{border-top:0;padding-top:0;margin-top:0}
+.section-title{font-weight:750;font-size:17px;margin-bottom:5px}
+.sub{font-size:13px;color:var(--muted)}
+.inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.full{grid-column:1/-1}
+label{display:block;font-size:13px;font-weight:600}
+.input{width:100%;min-height:48px;margin-top:5px;border:1px solid #d0d5dd;border-radius:12px;background:#fff;color:var(--text);padding:9px 11px;font-size:16px;outline:none}
+.input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(79,124,255,.12)}
+.preset{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.preset button,.normal-btn{min-height:48px;border:1px solid var(--border);border-radius:12px;background:#fff;color:var(--text);padding:7px 8px}
+.preset button.active{border-color:var(--blue);background:var(--blue-soft);color:#2f5bd4;font-weight:700}
+.alloc{border-radius:16px;padding:12px;margin-top:10px}
+.alloc.eq{background:var(--blue-soft)}
+.alloc.bond{background:var(--green-soft)}
+.alloc.cash{background:var(--orange-soft)}
+.alloc-top{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.alloc-name{font-weight:750}
+.alloc-role{font-size:12px;color:var(--muted)}
+.percent-box{display:flex;align-items:center;gap:5px}
+.percent-box input{width:74px;min-height:44px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;padding:7px;text-align:right;font-size:16px}
+input[type="range"]{width:100%;min-height:36px;margin-top:8px;accent-color:var(--blue)}
+.alloc.bond input[type="range"]{accent-color:var(--green)}
+.alloc.cash input[type="range"]{accent-color:var(--orange)}
+.bar{display:flex;height:16px;border-radius:999px;overflow:hidden;background:#eef0f4;margin-top:12px}
+.bar>div:nth-child(1){background:var(--blue)}
+.bar>div:nth-child(2){background:var(--green)}
+.bar>div:nth-child(3){background:var(--orange)}
+.details{border-top:1px solid var(--border);margin-top:18px;padding-top:16px}
+details summary{cursor:pointer;font-weight:750;min-height:44px;display:flex;align-items:center}
+.check{display:flex;gap:10px;align-items:flex-start;background:#f8f9fb;border-radius:12px;padding:11px;margin-top:10px;font-size:13px}
+.check input{width:20px;height:20px;margin:2px 0 0}
+.results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.result{border-radius:16px;padding:14px;min-width:0}
+.result.gray{background:#f1f3f6}.result.blue{background:var(--blue-soft)}.result.green{background:var(--green-soft)}.result.orange{background:var(--orange-soft)}
+.result-label{font-size:12px;color:var(--muted);margin-bottom:4px}
+.result-value{font-size:clamp(20px,3vw,28px);line-height:1.2;font-weight:800;font-variant-numeric:tabular-nums;word-break:break-word}
+.message{margin-top:12px;background:#f8f9fb;border-radius:14px;padding:13px 14px;font-size:15px;line-height:1.8}
+.info-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.info-mini{border:1px solid var(--border);border-radius:14px;padding:12px;background:#fff}
+.info-mini b{font-size:18px}
+.chart-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}
+svg{display:block;width:100%;min-width:640px;height:auto}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:var(--blue)}
+.age-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.age-card{border:1px solid var(--border);border-radius:16px;padding:13px;background:#fff}
+.age-card.now{background:#f8f9fb}
+.age-head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.age{font-size:19px;font-weight:800}.years{font-size:11px;color:var(--muted)}
+.age-money{font-size:24px;line-height:1.2;font-weight:800;margin-top:7px;font-variant-numeric:tabular-nums}
+.age-real{font-size:12px;color:var(--muted);margin-top:4px}
+.mini-bar{display:flex;height:8px;border-radius:999px;overflow:hidden;background:#eef0f4;margin-top:10px}
+.mini-bar span:nth-child(1){background:var(--blue)}.mini-bar span:nth-child(2){background:var(--green)}.mini-bar span:nth-child(3){background:var(--orange)}
+.infl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.infl-card{border-radius:16px;padding:14px;background:#f5f6f8;border:1px solid transparent}
+.infl-card.standard{background:var(--green-soft);border-color:#caebd8}
+.infl-card .value{font-size:23px;font-weight:800;margin-top:4px}
+.note{font-size:12px;color:var(--muted);line-height:1.8}
+.warning{color:var(--red);font-weight:700}
+footer{margin-top:18px;padding:0 4px}
+@media(max-width:960px){
+ .grid{grid-template-columns:1fr}.side{position:static}.results{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+ .wrap{width:min(100% - 14px,1180px);margin-top:8px}.hero{padding:17px 15px;border-radius:18px}
+ .card{padding:14px;border-radius:18px}.inputs{gap:8px}.results{gap:8px}
+ .result{padding:12px}.age-grid{grid-template-columns:1fr 1fr}.infl-grid{grid-template-columns:1fr}
+ .info-strip{grid-template-columns:1fr}.age-money{font-size:21px}.hero p{font-size:14px}
+}
+@media(max-width:380px){.age-grid{grid-template-columns:1fr}}
+</style>
 </head>
-<body class="bg-stone-50 text-stone-800">
+<body>
+<main class="wrap">
+  <section class="hero">
+    <h1>かんたん老後資産シミュレーター</h1>
+    <p>オルカン・個人向け国債・現金をどう分けると、将来どのくらい残るかを確認できます。スマホでも使えます。</p>
+  </section>
 
-  <div id="root">
-    <div class="center"><div class="loading"><div class="spinner"></div>アプリを起動中...</div></div>
+  <div class="grid">
+    <aside class="card side">
+      <section class="section">
+        <div class="section-title">① 基本条件</div>
+        <div class="sub">まずは資産額と年齢だけでも確認できます。</div>
+        <div class="inputs">
+          <label>現在の年齢
+            <input id="age" class="input" type="number" inputmode="numeric" min="18" max="100" value="68">
+          </label>
+          <label>何歳まで見る？
+            <input id="endAge" class="input" type="number" inputmode="numeric" min="19" max="110" value="90">
+          </label>
+          <label class="full">運用するお金（万円）
+            <input id="principal" class="input" type="number" inputmode="decimal" min="0" step="10" value="1000">
+          </label>
+          <label>毎月取り崩す額（万円）
+            <input id="draw" class="input" type="number" inputmode="decimal" min="0" step=".1" value="0">
+          </label>
+          <label>年間の追加投資（万円）
+            <input id="add" class="input" type="number" inputmode="decimal" min="0" step="1" value="0">
+          </label>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">② 物価の上がり方</div>
+        <div class="sub">長期間で平均して、毎年どのくらい物価が上がるかを設定します。</div>
+        <div class="preset">
+          <button type="button" class="infl" data-v="1">1%<br><span class="sub">低め</span></button>
+          <button type="button" class="infl active" data-v="2">2%<br><span class="sub">標準</span></button>
+          <button type="button" class="infl" data-v="3">3%<br><span class="sub">高め</span></button>
+        </div>
+        <label style="margin-top:9px">細かく設定する場合（年平均%）
+          <input id="inflation" class="input" type="number" inputmode="decimal" min="0" max="10" step=".1" value="2">
+        </label>
+      </section>
+
+      <section class="section">
+        <div class="alloc-top">
+          <div>
+            <div class="section-title" style="margin:0">③ お金の分け方</div>
+            <div class="sub">合計100%になるように設定します。</div>
+          </div>
+          <button id="normalize" type="button" class="normal-btn">100%に整える</button>
+        </div>
+
+        <div class="alloc eq">
+          <div class="alloc-top">
+            <div><div class="alloc-name">オルカン</div><div class="alloc-role">増やす役割</div></div>
+            <div class="percent-box"><input id="eqNum" type="number" inputmode="numeric" min="0" max="100" value="40"><span>%</span></div>
+          </div>
+          <input id="eq" type="range" min="0" max="100" value="40">
+        </div>
+
+        <div class="alloc bond">
+          <div class="alloc-top">
+            <div><div class="alloc-name">個人向け国債</div><div class="alloc-role">守る役割</div></div>
+            <div class="percent-box"><input id="bondNum" type="number" inputmode="numeric" min="0" max="100" value="40"><span>%</span></div>
+          </div>
+          <input id="bond" type="range" min="0" max="100" value="40">
+        </div>
+
+        <div class="alloc cash">
+          <div class="alloc-top">
+            <div><div class="alloc-name">現金</div><div class="alloc-role">すぐ使う役割</div></div>
+            <div class="percent-box"><input id="cashNum" type="number" inputmode="numeric" min="0" max="100" value="20"><span>%</span></div>
+          </div>
+          <input id="cash" type="range" min="0" max="100" value="20">
+        </div>
+
+        <div class="bar"><div id="barEq"></div><div id="barBond"></div><div id="barCash"></div></div>
+        <div id="sumLabel" class="sub" style="margin-top:7px"></div>
+      </section>
+
+      <details class="details">
+        <summary>詳しい設定</summary>
+        <div class="sub">分からなければ初期設定のままで大丈夫です。</div>
+        <div class="inputs" style="grid-template-columns:repeat(3,1fr)">
+          <label>オルカン年率
+            <input id="eqRate" class="input" type="number" inputmode="decimal" step=".1" value="5">
+          </label>
+          <label>国債年率
+            <input id="bondRate" class="input" type="number" inputmode="decimal" step=".1" value="2">
+          </label>
+          <label>現金年率
+            <input id="cashRate" class="input" type="number" inputmode="decimal" step=".1" value=".5">
+          </label>
+        </div>
+        <label class="check">
+          <input id="crash" type="checkbox">
+          <span>最初の年にオルカンが30%下落した場合も見る</span>
+        </label>
+      </details>
+      <div id="validation" class="sub" aria-live="polite" style="margin-top:8px"></div>
+    </aside>
+
+    <section>
+      <div class="card">
+        <div class="section-title" style="font-size:20px">まずここを確認</div>
+        <div class="results">
+          <div class="result gray"><div class="result-label">今の資産</div><div id="startAsset" class="result-value">-</div></div>
+          <div class="result blue"><div class="result-label">終了時の資産</div><div id="finalNominal" class="result-value">-</div></div>
+          <div class="result green"><div class="result-label">今のお金の価値に直すと</div><div id="finalReal" class="result-value">-</div></div>
+          <div class="result orange"><div class="result-label">資産は持つ？</div><div id="depletion" class="result-value">-</div></div>
+        </div>
+        <div id="simpleMessage" class="message"></div>
+        <div class="info-strip">
+          <div class="info-mini">
+            <div class="sub">設定中の物価上昇</div>
+            <b id="inflationMeaning">年平均2%</b>
+            <div id="inflationExample" class="sub" style="margin-top:3px"></div>
+          </div>
+          <div class="info-mini">
+            <div class="sub">資産配分から見た想定年率</div>
+            <b id="weighted">-</b>
+            <div class="sub" style="margin-top:3px">利益にも翌年以降の運用がかかる複利計算です。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="section-title" style="font-size:20px">資産の増え方・減り方</div>
+        <div id="chartNote" class="sub"></div>
+        <div class="chart-wrap">
+          <svg id="chart" viewBox="0 0 760 330" role="img" aria-label="2年ごとの資産推移グラフ"></svg>
+        </div>
+        <div class="legend"><span><i class="dot"></i>実際の資産額</span><span>− − 物価上昇を考えた「今のお金の価値」</span></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="section-title" style="font-size:20px">2年ごとの資産推移</div>
+        <div class="sub">「その年齢のとき、どのくらい残っているか」を2年ごとに表示します。</div>
+        <div id="ageCards" class="age-grid"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="section-title" style="font-size:20px">物価が違うとどうなる？</div>
+        <div class="sub">終了時の資産を「今のお金の価値」で比べます。</div>
+        <div id="inflCards" class="infl-grid"></div>
+      </div>
+
+      <footer class="note">
+        このシミュレーションは将来の運用成果を保証するものではありません。オルカンは価格変動があり、元本割れすることがあります。国債・現金を含めた配分、生活費、年金、医療・介護費なども合わせてご検討ください。オルカン部分をNISAで保有する想定で、税金・手数料などは簡略化しています。
+      </footer>
+    </section>
   </div>
+</main>
 
-  <script>
-    "use strict";
-
-    window.addEventListener("error", function(e) {
-      var root = document.getElementById("root");
-      if (!root) return;
-      root.innerHTML = '<div class="debug">JavaScript Error\n\n' + esc(e.message || "不明なエラー") + "\n" + esc(e.filename || "") + ":" + esc(String(e.lineno || "")) + "\n\nこの表示が出た場合は、表示されたエラー文をそのまま共有してください。</div>";
-    });
-
-    window.addEventListener("unhandledrejection", function(e) {
-      console.error(e.reason);
-    });
-
-    var DEFAULT_IMPORT_URL = "https://docs.google.com/spreadsheets/d/10_r8UZXOqXkbZZcBMyrci3gsg6t-2zVapaIFOET3GDA/export?format=csv&gid=1571684716";
-    var DEFAULT_LOGO_URL = "https://assets.st-note.com/production/uploads/images/233954636/profile_9ee7939ab1c2b0d090f5668ffb7d3155.png?width=80&height=80&dpr=2&crop=1:1,smart";
-    var QUESTIONS_PER_BATCH = 10;
-    var EXCLUDED_KEYWORDS = ["システム", "管理", "テスト", "ダミー"];
-
-    var defaultSampleData =
-      "タイトル,問題番号,問題,選択肢,解答,解説\n" +
-      "ワイン概論,1,日本の酒税法において粉末酒はどれに分類されるか、1つ選べ。,1.混成酒類2.発泡性酒類3.蒸留酒4.醸造酒類,混成酒類,粉末酒は混成酒類に分類されます。\n" +
-      "フランス,2,次のうちボルドー地方の主要品種を1つ選べ。,1.カベルネ・ソーヴィニヨン2.ネッビオーロ3.サンジョヴェーゼ4.テンプラニーリョ,カベルネ・ソーヴィニヨン,ボルドー地方ではカベルネ・ソーヴィニヨンやメルロが主要品種です。";
-
-    var state = {
-      screen: "title",
-      quizData: [],
-      selectedTheme: "すべて",
-      isRandomOrder: false,
-      sessionQuestions: [],
-      currentBatchIndex: 0,
-      questions: [],
-      currentIndex: 0,
-      userAnswers: {},
-      seenWords: new Set(),
-      message: "",
-      messageIsError: false,
-      importUrl: "",
-      isLoading: false,
-      isInitialLoading: true,
-      logoClickCount: 0,
-      showAdminTools: false,
-      showHomeConfirm: false
+<script>
+(function(){
+  var root=document;
+  function $(id){return root.getElementById(id)}
+  var E={
+    age:$("age"),endAge:$("endAge"),principal:$("principal"),draw:$("draw"),add:$("add"),
+    inflation:$("inflation"),eq:$("eq"),bond:$("bond"),cash:$("cash"),
+    eqNum:$("eqNum"),bondNum:$("bondNum"),cashNum:$("cashNum"),
+    barEq:$("barEq"),barBond:$("barBond"),barCash:$("barCash"),sumLabel:$("sumLabel"),
+    eqRate:$("eqRate"),bondRate:$("bondRate"),cashRate:$("cashRate"),crash:$("crash"),
+    normalize:$("normalize"),validation:$("validation"),startAsset:$("startAsset"),
+    finalNominal:$("finalNominal"),finalReal:$("finalReal"),depletion:$("depletion"),
+    simpleMessage:$("simpleMessage"),inflationMeaning:$("inflationMeaning"),
+    inflationExample:$("inflationExample"),weighted:$("weighted"),
+    chart:$("chart"),chartNote:$("chartNote"),ageCards:$("ageCards"),inflCards:$("inflCards")
+  };
+  function num(el,d){var v=Number(el.value);return Number.isFinite(v)?v:(d||0)}
+  function clamp(v,min,max){return Math.min(max,Math.max(min,v))}
+  function money(v){return new Intl.NumberFormat("ja-JP",{maximumFractionDigits:0}).format(Math.max(0,v))+"万円"}
+  function getCfg(){
+    var age=Math.round(clamp(num(E.age,68),18,100));
+    var endAge=Math.round(clamp(num(E.endAge,90),age+1,110));
+    return {
+      age:age,endAge:endAge,years:endAge-age,p:Math.max(0,num(E.principal,1000)),
+      draw:Math.max(0,num(E.draw,0)),add:Math.max(0,num(E.add,0)),
+      infl:clamp(num(E.inflation,2),0,10),
+      eq:clamp(num(E.eqNum,40),0,100),bond:clamp(num(E.bondNum,40),0,100),cash:clamp(num(E.cashNum,20),0,100),
+      eqR:clamp(num(E.eqRate,5),-30,30),bondR:clamp(num(E.bondRate,2),-10,15),cashR:clamp(num(E.cashRate,.5),-5,10),
+      crash:E.crash.checked
     };
-
-    var messageTimer = null;
-
-    // SVGインラインアイコンの生成関数群 (外部フォント依存を排除)
-    const Icons = {
-      Wine: '<svg class="w-10 h-10 mx-auto text-rose-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8" /><path d="M12 11v11" /><path d="M19 3a5 5 0 0 1-5 5h-4a5 5 0 0 1-5-5z" /></svg>',
-      BookOpen: '<svg class="w-5 h-5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></svg>',
-      ListOrdered: '<svg class="w-4 h-4 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6" /><line x1="10" y1="12" x2="21" y2="12" /><line x1="10" y1="18" x2="21" y2="18" /><path d="M4 6h1v4" /><path d="M4 10h2" /><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" /></svg>',
-      Shuffle: '<svg class="w-4 h-4 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8" /><line x1="4" y1="20" x2="21" y2="3" /><polyline points="21 16 21 21 16 21" /><line x1="15" y1="15" x2="21" y2="21" /><line x1="4" y1="4" x2="9" y2="9" /></svg>',
-      Home: '<svg class="w-4.5 h-4.5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>',
-      DownloadCloud: '<svg class="w-4 h-4 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17" /><line x1="12" y1="12" x2="12" y2="21" /><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29" /></svg>',
-      LinkIcon: '<svg class="w-4 h-4 text-stone-400 absolute left-3 top-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>',
-      Upload: '<svg class="w-3.5 h-3.5 inline mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>',
-      Loader2: '<svg class="w-10 h-10 animate-spin mb-4 text-rose-800 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.21-8.56" /></svg>'
-    };
-
-    function esc(v) {
-      return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-
-    function normalizeText(v) {
-      return String(v == null ? "" : v).replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-    }
-
-    function setMessage(text, isError) {
-      state.message = text || "";
-      state.messageIsError = !!isError;
-      if (messageTimer) { clearTimeout(messageTimer); messageTimer = null; }
-      if (state.message && !state.message.includes("読込中") && !state.message.includes("お待ち") && !state.isInitialLoading) {
-        messageTimer = setTimeout(function() { state.message = ""; render(); }, 7000);
+  }
+  function simulate(c,inflOverride){
+    var sum=c.eq+c.bond+c.cash;
+    var fe=sum?c.eq/sum:0,fb=sum?c.bond/sum:0,fc=sum?c.cash/sum:0;
+    var eq=c.p*fe,bond=c.p*fb,cash=c.p*fc,drawn=0,depletion=null;
+    var infl=inflOverride==null?c.infl:inflOverride;
+    var req=Math.pow(Math.max(.0001,1+c.eqR/100),1/12)-1;
+    var rb=Math.pow(Math.max(.0001,1+c.bondR/100),1/12)-1;
+    var rc=Math.pow(Math.max(.0001,1+c.cashR/100),1/12)-1;
+    var s=[{year:0,age:c.age,eq:eq,bond:bond,cash:cash,total:eq+bond+cash,real:eq+bond+cash}];
+    for(var m=1;m<=c.years*12;m++){
+      if(c.crash&&m===1)eq*=.7;
+      eq*=1+req;bond*=1+rb;cash*=1+rc;
+      var add=c.add/12;eq+=add*fe;bond+=add*fb;cash+=add*fc;
+      var need=c.draw,t=Math.min(cash,need);cash-=t;need-=t;
+      t=Math.min(bond,need);bond-=t;need-=t;
+      t=Math.min(eq,need);eq-=t;need-=t;
+      drawn+=c.draw-need;
+      if(eq+bond+cash<=.00001&&depletion===null&&c.draw>0){depletion=c.age+m/12;eq=0;bond=0;cash=0}
+      if(m%12===0){
+        var y=m/12,total=eq+bond+cash;
+        s.push({year:y,age:c.age+y,eq:eq,bond:bond,cash:cash,total:total,real:total/Math.pow(1+infl/100,y)});
       }
     }
-
-    function safeFetch(url) {
-      return fetch(url, { method: "GET", cache: "no-store", mode: "cors", credentials: "omit" });
+    return {s:s,drawn:drawn,depletion:depletion,final:s[s.length-1],fe:fe,fb:fb,fc:fc};
+  }
+  function drawChart(series){
+    var points=series.filter(function(d,i){return i===0||d.year%2===0||i===series.length-1});
+    var W=760,H=330,L=66,R=20,T=20,B=46,iw=W-L-R,ih=H-T-B;
+    var values=[];series.forEach(function(d){values.push(d.total,d.real)});
+    var maxV=Math.max.apply(null,[1].concat(values))*1.08,maxY=Math.max(1,series[series.length-1].year);
+    function x(v){return L+v/maxY*iw}function y(v){return T+ih-v/maxV*ih}
+    var h="";
+    for(var i=0;i<=4;i++){
+      var v=maxV*i/4,yy=y(v);
+      h+='<line x1="'+L+'" y1="'+yy+'" x2="'+(W-R)+'" y2="'+yy+'" stroke="#e4e7ec"/>';
+      h+='<text x="'+(L-8)+'" y="'+(yy+4)+'" text-anchor="end" font-size="12" fill="#667085">'+Math.round(v)+'万</text>';
     }
-
-    function looksHtml(text) {
-      var t = String(text || "").trim().slice(0, 160).toLowerCase();
-      return t.startsWith("<!doctype") || t.startsWith("<html") || t.startsWith("<script");
-    }
-
-    function parseData(raw) {
-      raw = normalizeText(raw);
-      if (!raw.trim()) return [];
-      if (looksHtml(raw)) throw new Error("HTML_RESPONSE_ERROR");
-
-      var cleaned = raw.split("\n").map(function(line) {
-        var l = line.trim().replace(/^"|"$/g, "").trim();
-        if (l.includes("ID:") || l.includes("章:") || l.includes("問題:") || l.includes("選択肢:") || l.includes("正解:") || l.includes("解説:") || l.startsWith("---")) {
-          l = l.replace(/,+$/g, "").trim().replace(/^"|"$/g, "").trim();
-        }
-        return l;
-      }).join("\n");
-
-      if (cleaned.includes("ID:") || cleaned.includes("章:") || cleaned.includes("問題:")) {
-        var textData = processTextData(cleaned);
-        if (textData.length) return textData;
-      }
-      return processCSVData(raw);
-    }
-
-    function processTextData(text) {
-      var blocks = text.split(/(?:-{10,}|" -{10,}")/);
-      var out = [];
-      blocks.forEach(function(block, index) {
-        if (!block.trim()) return;
-
-        function extract(prefix) {
-          var escaped = prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-          var re = new RegExp("^[\\s\\\",]*" + escaped + "\\s*([\\s\\S]*?)(?=(?:^[\\s\\\",]*(?:ID|章|問題|選択肢|正解|解説):|$))", "m");
-          var m = block.match(re);
-          return m ? m[1].trim() : '';
-        }
-        var id = extract('ID:') || index + 1;
-        var theme = extract('章:') || "その他";
-        var question = extract('問題:');
-        var optionsRaw = extract('選択肢:');
-        var correct = extract('正解:');
-        var explanation = extract('解説:');
-
-        if (!question || !optionsRaw) return;
-        if (EXCLUDED_KEYWORDS.some(function(k) { return theme.includes(k); })) return;
-
-        var options = splitOptionsFromCell(optionsRaw);
-        if (!options.length) return;
-
-        out.push({
-          id: Number(id) || index + 1,
-          theme: theme,
-          question: question,
-          options: options,
-          correctAnswer: normalizeAnswer(correct || options[0]),
-          explanation: explanation || "解説はありません。"
-        });
-      });
-      return out;
-    }
-
-    function csvRows(csvText) {
-      var text = normalizeText(csvText);
-      var rows = [];
-      var row = [];
-      var val = "";
-      var inQuotes = false;
-
-      for (var i = 0; i < text.length; i++) {
-        var ch = text[i];
-        if (ch === '"') {
-          if (inQuotes && text[i+1] === '"') {
-            val += '"';
-            i++;
-          } else {
-            inQuotes = !inQuotes;
-          }
-        } else if (ch === "," && !inQuotes) {
-          row.push(val);
-          val = "";
-        } else if (ch === "\n" && !inQuotes) {
-          row.push(val);
-          rows.push(row);
-          row = [];
-          val = "";
-        } else {
-          val += ch;
-        }
-      }
-      if (val !== "" || row.length) {
-        row.push(val);
-        rows.push(row);
-      }
-      return rows;
-    }
-
-    function toHalfWidthNumber(s) {
-      return String(s).replace(/[０-９]/g, function(ch) {
-        return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0);
-      });
-    }
-
-    function stripOptionMarker(s) {
-      return String(s || "")
-        .trim()
-        .replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, "")
-        .replace(/^[0-9０-９]{1,2}\s*[\.\．\)\）:：]\s*/, "")
-        .trim();
-    }
-
-    function normalizeAnswer(s) {
-      return stripOptionMarker(String(s || "").replace(/^"+|"+$/g, "").trim());
-    }
-
-    function splitOptionsFromCell(cell) {
-      if (cell == null) return [];
-
-      var text = String(cell)
-        .replace(/^"+|"+$/g, "")
-        .replace(/\\r\\n/g, "\n")
-        .replace(/\\n/g, "\n")
-        .replace(/\r\n/g, "\n")
-        .replace(/\r/g, "\n")
-        .trim();
-
-      if (!text) return [];
-
-      text = text.replace(/[；;]/g, "\n");
-
-      var parts = [];
-
-      if (text.includes("\n")) {
-        parts = text.split("\n");
-      } else if (/[①②③④⑤⑥⑦⑧⑨⑩]/.test(text)) {
-        parts = text.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/);
-      } else if (/[0-9０-９]{1,2}\s*[\.\．\)\）:：]/.test(text)) {
-        parts = text.split(/(?=[0-9０-９]{1,2}\s*[\.\．\)\）:：])/);
-      } else if (/(?:^|[\s　])(?:[1-9１-９])[\s　]+/.test(text)) {
-        parts = text.split(/(?=(?:^|[\s　])[1-9１-９][\s　]+)/);
-      } else if (text.includes(",") || text.includes("、")) {
-        parts = text.split(/,|、/);
-      } else {
-        parts = [text];
-      }
-
-      parts = parts
-        .map(function(x) { return String(x || "").trim(); })
-        .filter(Boolean);
-
-      return parts.map(function(x) {
-        return x.replace(/^"+|"+$/g, "").trim();
-      }).filter(Boolean);
-    }
-
-    function answerMatches(selected, correct) {
-      var a = normalizeAnswer(selected);
-      var b = normalizeAnswer(correct);
-      if (a === b) return true;
-      if (String(selected).trim() === String(correct).trim()) return true;
-
-      var selectedNumber = String(selected).trim().match(/^[0-9０-９]{1,2}/);
-      var correctNumber = String(correct).trim().match(/^[0-9０-９]{1,2}/);
-      if (selectedNumber && correctNumber && toHalfWidthNumber(selectedNumber[0]) === toHalfWidthNumber(correctNumber[0])) return true;
-
-      return false;
-    }
-
-    function processCSVData(csv) {
-      var rows = csvRows(csv).filter(function(r) {
-        return r.some(function(c) { return String(c || "").trim() !== ""; });
-      });
-      if (rows.length < 2) return [];
-
-      var headers = rows[0].map(function(x) { return String(x || "").trim(); });
-
-      function idx(cands) {
-        for (var c = 0; c < cands.length; c++) {
-          var cand = String(cands[c]).toLowerCase();
-          for (var i = 0; i < headers.length; i++) {
-            var h = String(headers[i] || "").trim();
-            if (h.toLowerCase() === cand) return i;
-          }
-        }
-        for (var c2 = 0; c2 < cands.length; c2++) {
-          var cand2 = String(cands[c2]).toLowerCase();
-          for (var j = 0; j < headers.length; j++) {
-            var h2 = String(headers[j] || "").trim();
-            var lower2 = h2.toLowerCase();
-            if (cands[c2] === "問題" && (h2 === "問題番号" || h2.includes("問題番号"))) continue;
-            if (cands[c2] === "番号" && (h2 === "問題" || h2.includes("問題文"))) continue;
-            if (lower2.includes(cand2)) return j;
-          }
-        }
-        return -1;
-      }
-
-      var idI = idx(["id", "ID", "番号", "問題番号"]);
-      var qI = idx(["questionSentence", "問題文", "問題", "question"]);
-      var expI = idx(["explanation", "解説", "説明"]);
-      var caI = idx(["correctAnswers.0", "correctAnswer", "正解", "解答", "答え"]);
-
-      if (qI === -1) qI = headers.length > 2 ? 2 : -1;
-      if (qI === -1) return [];
-
-      if (expI === -1) expI = headers.length > 5 ? 5 : -1;
-
-      var optionColumns = [];
-
-      // 👑 1. まず複数列に選択肢が分かれているパターン（「選択肢1」「選択肢2」等）を検知して全列を登録
-      headers.forEach(function(headerText, idx) {
-        var h = String(headerText).trim().toLowerCase();
-        var isMultiColumnOption = /^(選択肢|option|options|opt)[\s_.-]*([0-9a-f０-９ａ-ｆa-zａ-ｚ])$/i.test(h);
-        if (isMultiColumnOption) {
-          optionColumns.push(idx);
-        }
-      });
-
-      // 👑 2. 複数列形式がなく、単一の結合セル（「選択肢」列）にデータが入っている場合
-      if (optionColumns.length === 0) {
-        var joinedOptionsI = idx(["選択肢", "options", "option"]);
-        if (joinedOptionsI !== -1 && joinedOptionsI !== qI && joinedOptionsI !== caI && joinedOptionsI !== 0) {
-          optionColumns.push(joinedOptionsI);
-        }
-      }
-
-      // 👑 3. ヘッダー名が不規則で特定できない場合の自動フォールバック
-      if (optionColumns.length === 0) {
-        headers.forEach(function(_h, i) {
-          if (i !== idI && i !== 0 && i !== qI && i !== expI && i !== caI) {
-            optionColumns.push(i);
-          }
-        });
-      }
-
-      var out = [];
-
-      for (var r = 1; r < rows.length; r++) {
-        var row = rows[r];
-        if (!String(row[qI] || "").trim()) continue;
-
-        // 👑 スプシのA列（row[0]）を、そのまま出題テーマ（theme）として優先表示する！
-        var theme = String(row[0] || "その他").trim() || "その他";
-        if (theme === headers[0] || theme.toLowerCase() === "title" || theme.toLowerCase() === "chaptertitle" || theme === "章") continue;
-        if (EXCLUDED_KEYWORDS.some(function(k) { return theme.includes(k); })) return;
-
-        var options = [];
-        optionColumns.forEach(function(colIndex) {
-          var cell = String(row[colIndex] || "").trim();
-          if (!cell) return;
-
-          splitOptionsFromCell(cell).forEach(function(opt) {
-            if (opt) options.push(opt);
-          });
-        });
-
-        options = options
-          .map(function(x) { return String(x || "").replace(/^"+|"+$/g, "").trim(); })
-          .filter(Boolean);
-
-        if (!options.length) {
-          options = ["選択肢1", "選択肢2", "選択肢3", "選択肢4"];
-        }
-
-        var correctAnswer = caI !== -1 && row[caI] ? String(row[caI]).trim() : options[0];
-
-        out.push({
-          id: idI !== -1 && row[idI] ? Number(row[idI]) || r : r,
-          theme: theme,
-          question: String(row[qI] || "").replace(/\\n/g, "\n"),
-          options: options,
-          correctAnswer: correctAnswer,
-          explanation: expI !== -1 && row[expI] ? String(row[expI]).replace(/\\n/g, "\n") : "解説はありません。"
-        });
-      }
-      return out;
-    }
-
-    function formatText(text, isQuestion) {
-      if (!text) return "";
-      var re = /([a-zA-ZÀ-ÿ0-9\-.]+([\s][a-zA-ZÀ-ÿ0-9\-.]+)*)（([^）]+)）/g;
-      if (isQuestion) return String(text).replace(re, "$1");
-      return String(text).replace(re, function(match, word) {
-        var w = String(word || "").trim().toLowerCase();
-        if (state.seenWords.has(w)) return word;
-        state.seenWords.add(w);
-        return match;
-      });
-    }
-
-    // 👑 テーマ選択のプルダウンを「あいうえお（五十音）順」にソートする
-    function themes() {
-      if (!state.quizData.length) return ["すべて"];
-      var set = new Set();
-      state.quizData.forEach(function(q) { if (q.theme) set.add(q.theme); });
-      return ["すべて"].concat(Array.from(set).sort(function(a, b) {
-        return String(a).localeCompare(String(b), "ja");
-      }));
-    }
-
-    function logoHtml(cls) {
-      return '<img src="' + esc(DEFAULT_LOGO_URL) + '" alt="メインロゴ" class="' + esc(cls || "logo") + '" id="mainLogo">';
-    }
-
-    function titleHtml() {
-      var ts = themes();
-      var html = "";
-      html += '<div class="center animate"><div class="card">';
-      html += '<div class="hero">' + logoHtml("logo") + '<h1>ソムリエ / ワインエキスパート</h1><p class="subtitle">試験対策ドリル <strong>byブラインド川西</strong></p></div>';
-      html += '<div class="body">';
-
-      if (state.isInitialLoading) {
-        html += '<div class="loading">' + Icons.Loader2 + '<div>最新の問題データを自動読み込み中...</div></div>';
-      } else {
-        html += '<div class="field"><label class="label">出題テーマを選択（現在 ' + esc(state.quizData.length) + ' 問）</label><select id="themeSelect">';
-        ts.forEach(function(t) {
-          html += '<option value="' + esc(t) + '"' + (t === state.selectedTheme ? " selected" : "") + '>' + esc(t) + '</option>';
-        });
-        html += '</select></div>';
-
-        html += '<div class="field"><label class="label">出題の順番</label><div class="toggle">';
-        html += '<button id="orderNormal" class="' + (!state.isRandomOrder ? "active" : "") + '">' + Icons.ListOrdered + ' 五十音順（体系的）</button>';
-        html += '<button id="orderRandom" class="' + (state.isRandomOrder ? "active" : "") + '">' + Icons.Shuffle + ' ランダム（テスト）</button>';
-        html += '</div></div>';
-
-        html += '<button class="btn btnPrimary" id="startBtn" ' + (!state.quizData.length || state.isLoading ? "disabled" : "") + '>' + Icons.BookOpen + ' 学習を始める</button>';
-      }
-
-      if (state.message) {
-        html += '<div class="message ' + (state.messageIsError ? "err" : "ok") + '">' + esc(state.message) + '</div>';
-      }
-
-      if (state.showAdminTools) {
-        html += '<div class="admin animate"><h3>' + Icons.DownloadCloud + ' 管理者用ツール（手動更新）</h3>';
-        html += '<div class="adminRow"><div class="relative flex-1">' + Icons.LinkIcon + '<input id="importUrlInput" type="text" class="pl-9" placeholder="別URLから一時読込..." value="' + esc(state.importUrl) + '"></div><button id="importBtn" class="btn btnDark" ' + (state.isLoading ? "disabled" : "") + '>読込</button></div>';
-        html += '<label class="fileLabel">' + Icons.Upload + '端末のファイルから一時読込（.txt/.csv）<input id="fileInput" type="file" accept=".txt,.csv"></label>';
-        html += '</div>';
-      }
-
-      html += '</div></div></div>';
-      return html;
-    }
-
-    function quizHtml() {
-      var q = state.questions[state.currentIndex];
-      if (!q) {
-        return '<div class="center"><div class="card"><div class="body"><div class="message err">問題データがありません。タイトルに戻って再読み込みしてください。</div><button class="btn btnPrimary" id="backTitleBtn">タイトルへ戻る</button></div></div></div>';
-      }
-
-      var answered = state.userAnswers[state.currentIndex] !== undefined;
-      var selected = state.userAnswers[state.currentIndex];
-      var correct = answerMatches(selected, q.correctAnswer);
-      var totalProgress = state.currentBatchIndex * QUESTIONS_PER_BATCH + state.currentIndex + 1;
-
-      var html = "";
-      html += '<div class="quizPage animate"><div class="quizWrap">';
-      html += '<div class="quizTop"><span class="themePill">' + esc(q.theme) + '</span><div class="topActions"><div class="counter">Q ' + esc(state.currentIndex + 1) + ' <small>/ ' + esc(state.questions.length) + '</small><div class="progress font-sans">進捗: ' + esc(totalProgress) + ' / ' + esc(state.sessionQuestions.length) + '</div></div><button class="homeBtn" id="homeBtn">' + Icons.Home + ' ホーム</button></div></div>';
-      html += '<div class="qCard"><p class="qText">' + esc(formatText(q.question, true)) + '</p></div>';
-      html += '<div class="options">';
-
-      q.options.forEach(function(opt, i) {
-        var cls = "option";
-        var mark = "";
-        if (answered) {
-          if (answerMatches(opt, q.correctAnswer)) { cls += " correct"; mark = "✅"; }
-          else if (opt === selected) { cls += " wrong"; mark = "❌"; }
-          else cls += " muted";
-        }
-        html += '<button class="' + cls + '" data-option="' + esc(i) + '" ' + (answered ? "disabled" : "") + '><span class="optionInner"><span>' + esc(opt) + '</span><span>' + mark + '</span></span></button>';
-      });
-
-      html += '</div>';
-
-      if (answered) {
-        html += '<div class="answer ' + (correct ? "correct" : "wrong") + ' animate"><h3>' + (correct ? "✅ 正解！" : "❌ 不正解...") + '</h3><h4>【解説】</h4><p>' + esc(formatText(q.explanation, false)) + '</p></div>';
-        html += '<div class="nav">';
-        if (state.currentIndex > 0) html += '<button class="btn btnOutline" id="prevBtn">← 前の問題</button>';
-        html += '<button class="btn btnDark" id="nextBtn">' + (state.currentIndex < state.questions.length - 1 ? "次の問題へ →" : "結果を見る →") + '</button></div>';
-      } else if (state.currentIndex > 0) {
-        html += '<button class="btn btnOutline" id="prevBtn">← 前の問題に戻る</button>';
-      }
-
-      html += '</div>';
-      if (state.showHomeConfirm) html += modalHtml();
-      html += '</div>';
-      return html;
-    }
-
-    function modalHtml() {
-      return '<div class="modalBack animate"><div class="modal"><h3>タイトルに戻りますか？</h3><p>現在のクイズセット（第 ' + esc(state.currentBatchIndex + 1) + ' セット）の進行状況やスコアはリセットされます。</p><div class="nav"><button class="btn btnLight" id="cancelHomeBtn">キャンセル</button><button class="btn btnPrimary" id="confirmHomeBtn">タイトルに戻る</button></div></div></div>';
-    }
-
-    function score() {
-      return state.questions.reduce(function(acc, q, i) {
-        return acc + (answerMatches(state.userAnswers[i], q.correctAnswer) ? 1 : 0);
-      }, 0);
-    }
-
-    function resultHtml() {
-      var hasNext = (state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH < state.sessionQuestions.length;
-      var progressCount = Math.min((state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH, state.sessionQuestions.length);
-      var sc = score();
-      var msg = sc <= 3 ? "まだまだ勉強不足" : sc <= 6 ? "やるやん！この調子やで！" : sc <= 9 ? "このまま頑張ったら試験受かるんちゃう？" : "天才かよ…継続こそが\n大切です！";
-
-      var html = "";
-      html += '<div class="center animate"><div class="result">';
-      html += '<div class="bubble">' + esc(msg) + '</div>' + logoHtml("resultLogo");
-      html += '<h2>結果発表</h2><p>' + esc(state.selectedTheme) + '（第 ' + esc(state.currentBatchIndex + 1) + ' セット）</p>';
-      html += '<div class="progressPill">進捗: ' + esc(progressCount) + ' / ' + esc(state.sessionQuestions.length) + ' 問</div>';
-      html += '<div class="score">' + esc(sc) + ' <span>/ ' + esc(state.questions.length) + '</span></div>';
-      if (hasNext) html += '<button class="btn btnPrimary" id="nextBatchBtn">次の10問へ進む →</button>';
-      else html += '<div class="complete">🎉 このテーマの全問題をコンプリートしました！</div>';
-      html += '<div style="height:12px"></div><button class="btn ' + (hasNext ? "btnLight" : "btnDark") + '" id="resultTitleBtn">↻ タイトルへ戻る</button>';
-      html += '</div></div>';
-      return html;
-    }
-
-    function render() {
-      var root = document.getElementById("root");
-      if (!root) return;
-
-      if (state.screen === "title") {
-        root.innerHTML = titleHtml();
-        bindTitle();
-      } else if (state.screen === "quiz") {
-        root.innerHTML = quizHtml();
-        bindQuiz();
-      } else {
-        root.innerHTML = resultHtml();
-        bindResult();
-      }
-      bindLogo();
-    }
-
-    function bindLogo() {
-      var logo = document.getElementById("mainLogo");
-      if (!logo) return;
-      logo.addEventListener("click", function() {
-        if (state.showAdminTools) return;
-        state.logoClickCount++;
-        if (state.logoClickCount >= 5) {
-          state.showAdminTools = true;
-          setMessage("🔑 管理者用ツールを開放しました。", false);
-        }
-        render();
-      });
-      logo.addEventListener("error", function() {
-        var d = document.createElement("div");
-        d.className = logo.className.includes("resultLogo") ? "fallbackLogo resultLogo" : "fallbackLogo";
-        d.innerHTML = '<div class="wine">🍷</div><div>川西</div>';
-        logo.replaceWith(d);
-      });
-    }
-
-    function bindTitle() {
-      var s = document.getElementById("themeSelect");
-      if (s) s.addEventListener("change", function(e) { state.selectedTheme = e.target.value; render(); });
-
-      var n = document.getElementById("orderNormal");
-      if (n) n.addEventListener("click", function() { state.isRandomOrder = false; render(); });
-
-      var r = document.getElementById("orderRandom");
-      if (r) r.addEventListener("click", function() { state.isRandomOrder = true; render(); });
-
-      var st = document.getElementById("startBtn");
-      if (st) st.addEventListener("click", startQuiz);
-
-      var input = document.getElementById("importUrlInput");
-      if (input) input.addEventListener("input", function(e) { state.importUrl = e.target.value; });
-
-      var imp = document.getElementById("importBtn");
-      if (imp) imp.addEventListener("click", handleUrlImport);
-
-      var file = document.getElementById("fileInput");
-      if (file) file.addEventListener("change", handleFileUpload);
-    }
-
-    function bindQuiz() {
-      var back = document.getElementById("backTitleBtn");
-      if (back) back.addEventListener("click", function() { state.screen = "title"; render(); });
-
-      document.querySelectorAll("[data-option]").forEach(function(btn) {
-        btn.addEventListener("click", function() {
-          var i = Number(btn.getAttribute("data-option"));
-          var q = state.questions[state.currentIndex];
-          if (!q || !q.options[i]) return;
-          if (state.userAnswers[state.currentIndex] !== undefined) return;
-          state.userAnswers[state.currentIndex] = q.options[i];
-          state.seenWords = new Set();
-          render();
-        });
-      });
-
-      var next = document.getElementById("nextBtn");
-      if (next) next.addEventListener("click", function() {
-        if (state.currentIndex < state.questions.length - 1) state.currentIndex++;
-        else state.screen = "result";
-        state.seenWords = new Set();
-        render();
-      });
-
-      var prev = document.getElementById("prevBtn");
-      if (prev) prev.addEventListener("click", function() {
-        if (state.currentIndex > 0) state.currentIndex--;
-        state.seenWords = new Set();
-        render();
-      });
-
-      var home = document.getElementById("homeBtn");
-      if (home) home.addEventListener("click", function() { state.showHomeConfirm = true; render(); });
-
-      var cancel = document.getElementById("cancelHomeBtn");
-      if (cancel) cancel.addEventListener("click", function() { state.showHomeConfirm = false; render(); });
-
-      var confirm = document.getElementById("confirmHomeBtn");
-      if (confirm) confirm.addEventListener("click", function() { state.showHomeConfirm = false; state.screen = "title"; render(); });
-    }
-
-    function bindResult() {
-      var nb = document.getElementById("nextBatchBtn");
-      if (nb) nb.addEventListener("click", function() {
-        state.currentBatchIndex++;
-        state.questions = state.sessionQuestions.slice(state.currentBatchIndex * QUESTIONS_PER_BATCH, (state.currentBatchIndex + 1) * QUESTIONS_PER_BATCH);
-        state.currentIndex = 0;
-        state.userAnswers = {};
-        state.seenWords = new Set();
-        state.screen = "quiz";
-        render();
-      });
-
-      var title = document.getElementById("resultTitleBtn");
-      if (title) title.addEventListener("click", function() { state.screen = "title"; render(); });
-    }
-
-    function startQuiz() {
-      var filtered = state.selectedTheme === "すべて" ? state.quizData.slice() : state.quizData.filter(function(q) { return q.theme === state.selectedTheme; });
-      if (state.isRandomOrder) {
-        filtered.sort(function() { return Math.random() - .5; });
-      } else {
-        filtered.sort(function(a, b) {
-          var c = String(a.theme).localeCompare(String(b.theme), "ja");
-          if (c !== 0) return c;
-          return (Number(a.id) || 0) - (Number(b.id) || 0);
-        });
-      }
-      state.sessionQuestions = filtered;
-      state.currentBatchIndex = 0;
-      state.questions = filtered.slice(0, QUESTIONS_PER_BATCH);
-      state.currentIndex = 0;
-      state.userAnswers = {};
-      state.seenWords = new Set();
-      state.screen = "quiz";
-      render();
-    }
-
-    async function loadInitial() {
-      state.isInitialLoading = true;
-      setMessage("🔄 最新の問題データを自動読み込み中...", false);
-      render();
-
-      try {
-        var res = await safeFetch(DEFAULT_IMPORT_URL);
-        if (!res.ok) throw new Error("NETWORK_" + res.status);
-        var text = await res.text();
-        var data = parseData(text);
-        if (!data.length) throw new Error("EMPTY_DATA");
-        state.quizData = data;
-        setMessage("🎉 " + data.length + " 件の問題を自動で読み込みました！", false);
-      } catch (e) {
-        console.error("データ読み込みエラー:", e);
-        if (e && e.message === "HTML_RESPONSE_ERROR") {
-          setMessage("⚠️ 共有設定エラー：スプレッドシートのアクセス権が「制限付き」になっている可能性があります。\nGoogleスプレッドシートの共有を「リンクを知っている全員（閲覧者）」にしてください。\n\n一時的にサンプル問題で起動します。", true);
-        } else if (e && e.message === "EMPTY_DATA") {
-          setMessage("⚠️ 形式エラー：読み込んだデータ内に有効な問題が見つかりませんでした。\n\n一時的にサンプル問題で起動します。", true);
-        } else {
-          setMessage("⚠️ 自動読み込みに失敗しました。通信環境、またはスプレッドシートの共有設定をご確認ください。\n\n一時的にサンプル問題で起動します。", true);
-        }
-        try { state.quizData = parseData(defaultSampleData); } catch (_) { state.quizData = []; }
-      } finally {
-        state.isInitialLoading = false;
-        render();
-      }
-    }
-
-    async function handleUrlImport() {
-      var input = document.getElementById("importUrlInput");
-      var url = input ? input.value.trim() : state.importUrl.trim();
-      if (!url) return;
-
-      state.isLoading = true;
-      state.importUrl = url;
-      setMessage("🔄 外部データを読み込み中...", false);
-      render();
-
-      try {
-        var res = await safeFetch(url);
-        if (!res.ok) throw new Error("NETWORK_" + res.status);
-        var text = await res.text();
-        var data = parseData(text);
-        if (!data.length) throw new Error("EMPTY_DATA");
-        state.quizData = data;
-        state.selectedTheme = "すべて";
-        state.importUrl = "";
-        setMessage("🎉 手動参照成功: " + data.length + " 件を読み込みました！", false);
-      } catch (e) {
-        console.error(e);
-        setMessage("エラー：URLからデータを取得できませんでした。URL、共有設定、CSV形式をご確認ください。", true);
-      } finally {
-        state.isLoading = false;
-        render();
-      }
-    }
-
-    function handleFileUpload(e) {
-      var file = e.target.files && e.target.files[0];
-      if (!file) return;
-
-      state.isLoading = true;
-      setMessage("🔄 ファイルを読み込み中...", false);
-      render();
-
-      var reader = new FileReader();
-      reader.onload = function(ev) {
-        try {
-          var data = parseData(ev.target.result);
-          if (!data.length) throw new Error("EMPTY_DATA");
-          state.quizData = data;
-          state.selectedTheme = "すべて";
-          setMessage("🎉 ファイルから " + data.length + " 件を読み込みました！", false);
-        } catch (err) {
-          console.error(err);
-          setMessage("エラー：ファイルを読み込めませんでした。CSVまたはテキスト形式をご確認ください。", true);
-        } finally {
-          state.isLoading = false;
-          render();
-        }
-      };
-      reader.onerror = function() {
-        state.isLoading = false;
-        setMessage("エラー：ファイルの読み込みに失敗しました。", true);
-        render();
-      };
-      reader.readAsText(file, "UTF-8");
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      render();
-      loadInitial();
+    points.forEach(function(d){
+      h+='<text x="'+x(d.year)+'" y="'+(H-14)+'" text-anchor="middle" font-size="12" fill="#667085">'+Math.round(d.age)+'歳</text>';
     });
-  </script>
+    var p1=series.map(function(d,i){return(i?"L":"M")+x(d.year).toFixed(1)+" "+y(d.total).toFixed(1)}).join(" ");
+    var p2=series.map(function(d,i){return(i?"L":"M")+x(d.year).toFixed(1)+" "+y(d.real).toFixed(1)}).join(" ");
+    h+='<path d="'+p1+'" fill="none" stroke="#4f7cff" stroke-width="4" stroke-linecap="round"/>';
+    h+='<path d="'+p2+'" fill="none" stroke="#98a2b3" stroke-width="3" stroke-dasharray="9 7" stroke-linecap="round"/>';
+    points.forEach(function(d){
+      h+='<circle cx="'+x(d.year)+'" cy="'+y(d.total)+'" r="5" fill="#4f7cff"/>';
+      h+='<circle cx="'+x(d.year)+'" cy="'+y(d.real)+'" r="4" fill="#fff" stroke="#98a2b3" stroke-width="2"/>';
+    });
+    E.chart.innerHTML=h;
+  }
+  function normalize(){
+    var a=[Math.max(0,num(E.eqNum)),Math.max(0,num(E.bondNum)),Math.max(0,num(E.cashNum))];
+    var s=a[0]+a[1]+a[2];
+    if(s<=0)a=[40,40,20];
+    else{
+      a=a.map(function(v){return v/s*100});
+      var x=Math.round(a[0]),y=Math.round(a[1]);a=[x,y,100-x-y];
+    }
+    [E.eqNum,E.bondNum,E.cashNum].forEach(function(el,i){el.value=a[i]});
+    [E.eq,E.bond,E.cash].forEach(function(el,i){el.value=a[i]});
+    render();
+  }
+  function syncPair(range,numBox){
+    range.addEventListener("input",function(){numBox.value=range.value;render()});
+    numBox.addEventListener("input",function(){range.value=numBox.value;render()});
+  }
+  function render(){
+    var c=getCfg(),sum=c.eq+c.bond+c.cash;
+    var fe=sum?c.eq/sum*100:0,fb=sum?c.bond/sum*100:0,fc=sum?c.cash/sum*100:0;
+    E.barEq.style.width=fe+"%";E.barBond.style.width=fb+"%";E.barCash.style.width=fc+"%";
+    E.sumLabel.textContent="合計 "+sum.toFixed(0)+"%"+(Math.round(sum)===100?"":"（計算時は自動で比率換算）");
+    if(sum<=0){E.validation.innerHTML='<span class="warning">資産配分を設定してください。</span>';return}
+    E.validation.textContent="";
+    var r=simulate(c);
+    E.startAsset.textContent=money(c.p);
+    E.finalNominal.textContent=money(r.final.total);
+    E.finalReal.textContent=money(r.final.real);
+    E.depletion.textContent=r.depletion===null?"最後まで残る":Math.floor(r.depletion)+"歳頃に0";
+    var wr=r.fe*c.eqR+r.fb*c.bondR+r.fc*c.cashR;
+    E.weighted.textContent="約"+wr.toFixed(1)+"%／年";
+    E.inflationMeaning.textContent="年平均"+c.infl+"%";
+    var future10=100*Math.pow(1+c.infl/100,10);
+    E.inflationExample.textContent="今100万円で買えるものが、10年後には約"+Math.round(future10)+"万円必要になる想定です。";
+    E.chartNote.textContent=c.age+"歳から"+c.endAge+"歳まで・2年ごと表示・物価上昇は年平均"+c.infl+"%"+(c.crash?"・初年度オルカン30%下落ケース":"");
+    var diff=r.final.real-c.p;
+    if(r.depletion!==null){
+      E.simpleMessage.textContent="この条件では、約"+Math.floor(r.depletion)+"歳で資産がなくなる計算です。毎月の取り崩し額や資産配分を見直してみてください。";
+    }else if(diff>=0){
+      E.simpleMessage.textContent=c.endAge+"歳時点でも、物価上昇を考えた「今のお金の価値」は現在の資産額以上を維持する計算です。";
+    }else{
+      E.simpleMessage.textContent=c.endAge+"歳時点でも資産は残ります。ただし物価上昇を考えると、今より買える量は少なくなる計算です。";
+    }
+    drawChart(r.s);
+    var rows=[];
+    for(var a=c.age;a<=c.endAge;a+=2){
+      var d=r.s.find(function(x){return Math.round(x.age)===a});
+      if(d)rows.push(d);
+    }
+    if(rows.length&&Math.round(rows[rows.length-1].age)!==c.endAge){
+      var last=r.s.find(function(x){return Math.round(x.age)===c.endAge});if(last)rows.push(last);
+    }
+    E.ageCards.innerHTML=rows.map(function(d,i){
+      var total=d.total||1,eqW=d.total?d.eq/total*100:0,bondW=d.total?d.bond/total*100:0,cashW=d.total?d.cash/total*100:0;
+      return '<div class="age-card '+(i===0?'now':'')+'">'+
+        '<div class="age-head"><div class="age">'+Math.round(d.age)+'歳</div><div class="years">'+(d.year===0?'現在':d.year+'年後')+'</div></div>'+
+        '<div class="age-money">'+money(d.total)+'</div>'+
+        '<div class="age-real">今のお金の価値：'+money(d.real)+'</div>'+
+        '<div class="mini-bar"><span style="width:'+eqW+'%"></span><span style="width:'+bondW+'%"></span><span style="width:'+cashW+'%"></span></div>'+
+      '</div>';
+    }).join("");
+    E.inflCards.innerHTML=[1,2,3].map(function(v){
+      var z=simulate(c,v);
+      return '<div class="infl-card '+(v===2?'standard':'')+'"><div class="sub">年平均 '+v+'%'+(v===2?'・標準':'')+'</div><div class="value">'+money(z.final.real)+'</div><div class="sub">'+c.endAge+'歳時点の実質価値</div></div>';
+    }).join("");
+    document.querySelectorAll(".infl").forEach(function(b){
+      b.classList.toggle("active",Number(b.dataset.v)===Number(c.infl));
+    });
+  }
+  syncPair(E.eq,E.eqNum);syncPair(E.bond,E.bondNum);syncPair(E.cash,E.cashNum);
+  [E.age,E.endAge,E.principal,E.draw,E.add,E.inflation,E.eqRate,E.bondRate,E.cashRate,E.crash].forEach(function(el){
+    el.addEventListener("input",render);el.addEventListener("change",render);
+  });
+  document.querySelectorAll(".infl").forEach(function(b){b.addEventListener("click",function(){E.inflation.value=b.dataset.v;render()})});
+  E.normalize.addEventListener("click",normalize);
+  render();
+})();
+</script>
 </body>
 </html>
