@@ -1,9 +1,9 @@
 const assert=require('node:assert/strict'),ts=require('typescript'),fs=require('node:fs'),vm=require('node:vm');
 const {PGlite}=require('@electric-sql/pglite');
-function compile(file,requireFn){const mod={exports:{}};vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,{exports:mod.exports,require:requireFn,Response,URL,Map,crypto,process,console});return mod.exports;}
+function compile(file,requireFn){const mod={exports:{}};vm.runInNewContext(ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,{exports:mod.exports,require:requireFn,Response,URL,Map,crypto,process,console,TextEncoder});return mod.exports;}
 (async()=>{const db=new PGlite();try{
  const exam=compile('lib/exam.ts',require),opts=compile('lib/options.ts',()=>exam);let allowed=true;
- const query=async(...args)=>(await db.query(...args)).rows;
+ let aggregateReads=0;const query=async(...args)=>{const statement=args[0];if(typeof statement==='string'&&(statement.startsWith('SELECT count(*)::int AS n FROM bk_submissions WHERE exam=')||statement.startsWith('SELECT a->>')||statement.startsWith('WITH grouped AS')))aggregateReads++;return (await db.query(...args)).rows;};
  const server=compile('lib/server.ts',id=>id==='@neondatabase/serverless'?{neon:()=>({query})}:id==='./exam'?exam:id==='./options'?opts:{admin:async()=>allowed});
  process.env.DATABASE_URL='test';
  const results=compile('lib/results.ts',require);
@@ -25,5 +25,7 @@ function compile(file,requireFn){const mod={exports:{}};vm.runInNewContext(ts.tr
  assert.equal((await route.POST(request({action:'reset',exam:'sommelier',confirm:'回答データをクリア'}))).status,200);
  assert.equal((await query('SELECT * FROM bk_submissions')).length,0);assert.equal((await query('SELECT * FROM bk_submission_archive')).length,1);
  const latest=await server.config('sommelier');body.sharedRevision=latest.shared_revision;body.answers[0].values.grape='シャルドネ';body.answers[1].values.grape='シャルドネ';assert.equal((await route.POST(request(body,device))).status,200);
- console.log('PASS: shared choices across both exams and all same-type questions, authorization, stale edits and submissions, retained historical answers');
+ allowed=false;const anonymous=await route.GET(new Request('https://example.test/api/exam?exam=sommelier',{headers:{cookie:'bk_device='+crypto.randomUUID()}}));assert.equal((await anonymous.json()).results,null);allowed=true;
+ const readsBefore=aggregateReads,read=()=>route.GET(new Request('https://example.test/api/exam?exam=sommelier',{headers:{cookie:'bk_device='+crypto.randomUUID()}}));const [first,second]=await Promise.all([read(),read()]);assert.equal(first.status,200);assert.equal(second.status,200);assert.equal(aggregateReads-readsBefore,3,'concurrent result reads should share one aggregate query set');
+ console.log('PASS: shared choices across both exams and all same-type questions, authorization, stale edits and submissions, retained historical answers, private results and coalesced reads');
 }finally{await db.close()}})().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,7 +1,7 @@
 'use client';
 import {chartColors,chartSegments,type Combination} from '@/lib/results';
 import {choices,choiceFields,defaultSharedChoices,type SharedChoices} from '@/lib/options';
-import {useEffect,useState} from 'react';
+import {useEffect,useRef,useState} from 'react';
 import {Wine,ChartNoAxesCombined,LockKeyhole,ArrowRight,Check,Plus,Trash2,RefreshCw} from 'lucide-react';
 import {Tabs,TabsList,TabsTrigger} from '@/components/ui/tabs';
 import {Select,SelectTrigger,SelectValue,SelectContent,SelectItem} from '@/components/ui/select';
@@ -12,6 +12,15 @@ type Values=Record<string,string>;type Data={config:{revision:number,questions:Q
 function Pick({label,value,options,onChange}:{label:string,value?:string,options:string[],onChange:(s:string)=>void}){return <label className="field"><span>{label}</span><Select value={value||''} onValueChange={onChange}><SelectTrigger aria-label={label} className="picker"><SelectValue placeholder="選択してください"/></SelectTrigger><SelectContent position="popper">{options.map(x=><SelectItem key={x} value={x}>{x}</SelectItem>)}</SelectContent></Select></label>}
 function Confirm({label,title,body,onConfirm,disabled=false}:{label:string,title:string,body:string,onConfirm:()=>void,disabled?:boolean}){return <AlertDialog><AlertDialogTrigger asChild><button type="button" className="primary" disabled={disabled}>{label}<ArrowRight size={18}/></button></AlertDialogTrigger><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{title}</AlertDialogTitle><AlertDialogDescription>{body}</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>戻る</AlertDialogCancel><AlertDialogAction onClick={onConfirm}>確定する</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>}
 export default function ExamApp({manage=false}:{manage?:boolean}){
+ const [adminShortcut,setAdminShortcut]=useState(false);
+ const adminClicks=useRef(0),adminClickTimer=useRef<number|undefined>(undefined);
+ function handleAdminHotspot(){
+  adminClicks.current+=1;
+  if(adminClickTimer.current)window.clearTimeout(adminClickTimer.current);
+  if(adminClicks.current>=3){adminClicks.current=0;setAdminShortcut(true);return;}
+  adminClickTimer.current=window.setTimeout(()=>{adminClicks.current=0;},2500);
+ }
+ useEffect(()=>()=>{if(adminClickTimer.current)window.clearTimeout(adminClickTimer.current);},[]);
  const [shared,setShared]=useState<SharedChoices>(defaultSharedChoices),[choiceType,setChoiceType]=useState<Question['type']>('white'),[resetText,setResetText]=useState('');
  const [exam,setExam]=useState<Exam>('sommelier'),[data,setData]=useState<Data|null>(null),[answers,setAnswers]=useState<Record<string,Values>>({}),[questions,setQuestions]=useState<Question[]>([]),[error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[loading,setLoading]=useState(true),[view,setView]=useState('edit'),[stamp,setStamp]=useState('');
  async function load(e=exam){setLoading(true);setError('');try{const r=await fetch('/api/exam?exam='+e,{cache:'no-store'}),d:any=await r.json();if(!r.ok)throw Error(d.error);setData(d);setQuestions(d.config.questions);setShared(d.config.shared_options);setStamp(new Date().toLocaleTimeString('ja-JP'));}catch(e:any){setError(e.message||'読み込みに失敗しました');}finally{setLoading(false);}}
@@ -24,7 +33,7 @@ export default function ExamApp({manage=false}:{manage?:boolean}){
  async function resetResults(){setBusy(true);setError('');try{const r=await fetch('/api/exam',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'reset',exam,confirm:resetText})});const d=await r.json();if(!r.ok)throw Error(d.error);setResetText('');await load();setNotice(`両試験の回答${d.count}件を退避し、集計をクリアしました。テスト端末からも再回答できます。`);}catch(e:any){setError(e.message)}finally{setBusy(false)}}
  const resultsView=manage?view==='results':!!data?.done;
  const update=(id:string,key:string,value:string)=>setAnswers(a=>({...a,[id]:{...a[id],[key]:value}}));
- return <><header className="top"><a href="/" className="brand"><img className="brandlogo" src="/blind-kawanishi-logo.png" alt="ブラインド川西 ロゴ" width={64} height={76}/><span>BLIND KAWANISHI<small>ブラインド川西</small></span></a><span className="topcaption">2026 TASTING EXAM</span><a className="adminlink" href={manage?'/':'/admin'}><LockKeyhole size={14}/>{manage?'回答ページ':'管理画面'}</a></header><main className="shell"><div className="heading"><div><p className="eyebrow">BLIND KAWANISHI · 回答集計</p><h1 className="pagetitle">{manage?'問題と集計の管理':resultsView?'みんなの回答結果':'2026年度 ソムリエ・ワインエキスパート二次試験'}</h1><p className="lead">{manage?'試験ごとに問題構成を設定できます。':resultsView?'試験を終えたみなさんの回答を、ひとつの場所に。':'受験した試験を選び、あなたの回答を教えてください。'}</p></div><div className="edition">2026<span>BLIND TASTING</span></div></div>
+ return <><header className="top"><a href="/" className="brand"><img className="brandlogo" src="/blind-kawanishi-logo.png" alt="ブラインド川西 ロゴ" width={64} height={76}/><span>BLIND KAWANISHI<small>ブラインド川西</small></span></a><span className="topcaption">2026 TASTING EXAM</span>{manage?<a className="adminlink" href="/"><LockKeyhole size={14}/>回答ページ</a>:adminShortcut?<a className="adminlink" href="/admin"><LockKeyhole size={14}/>管理画面</a>:<button type="button" className="adminHotspot" aria-label="2026 TASTING EXAM" tabIndex={-1} onClick={handleAdminHotspot}/> }</header><main className="shell"><div className="heading"><div><p className="eyebrow">BLIND KAWANISHI · 回答集計</p><h1 className="pagetitle">{manage?'問題と集計の管理':resultsView?'みんなの回答結果':'2026年度 ソムリエ・ワインエキスパート二次試験'}</h1><p className="lead">{manage?'試験ごとに問題構成を設定できます。':resultsView?'試験を終えたみなさんの回答を、ひとつの場所に。':'受験した試験を選び、あなたの回答を教えてください。'}</p></div><div className="edition">2026<span>BLIND TASTING</span></div></div>
  <Tabs value={exam} onValueChange={v=>{if(!busy)setExam(v as Exam)}} className="examtabs"><TabsList className="tablist"><TabsTrigger value="sommelier" disabled={busy||loading} className="tab">ソムリエ</TabsTrigger><TabsTrigger value="expert" disabled={busy||loading} className="tab">ワインエキスパート</TabsTrigger></TabsList></Tabs>
  {manage&&<button className="secondary" onClick={async()=>{await fetch('/api/admin/logout',{method:'POST'});location.reload()}}>ログアウト</button>}{manage&&<Tabs value={view} onValueChange={setView}><TabsList><TabsTrigger value="edit">問題を編集</TabsTrigger><TabsTrigger value="choices">共通の選択肢</TabsTrigger><TabsTrigger value="results">回答結果</TabsTrigger></TabsList></Tabs>}
  {error&&<div role="alert" className="message error">{error}<button onClick={()=>load()}>再読み込み</button></div>}{notice&&<div role="status" className="message success"><Check size={18}/>{notice}</div>}
