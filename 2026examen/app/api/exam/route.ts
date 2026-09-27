@@ -1,22 +1,46 @@
 import {combinationQuery,resetQuery} from '@/lib/results';
 import {choices,normalizeSharedChoices} from '@/lib/options';
-import {sql,admin,config,json,originOk,device} from '@/lib/server';
+import {sql,admin,config,json,originOk,device,init} from '@/lib/server';
 import {EXAMS,type Exam,type Question} from '@/lib/exam';
 export const dynamic='force-dynamic';
+type Results={count:number,rows:any[],combinations:any[]};
+const RESULTS_CACHE_MS=3000;
+const resultsCache=new Map<Exam,{expiresAt:number,version:number,value:Results}>();
+const resultsInFlight=new Map<Exam,Promise<Results>>();
+const resultsVersions=new Map<Exam,number>();
+function invalidateResults(exam:Exam){resultsCache.delete(exam);resultsVersions.set(exam,(resultsVersions.get(exam)||0)+1);}
+async function aggregateResults(exam:Exam):Promise<Results>{
+ const cached=resultsCache.get(exam);
+ if(cached&&cached.expiresAt>Date.now()&&cached.version===(resultsVersions.get(exam)||0))return cached.value;
+ const pending=resultsInFlight.get(exam);if(pending)return pending;
+ const version=resultsVersions.get(exam)||0,q=sql();
+ const task=(async()=>{
+  const [counts,rows,combinations]=await Promise.all([
+   q.query('SELECT count(*)::int AS n FROM bk_submissions WHERE exam=$1',[exam]),
+   q.query(`SELECT a->>'id' AS id,a->>'label' AS label,a->>'type' AS type,f.key AS field,f.value AS value,count(*)::int AS n FROM bk_submissions s CROSS JOIN LATERAL jsonb_array_elements(s.answers) a CROSS JOIN LATERAL jsonb_each_text(a->'values') f WHERE s.exam=$1 GROUP BY a->>'id',a->>'label',a->>'type',f.key,f.value ORDER BY n DESC`,[exam]),
+   q.query(combinationQuery,[exam]),
+  ]);
+  const value={count:counts[0]?.n||0,rows,combinations};
+  if(version===(resultsVersions.get(exam)||0))resultsCache.set(exam,{expiresAt:Date.now()+RESULTS_CACHE_MS,version,value});
+  return value;
+ })();
+ resultsInFlight.set(exam,task);
+ try{return await task;}finally{if(resultsInFlight.get(exam)===task)resultsInFlight.delete(exam);}
+}
 export async function GET(r:Request){try{
  const url=new URL(r.url),exam=url.searchParams.get('exam') as Exam;if(!Object.hasOwn(EXAMS,exam))return json({error:'試験区分が不正です'},400);
- const c=await config(exam),q=sql(),id=device(r)||crypto.randomUUID();
- const found=await q.query('SELECT exam FROM bk_submissions WHERE device=$1',[id]);const done=found[0]||null,isAdmin=await admin();let results=null;
- if(done||isAdmin){const counts=await q.query('SELECT count(*)::int AS n FROM bk_submissions WHERE exam=$1',[exam]);const rows=await q.query(`SELECT a->>'id' AS id,a->>'label' AS label,a->>'type' AS type,f.key AS field,f.value AS value,count(*)::int AS n FROM bk_submissions s CROSS JOIN LATERAL jsonb_array_elements(s.answers) a CROSS JOIN LATERAL jsonb_each_text(a->'values') f WHERE s.exam=$1 GROUP BY a->>'id',a->>'label',a->>'type',f.key,f.value ORDER BY n DESC`,[exam]);const combinations=await q.query(combinationQuery,[exam]);results={count:counts[0].n,rows,combinations};}
+ await init();const q=sql(),id=device(r)||crypto.randomUUID();
+ const [c,found,isAdmin]=await Promise.all([config(exam),q.query('SELECT exam FROM bk_submissions WHERE device=$1',[id]),admin()]);const done=found[0]||null;let results=null;
+ if(done||isAdmin)results=await aggregateResults(exam);
  const res=json({config:c,done,admin:isAdmin,results});res.headers.set('Set-Cookie',`bk_device=${id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=63072000${process.env.NODE_ENV==='production'?'; Secure':''}`);return res;
  }catch(err){console.error('exam read failed',err instanceof Error?err.name:'error');return json({error:'読み込めませんでした。時間をおいて再試行してください。'},503)}}
 export async function POST(r:Request){try{
- if(!originOk(r))return json({error:'アクセスを確認できません'},403);const raw=await r.text();if(raw.length>2000000)return json({error:'データが大きすぎます'},413);let b:any;try{b=JSON.parse(raw)}catch{return json({error:'入力が不正です'},400)}if(!b||!Object.hasOwn(EXAMS,b.exam))return json({error:'試験区分が不正です'},400);const exam=b.exam as Exam;
+ if(!originOk(r))return json({error:'アクセスを確認できません'},403);const declared=Number(r.headers.get('content-length')||0);if(declared>524288)return json({error:'データが大きすぎます'},413);const raw=await r.text();if(new TextEncoder().encode(raw).byteLength>524288)return json({error:'データが大きすぎます'},413);let b:any;try{b=JSON.parse(raw)}catch{return json({error:'入力が不正です'},400)}if(!b||!Object.hasOwn(EXAMS,b.exam))return json({error:'試験区分が不正です'},400);const exam=b.exam as Exam;if(b.action==='submit'&&new TextEncoder().encode(raw).byteLength>32768)return json({error:'回答データが大きすぎます'},413);
  if(['configure','choices','reset'].includes(b.action)&&!await admin())return json({error:'管理者のみ操作できます'},403);
  const c=await config(exam),q=sql();
  if(b.action==='reset'){
   if(b.confirm!=='回答データをクリア')return json({error:'確認文を正しく入力してください。'},400);
-  const removed=await q.query(resetQuery,[crypto.randomUUID()]);return json({ok:true,count:removed.length});
+  const removed=await q.query(resetQuery,[crypto.randomUUID()]);invalidateResults('sommelier');invalidateResults('expert');return json({ok:true,count:removed.length});
  }
  if(b.action==='choices'){
   let options;try{options=normalizeSharedChoices(b.options)}catch(e){return json({error:e instanceof Error?e.message:'選択肢が不正です。'},400)}
@@ -29,11 +53,10 @@ export async function POST(r:Request){try{
   const updated=await q.query('UPDATE bk_settings SET questions=$1::jsonb,revision=revision+1 WHERE exam=$2 AND revision=$3 RETURNING revision',[JSON.stringify(questions),exam,b.revision]);if(!updated.length)return json({error:'設定が更新されています。再読み込みしてください。'},409);return json({ok:true});
  }
  if(b.action!=='submit')return json({error:'操作が不正です'},400);const id=device(r);if(!id)return json({error:'Cookieを有効にして、ページを再読み込みしてください。'},400);
- if((await q.query('SELECT 1 FROM bk_submissions WHERE device=$1',[id])).length)return json({error:'この端末では送信済みです。',done:true},409);
  if(c.revision!==b.revision||c.shared_revision!==b.sharedRevision)return json({error:'問題が変更されました。ページを再読み込みしてご確認ください。'},409);
  if(!Array.isArray(b.answers)||b.answers.length!==c.questions.length)return json({error:'すべての問題に回答してください。'},400);
  const answers=[];for(const item of c.questions as Question[]){const a=b.answers.find((x:any)=>x?.id===item.id)?.values;if(!a)return json({error:'すべての問題に回答してください。'},400);const opts=choices(item);const valid=item.type==='spirit'?opts.drink.includes(a.drink):opts.country.includes(a.country)&&opts.grape.includes(a.grape)&&opts.year.includes(a.year);if(!valid)return json({error:'すべての項目を選択してください。'},400);answers.push({id:item.id,label:item.label,type:item.type,values:item.type==='spirit'?{drink:a.drink}:{country:a.country,grape:a.grape,year:a.year}});}
  // Row lock serializes an in-flight submission against a settings update.
  const inserted=await q.query(`WITH current_config AS (SELECT e.exam FROM bk_settings e CROSS JOIN bk_settings s WHERE e.exam=$1 AND e.revision=$2 AND s.exam='shared' AND s.revision=$5 FOR SHARE OF e,s) INSERT INTO bk_submissions(device,exam,answers) SELECT $3::uuid,$1,$4::jsonb FROM current_config ON CONFLICT(device) DO NOTHING RETURNING device`,[exam,b.revision,id,JSON.stringify(answers),b.sharedRevision]);
- if(!inserted.length)return json({error:'送信済み、または問題が更新されました。再読み込みしてください。'},409);return json({ok:true});
+ if(!inserted.length){const duplicate=(await q.query('SELECT 1 FROM bk_submissions WHERE device=$1',[id])).length>0;return json({error:duplicate?'この端末では送信済みです。':'問題が更新されました。ページを再読み込みしてください。',done:duplicate},409);}return json({ok:true});
  }catch(err){console.error('exam write failed',err instanceof Error?err.name:'error');return json({error:'保存できませんでした。入力内容を残したまま再試行できます。'},503)}}
