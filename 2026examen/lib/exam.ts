@@ -4,6 +4,8 @@ export const COUNTRIES=['フランス','イタリア','スペイン','ドイツ'
 export const YEARS=Array.from({length:8},(_,i)=>String(2025-i));
 export const SPIRITS=['ジン','ウォッカ','ラム','テキーラ','ウイスキー','バーボン','コニャック','アルマニャック','カルヴァドス','グラッパ','マール','キルシュ','アクアヴィット','焼酎（芋）','焼酎（麦）','焼酎（米）','泡盛','日本酒','梅酒','紹興酒','ポート','シェリー','マデイラ','ヴェルモット','カンパリ','シャルトリューズ（緑）','シャルトリューズ（黄）','ベネディクティン','ドランブイ','コアントロー','グラン・マルニエ','アマレット','サンブーカ','ペルノ','クレーム・ド・カシス','その他','わからない'];
 export const EXAMS={sommelier:'ソムリエ',expert:'ワインエキスパート'};
+// 2026年度の回答受付は終了。公開ページでは両試験の最終集計を表示する。
+export const ACCEPTING_RESPONSES=false;
 export type Exam=keyof typeof EXAMS;
 export type Question={id:string,type:'white'|'red'|'spirit',label:string,options?:Partial<{country:string[],grape:string[],year:string[],drink:string[]}>};
 export const TYPES={white:'白ワイン',red:'赤ワイン',spirit:'その他の飲料'};
