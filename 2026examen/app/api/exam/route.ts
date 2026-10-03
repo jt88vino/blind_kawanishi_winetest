@@ -1,7 +1,7 @@
 import {combinationQuery,resetQuery} from '@/lib/results';
 import {choices,normalizeSharedChoices} from '@/lib/options';
 import {sql,admin,config,json,originOk,device,init} from '@/lib/server';
-import {EXAMS,type Exam,type Question} from '@/lib/exam';
+import {ACCEPTING_RESPONSES,EXAMS,type Exam,type Question} from '@/lib/exam';
 export const dynamic='force-dynamic';
 type Results={count:number,rows:any[],combinations:any[]};
 const RESULTS_CACHE_MS=3000;
@@ -31,12 +31,13 @@ export async function GET(r:Request){try{
  const url=new URL(r.url),exam=url.searchParams.get('exam') as Exam;if(!Object.hasOwn(EXAMS,exam))return json({error:'試験区分が不正です'},400);
  await init();const q=sql(),id=device(r)||crypto.randomUUID();
  const [c,found,isAdmin]=await Promise.all([config(exam),q.query('SELECT exam FROM bk_submissions WHERE device=$1',[id]),admin()]);const done=found[0]||null;let results=null;
- if(done||isAdmin)results=await aggregateResults(exam);
- const res=json({config:c,done,admin:isAdmin,results});res.headers.set('Set-Cookie',`bk_device=${id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=63072000${process.env.NODE_ENV==='production'?'; Secure':''}`);return res;
+ if(!ACCEPTING_RESPONSES||done||isAdmin)results=await aggregateResults(exam);
+ const res=json({config:c,done,admin:isAdmin,acceptingResponses:ACCEPTING_RESPONSES,results});res.headers.set('Set-Cookie',`bk_device=${id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=63072000${process.env.NODE_ENV==='production'?'; Secure':''}`);return res;
  }catch(err){console.error('exam read failed',err instanceof Error?err.name:'error');return json({error:'読み込めませんでした。時間をおいて再試行してください。'},503)}}
 export async function POST(r:Request){try{
  if(!originOk(r))return json({error:'アクセスを確認できません'},403);const declared=Number(r.headers.get('content-length')||0);if(declared>524288)return json({error:'データが大きすぎます'},413);const raw=await r.text();if(new TextEncoder().encode(raw).byteLength>524288)return json({error:'データが大きすぎます'},413);let b:any;try{b=JSON.parse(raw)}catch{return json({error:'入力が不正です'},400)}if(!b||!Object.hasOwn(EXAMS,b.exam))return json({error:'試験区分が不正です'},400);const exam=b.exam as Exam;if(b.action==='submit'&&new TextEncoder().encode(raw).byteLength>32768)return json({error:'回答データが大きすぎます'},413);
  if(['configure','choices','reset'].includes(b.action)&&!await admin())return json({error:'管理者のみ操作できます'},403);
+ if(b.action==='submit'&&!ACCEPTING_RESPONSES)return json({error:'2026年度の回答受付は終了しました。集計結果をご覧ください。'},403);
  const c=await config(exam),q=sql();
  if(b.action==='reset'){
   if(b.confirm!=='回答データをクリア')return json({error:'確認文を正しく入力してください。'},400);
