@@ -7,7 +7,7 @@ function compile(file,requireFn){const mod={exports:{}};vm.runInNewContext(ts.tr
  const server=compile('lib/server.ts',id=>id==='@neondatabase/serverless'?{neon:()=>({query})}:id==='./exam'?exam:id==='./options'?opts:{admin:async()=>allowed});
  process.env.DATABASE_URL='test';
  const results=compile('lib/results.ts',require);
- const route=compile('app/api/exam/route.ts',id=>id==='@/lib/server'?server:id==='@/lib/exam'?exam:id==='@/lib/results'?results:opts);
+ const route=compile('app/api/exam/route.ts',id=>id==='@/lib/server'?server:id==='@/lib/exam'?{...exam,ACCEPTING_RESPONSES:true}:id==='@/lib/results'?results:opts);
  const request=(b,id=crypto.randomUUID())=>new Request('https://example.test/api/exam',{method:'POST',headers:{origin:'https://example.test',cookie:'bk_device='+id},body:JSON.stringify(b)});
  const old=await server.config('sommelier');await server.config('expert');
  const shared=opts.defaultSharedChoices();shared.white={country:['日本'],grape:['甲州'],year:['2025']};
@@ -27,5 +27,8 @@ function compile(file,requireFn){const mod={exports:{}};vm.runInNewContext(ts.tr
  const latest=await server.config('sommelier');body.sharedRevision=latest.shared_revision;body.answers[0].values.grape='シャルドネ';body.answers[1].values.grape='シャルドネ';assert.equal((await route.POST(request(body,device))).status,200);
  allowed=false;const anonymous=await route.GET(new Request('https://example.test/api/exam?exam=sommelier',{headers:{cookie:'bk_device='+crypto.randomUUID()}}));assert.equal((await anonymous.json()).results,null);allowed=true;
  const readsBefore=aggregateReads,read=()=>route.GET(new Request('https://example.test/api/exam?exam=sommelier',{headers:{cookie:'bk_device='+crypto.randomUUID()}}));const [first,second]=await Promise.all([read(),read()]);assert.equal(first.status,200);assert.equal(second.status,200);assert.equal(aggregateReads-readsBefore,3,'concurrent result reads should share one aggregate query set');
- console.log('PASS: shared choices across both exams and all same-type questions, authorization, stale edits and submissions, retained historical answers, private results and coalesced reads');
+ const closedRoute=compile('app/api/exam/route.ts',id=>id==='@/lib/server'?server:id==='@/lib/exam'?exam:id==='@/lib/results'?results:opts);allowed=false;
+ assert.equal((await closedRoute.POST(request(body))).status,403);
+ const publicResults=await (await closedRoute.GET(new Request('https://example.test/api/exam?exam=sommelier'))).json();assert.equal(publicResults.acceptingResponses,false);assert.ok(publicResults.results);assert.equal(publicResults.results.count,1);
+ console.log('PASS: shared choices, authorization, stale submissions, retained answers, open-mode privacy, closed submissions, public final results, and coalesced reads');
 }finally{await db.close()}})().catch(e=>{console.error(e);process.exitCode=1});
