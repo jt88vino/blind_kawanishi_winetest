@@ -1,1 +1,8 @@
-{"framework":"nextjs"}
+{
+  "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "security/node-october-2026": false
+    }
+  }
+}
